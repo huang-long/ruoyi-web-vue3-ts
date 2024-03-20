@@ -3,7 +3,6 @@ import routes from "./constantRoutes";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { getToken } from "@/utils/auth";
-import settingsStore from "@/stores/settings";
 import userStore from "@/stores/user";
 import permissionStore from "@/stores/permission";
 import { ElMessage } from "element-plus";
@@ -46,8 +45,6 @@ NProgress.configure({ showSpinner: false });
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
-    const sStore = settingsStore();
-    to.meta.title && sStore.setTitle(to.meta.title);
     /* has token*/
     if (to.path === "/login") {
       next({ path: "/" });

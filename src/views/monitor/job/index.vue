@@ -391,7 +391,7 @@ function handleUpdate(row: JobObj) {
 function submitForm() {
   jobRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.jobId != undefined) {
+      if (form.value.jobId) {
         updateJob(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

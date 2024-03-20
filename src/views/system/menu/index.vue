@@ -360,7 +360,7 @@ async function handleUpdate(row: MenuObj) {
 function submitForm() {
   menuRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.menuId != undefined) {
+      if (form.value.menuId) {
         updateMenu(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

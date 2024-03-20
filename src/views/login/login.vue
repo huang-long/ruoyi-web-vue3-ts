@@ -4,17 +4,29 @@
       <h3 class="title">若依后台管理系统</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-          <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
+          <template #prefix>
+            <el-icon>
+              <myUser />
+            </el-icon>
+          </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码" @keyup.enter="handleLogin">
-          <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
+          <template #prefix>
+            <el-icon>
+              <myPassword />
+            </el-icon>
+          </template>
         </el-input>
       </el-form-item>
       <el-form-item v-if="captchaEnabled" prop="code">
         <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter="handleLogin">
-          <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
+          <template #prefix>
+            <el-icon>
+              <myValidCode />
+            </el-icon>
+          </template>
         </el-input>
         <div class="login-code">
           <img :src="codeUrl" class="login-code-img" @click="getCode" />

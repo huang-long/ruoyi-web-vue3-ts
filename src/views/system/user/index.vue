@@ -109,7 +109,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog v-model="open" :title="title" width="600px" append-to-body>
-      <el-form ref="userRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="userRef" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户昵称" prop="nickName">
@@ -128,8 +128,6 @@
               />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="手机号码" prop="phonenumber">
               <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
@@ -140,20 +138,16 @@
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
+          <el-col v-if="!form.userId" :span="12">
+            <el-form-item label="用户名称" prop="userName">
               <el-input v-model="form.userName" placeholder="请输入用户名称" maxlength="30" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
+          <el-col v-if="!form.userId" :span="12">
+            <el-form-item label="用户密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入用户密码" type="password" maxlength="20" show-password />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="用户性别">
               <el-select v-model="form.sex" placeholder="请选择">
@@ -168,8 +162,6 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="岗位">
               <el-select v-model="form.postIds" multiple placeholder="请选择">
@@ -184,8 +176,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
@@ -555,13 +545,13 @@ const cancel = () => {
 /** 新增按钮操作 */
 const handleAdd = () => {
   reset();
-  // getUser().then(response => {
-  // postOptions.value = response.posts;
-  // roleOptions.value = response.roles;
-  open.value = true;
-  title.value = "添加用户";
-  form.value.password = "";
-  // });
+  getUser(form.value.userId).then((response) => {
+    postOptions.value = response.posts;
+    roleOptions.value = response.roles;
+    open.value = true;
+    title.value = "添加用户";
+    form.value.password = "";
+  });
 };
 /** 修改按钮操作 */
 const handleUpdate = (row: UserInfoObj) => {
@@ -582,7 +572,7 @@ const handleUpdate = (row: UserInfoObj) => {
 const submitForm = () => {
   userRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.userId != undefined) {
+      if (form.value.userId) {
         updateUser(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

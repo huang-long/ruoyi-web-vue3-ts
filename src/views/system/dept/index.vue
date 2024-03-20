@@ -237,7 +237,7 @@ function handleUpdate(row: DeptObj) {
 function submitForm() {
   deptRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.deptId != undefined) {
+      if (form.value.deptId) {
         updateDept(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

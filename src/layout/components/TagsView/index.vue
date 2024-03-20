@@ -1,15 +1,18 @@
 <template>
   <div v-if="showTags" class="tags">
-    <ul>
-      <li v-for="item in tagsList" :key="item.path" class="tags-li" :class="{ active: isActive(item.path) }">
-        <router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
-        <span class="tags-li-icon" @click="closePage(item)">
-          <el-icon>
-            <Close />
-          </el-icon>
-        </span>
-      </li>
-    </ul>
+    <div ref="tagsRef" class="tags-box" @wheel.stop="tabsWheel">
+      <ul ref="tabsUlRef">
+        <li v-for="item in tagsList" ref="tabsLiRef" :key="item.path" class="tags-li" :class="{ active: isActive(item.path) }">
+          <router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
+          <span class="tags-li-icon" @click="closeTags(item)">
+            <el-icon>
+              <Close />
+            </el-icon>
+          </span>
+        </li>
+      </ul>
+    </div>
+
     <div class="tags-close-box">
       <el-dropdown @command="handleTags">
         <el-button size="small" type="primary">
@@ -30,7 +33,7 @@
 </template>
 
 <script lang="ts" setup name="TagsViewLayout">
-import { computed, watch } from "vue";
+import { computed, ref, watch, VueElement, nextTick } from "vue";
 import tagsViewStore, { type Tag } from "@/stores/tagsView";
 import permissionStore from "@/stores/permission";
 import { useRoute, useRouter } from "vue-router";
@@ -44,7 +47,7 @@ const isActive = (path: string) => {
 const tStore = tagsViewStore();
 const pStore = permissionStore();
 const tagsList = computed(() => tStore.tagsList);
-const showTags = computed(() => tagsList.value.length > 0);
+const showTags = computed(() => tStore.tagsList.length > 0);
 
 watch(
   () => tStore.activePath,
@@ -58,11 +61,14 @@ watch(
   (value) => {
     tStore.activePath = route.fullPath;
     value && setTags();
+    nextTick(() => {
+      scrollToActiveTag();
+    });
   }
 );
 
 // 关闭单个标签
-const closePage = (tag: Tag) => {
+const closeTags = (tag: Tag) => {
   tStore.closePage(tag.path);
 };
 
@@ -108,6 +114,41 @@ const handleTags = (command: string) => {
 //     $router: router,
 //     $route: route
 // });
+
+//滚轮滑动操作
+let translateX = 0;
+const tagsRef = ref();
+const tabsUlRef = ref();
+const tabsLiRef = ref();
+const tabsWheel = (e: WheelEvent) => {
+  translateX = translateX - e.deltaY;
+  const max = tagsRef.value.offsetWidth - tabsUlRef.value.offsetWidth;
+  if (max >= 0) {
+    return;
+  }
+
+  if (translateX > 0) {
+    translateX = 0;
+  } else if (translateX < max) {
+    translateX = max;
+  }
+  tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
+  e.preventDefault();
+};
+// 定位到当前tag
+const scrollToActiveTag = () => {
+  tabsLiRef.value.forEach((item: VueElement) => {
+    if (item.className && item.className.indexOf("active") >= 0) {
+      if (item.offsetLeft + translateX < 0) {
+        translateX = 0 - item.offsetLeft;
+        tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
+      } else if (item.offsetLeft + item.offsetWidth + translateX - tagsRef.value.offsetWidth > 0) {
+        translateX = tagsRef.value.offsetWidth - item.offsetLeft - item.offsetWidth;
+        tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
+      }
+    }
+  });
+};
 </script>
 
 <style lang="less" scoped>
@@ -116,33 +157,57 @@ const handleTags = (command: string) => {
   height: 30px;
   overflow: hidden;
   background: #fff;
-  padding-right: 120px;
+  padding-right: 110px;
   box-shadow: 0 5px 10px #ddd;
 
+  .tags-box {
+    width: calc(100% - 10px);
+    margin: 0 5px;
+    height: 100%;
+  }
+
+  .tags-close-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    padding-top: 1px;
+    text-align: center;
+    width: 110px;
+    height: 30px;
+    background: #fff;
+    box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+
+    .el-icon {
+      margin-left: 5px;
+    }
+
+    button {
+      width: 100px;
+      height: 27px;
+    }
+  }
+}
+
+.tags-box {
   ul {
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    padding: 0;
+    display: inline-flex;
 
     .tags-li {
       float: left;
-      margin: 3px 5px 2px 3px;
       border-radius: 3px;
+      margin: 4px 5px 0 0;
       font-size: 12px;
-      overflow: hidden;
       cursor: pointer;
       height: 23px;
       line-height: 23px;
       border: 1px solid #e9eaec;
       background: #fff;
       padding: 0 5px 0 12px;
-      vertical-align: middle;
       color: #666;
-      -webkit-transition: all 0.3s ease-in;
-      -moz-transition: all 0.3s ease-in;
-      transition: all 0.3s ease-in;
-      display: flex;
+      display: inline-flex;
       justify-content: center;
 
       .tags-li-title {
@@ -174,28 +239,9 @@ const handleTags = (command: string) => {
         color: #fff;
       }
     }
-  }
 
-  .tags-close-box {
-    position: absolute;
-    right: 0;
-    top: 0;
-    box-sizing: border-box;
-    padding-top: 1px;
-    text-align: center;
-    width: 110px;
-    height: 30px;
-    background: #fff;
-    box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-
-    .el-icon {
-      margin-left: 5px;
-    }
-
-    button {
-      width: 100px;
-      height: 27px;
+    .tags-li:last-child {
+      margin-right: 0;
     }
   }
 }

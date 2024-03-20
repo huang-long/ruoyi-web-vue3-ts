@@ -193,7 +193,7 @@ function handleUpdate(row: PostObj) {
 function submitForm() {
   postRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.postId != undefined) {
+      if (form.value.postId) {
         updatePost(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

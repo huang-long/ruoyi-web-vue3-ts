@@ -1,6 +1,6 @@
 <template>
-  <svg :class="svgClass" aria-hidden="true">
-    <use :xlink:href="iconName" :fill="color" />
+  <svg viewBox="0 0 1024 1024">
+    <use :xlink:href="iconName" />
   </svg>
 </template>
 
@@ -10,38 +10,11 @@ import { computed } from "vue";
 const props = withDefaults(
   defineProps<{
     iconClass: string;
-    className?: string;
-    color?: string;
   }>(),
-  {
-    className: "",
-    color: "",
-  }
+  {}
 );
 
 const iconName = computed(() => `#icon-${props.iconClass}`);
-const svgClass = computed(() => {
-  if (props.className) {
-    return `svg-icon ${props.className}`;
-  }
-  return "svg-icon";
-});
 </script>
 
-<style scope lang="less">
-.sub-el-icon,
-.nav-icon {
-  display: inline-block;
-  font-size: 15px;
-  margin-right: 12px;
-  position: relative;
-}
-
-.svg-icon {
-  width: 1em;
-  height: 1em;
-  position: relative;
-  fill: currentColor;
-  vertical-align: -2px;
-}
-</style>
+<style scope lang="less"></style>

@@ -200,7 +200,7 @@ function handleUpdate(row: SysConfigObj) {
 function submitForm() {
   configRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.configId != undefined) {
+      if (form.value.configId) {
         updateConfig(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

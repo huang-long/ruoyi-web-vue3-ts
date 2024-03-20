@@ -1,4 +1,5 @@
 import server from "@/utils/request";
+import type { UserInfoObj } from "./system/user";
 
 export type LoginReq = {
   username: string;
@@ -36,7 +37,7 @@ export function register(data: LoginReq) {
 // 获取用户详细信息
 export function getInfo() {
   return server.requestT<{
-    user: { userName: string; avatar: string };
+    user: UserInfoObj;
     roles: string[];
     permissions: string[];
   }>({

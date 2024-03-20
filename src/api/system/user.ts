@@ -7,6 +7,7 @@ import type { QueryParam } from "../form";
 
 export type UserInfoObj = {
   userId: string;
+  avatar?: string;
   deptId?: string;
   nickName?: string;
   userName?: string;

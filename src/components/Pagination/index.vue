@@ -1,22 +1,25 @@
 <template>
   <div :class="{ hidden: hidden }" class="pagination-container">
-    <el-pagination
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
-      :background="background"
-      :layout="layout"
-      :page-sizes="pageSizes"
-      :pager-count="pagerCount"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+    <el-config-provider :locale="zhCn">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="background"
+        :layout="layout"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-config-provider>
   </div>
 </template>
 
 <script setup lang="ts" name="PaginationCmpt">
 import { scrollTo } from "@/utils/scroll-to";
 import { computed } from "vue";
+import { zhCn } from "element-plus/es/locales";
 
 const props = withDefaults(
   defineProps<{

@@ -74,7 +74,7 @@
 
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog v-model="open" :title="title" width="500px" append-to-body>
-      <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典名称" prop="dictName">
           <el-input v-model="form.dictName" placeholder="请输入字典名称" />
         </el-form-item>
@@ -155,7 +155,7 @@ const rules = ref({
 });
 
 const formRef = ref();
-const queryFormRef = ref();
+const queryRef = ref();
 
 /** 查询字典类型列表 */
 const getList = () => {
@@ -194,7 +194,7 @@ const handleQuery = () => {
 /** 重置按钮操作 */
 const resetQuery = () => {
   dateRange.value = [];
-  queryFormRef.value?.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 };
 

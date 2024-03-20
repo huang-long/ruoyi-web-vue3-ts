@@ -10,7 +10,7 @@ import myDirective from "@/directive/index"; // directive
 import myComponent from "@/components/index"; // component
 // svg图标
 import "virtual:svg-icons-register";
-import SvgIcon from "@/components/SvgIcon/index.vue";
+import myIcons from "@/components/SvgIcon/myIcon";
 // formCreate
 import formCreate from "@form-create/element-ui";
 import fcDesigner from "@form-create/designer";
@@ -22,10 +22,13 @@ app.use(router);
 for (const [name, comp] of Object.entries(ElementPlusIconsVue)) {
   app.component(name, comp);
 }
+// 自定义icon 转化为 element plus Icons
+myIcons.forEach((item) => {
+  app.component(item.name, item.component);
+});
 app.use(ElementPlus);
 app.use(myDirective); // 挂载全局指令
 app.use(myComponent); // 挂载全局组件
 app.use(formCreate);
 app.use(fcDesigner);
-app.component("SvgIcon", SvgIcon);
 app.mount("#app");

@@ -480,7 +480,7 @@ function handleDataScope(row: RoleObj) {
 }
 /** 提交按钮（数据权限） */
 function submitDataScope() {
-  if (form.value.roleId != undefined) {
+  if (form.value.roleId) {
     form.value.deptIds = getDeptAllCheckedKeys();
     dataScope(form.value).then(() => {
       ElMessage.success("修改成功");

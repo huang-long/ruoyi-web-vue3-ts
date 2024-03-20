@@ -199,7 +199,7 @@ function handleUpdate(row: NoticeObj) {
 function submitForm() {
   noticeRef.value.validate((valid: boolean) => {
     if (valid) {
-      if (form.value.noticeId != undefined) {
+      if (form.value.noticeId) {
         updateNotice(form.value).then(() => {
           ElMessage.success("修改成功");
           open.value = false;

@@ -117,7 +117,7 @@ if (props.showColumnsType == "transfer") {
 </script>
 <style lang="less" scoped>
 .item:first-child {
-  :v-deep(.el-button:first-child) {
+  :deep(.el-button:first-child) {
     margin-bottom: 10px;
   }
 }

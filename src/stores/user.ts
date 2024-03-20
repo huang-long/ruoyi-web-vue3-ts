@@ -9,6 +9,7 @@ const store = defineStore({
     return {
       token: getToken(),
       name: "",
+      nickName: "",
       phonenumber: "",
       email: "",
       avatar: "",
@@ -54,7 +55,8 @@ const store = defineStore({
             } else {
               this.roles = ["ROLE_DEFAULT"];
             }
-            this.name = user.userName;
+            this.name = user.userName || "";
+            this.nickName = user.nickName || "";
             this.avatar = avatar;
             resolve(res);
           })

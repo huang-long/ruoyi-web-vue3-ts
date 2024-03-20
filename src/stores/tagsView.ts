@@ -78,7 +78,7 @@ const store = defineStore({
       index >= 0 && this.delTagsItem(index);
       // 设置下一页面
       const nextTag = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
-      this.activePath = nextTag && nextTag.fullPath ? nextTag.fullPath : "/index";
+      this.activePath = nextTag && nextTag.path ? nextTag.path : "/index";
     },
     // 关闭当前打开指定页面
     closeOpenPage(toPath: string, path?: string) {

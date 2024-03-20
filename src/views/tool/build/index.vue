@@ -26,7 +26,6 @@ import { ref } from "vue";
 const dialogVisible = ref(false);
 </script>
 
-<style lang="less" scoped></style>
 <style lang="less" scoped>
 :deep(.form-create-dialog) {
   .el-dialog__body {
