@@ -115,6 +115,7 @@ const zh_cn = {
   "Connect using data input association": "使用数据输入关联连接",
   "Data store reference": "数据存储参考",
   Collection: "收藏",
+  "Exclusive gateway": "排他网关",
   "Parallel gateway": "并行网关",
   "Inclusive gateway": "包容网关",
   "Complex gateway": "复杂网关",

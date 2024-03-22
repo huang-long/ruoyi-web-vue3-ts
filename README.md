@@ -40,3 +40,11 @@ pnpm run lint
 ```sh
 pnpm run build:prod
 ```
+
+### 支持作者
+
+![Image text](https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/shoukuanma.png)
+
+### 欢迎讨论
+
+huanglgln@163.com
