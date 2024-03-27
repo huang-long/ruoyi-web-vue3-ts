@@ -33,6 +33,9 @@ export type TaskHistoryObj = {
   status?: string;
   pass?: string;
   reason?: string;
+  department?: string;
+  actParams?: string;
+  actParamsObj?: { [key: string]: string };
 };
 
 // 查询已办任务列表
@@ -81,7 +84,7 @@ export function queryHistoryList(query: TaskHistoryObj & QueryParam) {
 }
 
 // 审批任务
-export function complete(params: { taskId: string; pass: string; reason?: string }) {
+export function complete(params: { taskId: string; pass: string; comment?: string }) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/complete",
     method: "post",

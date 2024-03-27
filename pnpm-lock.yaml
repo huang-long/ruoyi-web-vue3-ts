@@ -26,7 +26,7 @@ specifiers:
   '@wangeditor/editor': ^5.1.23
   '@wangeditor/editor-for-vue': ^5.1.12
   axios: ^1.2.3
-  bpmn-js: ^17.0.2
+  bpmn-js: ^17.2.1
   bpmn-js-properties-panel: ^5.13.0
   camunda-bpmn-js-behaviors: ^1.3.0
   camunda-bpmn-moddle: ^7.0.1
@@ -75,9 +75,9 @@ dependencies:
   '@wangeditor/editor': 5.1.23
   '@wangeditor/editor-for-vue': 5.1.12_ypytdxfolnhr7xayhbqhc35tlu
   axios: 1.6.2
-  bpmn-js: 17.0.2
-  bpmn-js-properties-panel: 5.13.0_uovmndoquskhkzymzryysgbzly
-  camunda-bpmn-js-behaviors: 1.3.0_zsoqikxibu7w7orzhbgfcqczmy
+  bpmn-js: 17.2.1
+  bpmn-js-properties-panel: 5.13.0_6uzffhi5xag3t7g5mdjkssvhqe
+  camunda-bpmn-js-behaviors: 1.3.0_3zxqyc3cot77dxsfdg6ucxkmwy
   camunda-bpmn-moddle: 7.0.1
   diagram-js: 14.1.0
   echarts: 5.4.3
@@ -177,6 +177,13 @@ packages:
 
   /@bpmn-io/diagram-js-ui/0.2.2:
     resolution: {integrity: sha512-IgOIxOwoqsFB2mMPdXtcbPVPjdYkZ3huW7ipowYLhg5jdRGHlBronQ+LER+lfWro6sPtzEsw7qX8D8Yq9M2S5g==}
+    dependencies:
+      htm: 3.1.1
+      preact: 10.19.3
+    dev: false
+
+  /@bpmn-io/diagram-js-ui/0.2.3:
+    resolution: {integrity: sha512-OGyjZKvGK8tHSZ0l7RfeKhilGoOGtFDcoqSGYkX0uhFlo99OVZ9Jn1K7TJGzcE9BdKwvA5Y5kGqHEhdTxHvFfw==}
     dependencies:
       htm: 3.1.1
       preact: 10.19.3
@@ -1716,7 +1723,7 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
 
-  /bpmn-js-properties-panel/5.13.0_uovmndoquskhkzymzryysgbzly:
+  /bpmn-js-properties-panel/5.13.0_6uzffhi5xag3t7g5mdjkssvhqe:
     resolution: {integrity: sha512-b427nXA30WcsCQkyTuAGxUnaeEcnApsYb6USKFnhrDLjEy6E20l2jK0zSMNtPhK0fhrYkardDX6kIhM/z0oC6w==}
     peerDependencies:
       '@bpmn-io/properties-panel': '>= 3.7'
@@ -1727,20 +1734,20 @@ packages:
       '@bpmn-io/extract-process-variables': 0.8.0
       '@bpmn-io/properties-panel': 3.18.1
       array-move: 4.0.0
-      bpmn-js: 17.0.2
-      camunda-bpmn-js-behaviors: 1.3.0_zsoqikxibu7w7orzhbgfcqczmy
+      bpmn-js: 17.2.1
+      camunda-bpmn-js-behaviors: 1.3.0_3zxqyc3cot77dxsfdg6ucxkmwy
       diagram-js: 14.1.0
       ids: 1.0.5
       min-dash: 4.2.1
       min-dom: 4.1.0
     dev: false
 
-  /bpmn-js/17.0.2:
-    resolution: {integrity: sha512-4DPtHgCCCiitO6hZih2zH16QbaKhd5UdcZhcDEGvOKV7HhXN0IYV0ilksAr0Fr0aUuLAk573wxPGmsh76LDR8A==}
+  /bpmn-js/17.2.1:
+    resolution: {integrity: sha512-gj39OuDwZlAnpMpy4t1jZA7srNVlT9hvveZut42aTWZvg3bbxfhtCZE9LuGyCTi1sxCB05s9Z4xiGpACziTDgQ==}
     dependencies:
       bpmn-moddle: 8.1.0
-      diagram-js: 14.1.0
-      diagram-js-direct-editing: 2.1.2_diagram-js@14.1.0
+      diagram-js: 14.3.1
+      diagram-js-direct-editing: 2.1.2_diagram-js@14.3.1
       ids: 1.0.5
       inherits-browser: 0.1.0
       min-dash: 4.2.1
@@ -1823,14 +1830,14 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /camunda-bpmn-js-behaviors/1.3.0_zsoqikxibu7w7orzhbgfcqczmy:
+  /camunda-bpmn-js-behaviors/1.3.0_3zxqyc3cot77dxsfdg6ucxkmwy:
     resolution: {integrity: sha512-Nz+Fa5B6SVUq6d+Mb0UOP0GZI6a+NrMwUXKeyA5LSXjVEKxwso500PGwbzW7HGgFfqT40Fv8i/ukvI0adTBPyA==}
     peerDependencies:
       bpmn-js: '>= 9'
       camunda-bpmn-moddle: '>= 7'
       zeebe-bpmn-moddle: '>= 0.18'
     dependencies:
-      bpmn-js: 17.0.2
+      bpmn-js: 17.2.1
       camunda-bpmn-moddle: 7.0.1
       ids: 1.0.5
       min-dash: 4.2.1
@@ -2242,12 +2249,12 @@ packages:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
 
-  /diagram-js-direct-editing/2.1.2_diagram-js@14.1.0:
+  /diagram-js-direct-editing/2.1.2_diagram-js@14.3.1:
     resolution: {integrity: sha512-VpccLAnLqLF1cp3fk363QUbRVTd/qTcj2oOb+IqgcmOiWszJp7J9Ta6y5GjUvw48hDZpzCatlmWwA4CJ3MaYGQ==}
     peerDependencies:
       diagram-js: '*'
     dependencies:
-      diagram-js: 14.1.0
+      diagram-js: 14.3.1
       min-dash: 4.2.1
       min-dom: 4.1.0
     dev: false
@@ -2266,8 +2273,27 @@ packages:
       tiny-svg: 3.0.1
     dev: false
 
+  /diagram-js/14.3.1:
+    resolution: {integrity: sha512-QXwH2kdlTP8cfWDCfYnnhvJ9PXX8UQ/M8TJaeLfcIjJPBOrfSEfLI/wuI7VNtAZZ9munlcGmCnh8hEBtcjB8kA==}
+    dependencies:
+      '@bpmn-io/diagram-js-ui': 0.2.3
+      clsx: 2.1.0
+      didi: 10.2.2
+      inherits-browser: 0.1.0
+      min-dash: 4.2.1
+      min-dom: 4.1.0
+      object-refs: 0.4.0
+      path-intersection: 3.0.0
+      tiny-svg: 3.0.1
+    dev: false
+
   /didi/10.2.0:
     resolution: {integrity: sha512-HqlQimiIImFz8amKDomklW8pZ/7JhiGtgru8yOUlN/VE2X9WQ4sMj2pdsuk8IhWQjGVHTmvKXEmmYQaOKLrr5Q==}
+    engines: {node: '>= 16'}
+    dev: false
+
+  /didi/10.2.2:
+    resolution: {integrity: sha512-l8NYkYFXV1izHI65EyT8EXOjUZtKmQkHLTT89cSP7HU5J/G7AOj0dXKtLc04EXYlga99PBY18IPjOeZ+c3DI4w==}
     engines: {node: '>= 16'}
     dev: false
 

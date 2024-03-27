@@ -14,7 +14,7 @@ import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
 import type { Canvas } from "diagram-js/lib/features/palette/Palette";
-import type { Element as BpmnElement, Connection } from "diagram-js/lib/model";
+import type { Element as BpmnElement } from "diagram-js/lib/model";
 import { queryViewerData, type TaskHistoryObj } from "@/api/workflow/activiti/task";
 import createMarker from "./marker";
 import type EventBus from "diagram-js/lib/core/EventBus";
@@ -121,6 +121,7 @@ const drawProcessView = () => {
 };
 
 /**
+ * TODO 以下需要根据自己实际的业务情况来处理
  * 高亮流程图
  */
 const highlightDiagram = () => {
@@ -132,102 +133,97 @@ const highlightDiagram = () => {
   const elements = viewer.getDefinitions().rootElements[0].flowElements;
   elements?.forEach((element: BpmnElement) => {
     const activity = actList.find((m) => m.actKey === element.id); // 找到对应的活动
-    const status = activity?.status === "1" ? activity.pass : activity?.status; //0-未处理, 1-同意，2-拒绝，3-取消
-    const color = getResultCss(status);
 
-    if (element.$type === "bpmn:UserTask") {
-      // 用户任务
-      if (!activity) {
-        return;
-      }
+    // 用户任务 ##############################################
+    if (element.$type === "bpmn:UserTask" && activity) {
+      const status = activity?.status ? activity?.status : "0"; //0-未处理, 1-同意，2-拒绝，3-取消
+      const color = getResultCss(status);
       // 设置节点颜色
       canvas.addMarker(element.id, color);
 
       // 处理 outgoing 出线
+      if (status === "0") return;
       const outgoing = getActivityOutgoing(activity.actKey);
       outgoing?.forEach((outLine) => {
-        let startMarker = false;
-        //代办
-        if (status === "0") {
-          return;
-        } else if (status && ["1", "2", "3"].indexOf(status) >= 0 && outLine.conditionExpression?.body) {
-          // 条件不匹配
-          if (outLine.conditionExpression.body !== `\${pass == '${status}'}`) {
-            return;
-          }
-          startMarker = true;
-        }
-
-        // 进行【bpmn:SequenceFlow】连线的高亮设置
-        canvas.addMarker(outLine.id, color);
-        canvas.addMarker(outLine.id + "_label", color); // 高亮连线（文字）
-        //条件连线
-        startMarker && canvas.addMarker(outLine.id, "start-marker");
-
-        // TODO
-        if (outLine.targetRef.$type === "bpmn:ExclusiveGateway") {
-          // 【待确认】 这个流程，暂时没走到过
+        //无条件往线【bpmn:SequenceFlow】
+        if (outLine.conditionExpression?.$type == "bpmn:SequenceFlow") {
           canvas.addMarker(outLine.id, color);
-          canvas.addMarker(outLine.targetRef.id, color);
-        } else if (outLine.targetRef.$type === "bpmn:EndEvent") {
-          // 结束节点
-          canvas.addMarker(outLine.targetRef.id, color);
+          canvas.findRoot(outLine.id + "_label") && canvas.addMarker(outLine.id + "_label", color); // 高亮连线（文字）
+          return;
+        }
+        //有条件往线【bpmn:FormalExpression】
+        if (outLine.conditionExpression?.$type == "bpmn:FormalExpression" && outLine.conditionExpression?.body) {
+          if (activity.actParams && executeConditionExpression(activity.actParams, outLine.conditionExpression?.body)) {
+            canvas.addMarker(outLine.id, color);
+            canvas.findRoot(outLine.id + "_label") && canvas.addMarker(outLine.id + "_label", color); // 高亮连线（文字）
+            canvas.addMarker(outLine.id, "start-marker"); //条件连线
+          }
+          return;
         }
       });
-    } else if (element.$type === "bpmn:ExclusiveGateway") {
-      // 排它网关  TODO
-      if (!activity) {
-        return;
-      }
+      return;
+    }
+
+    // 排它网关 ##############################################
+    if (element.$type === "bpmn:ExclusiveGateway" && activity) {
+      const color = "highlight";
       // 设置【bpmn:ExclusiveGateway】排它网关的高亮
-      canvas.addMarker(element.id, color);
-      // 查找需要高亮的连线
-      let matchNN: Connection | undefined = undefined;
-      let matchActivity: TaskHistoryObj | undefined = undefined;
-      for (const outLine of element.outgoing) {
-        const targetActivity = actList.find((m) => m.actKey === outLine.targetRef.id);
-        if (!targetActivity) {
-          continue;
-        }
-        // 特殊判断 endEvent 类型的原因，ExclusiveGateway 可能后续连有 2 个路径：
-        //  1. 一个是 UserTask => EndEvent
-        //  2. 一个是 EndEvent
-        // 在选择路径 1 时，其实 EndEvent 可能也存在，导致 1 和 2 都高亮，显然是不正确的。
-        // 所以，在 matchActivity 为 EndEvent 时，需要进行覆盖~~
-        if (!matchActivity || matchActivity.actType === "endEvent") {
-          matchNN = outLine;
-          matchActivity = targetActivity;
-        }
-      }
-      if (matchNN && matchActivity) {
-        canvas.addMarker(matchNN.id, color);
-      }
-    } else if (element.$type === "bpmn:ParallelGateway") {
-      // 并行网关 TODO
-      if (!activity) {
-        return;
-      }
-      // 设置【bpmn:ParallelGateway】并行网关的高亮
-      canvas.addMarker(element.id, color);
+      canvas.addMarker(element.id, color); // 高亮节点（自己）
+      canvas.findRoot(element.id + "_label") && canvas.addMarker(element.id + "_label", color); // 高亮节点（文字）
+      // 设置往线的高亮
       element.outgoing?.forEach((outLine) => {
-        // 获得连线是否有指向目标。如果有，则进行高亮
-        const targetActivity = actList.find((m) => m.actKey === outLine.targetRef.id);
-        if (targetActivity) {
-          canvas.addMarker(outLine.id, color); // 高亮【bpmn:SequenceFlow】连线
-          // 高亮【...】目标。其中 ... 可以是 bpm:UserTask、也可以是其它的。当然，如果是 bpm:UserTask 的话，其实不做高亮也没问题，因为上面有逻辑做了这块。
-          canvas.addMarker(outLine.targetRef.id, color);
+        if (outLine.conditionExpression?.body) {
+          if (activity.actParams && executeConditionExpression(activity.actParams, outLine.conditionExpression?.body)) {
+            canvas.addMarker(outLine.id, color);
+            canvas.findRoot(outLine.id + "_label") && canvas.addMarker(outLine.id + "_label", color); // 高亮连线（文字）
+          }
         }
       });
-    } else if (element.$type === "bpmn:StartEvent") {
-      // 开始节点
-      canvas.addMarker(element.id, "highlight"); // 高亮【bpmn:StartEvent】开始节点（自己）
-      canvas.addMarker(element.id + "_label", "highlight"); // 高亮【bpmn:StartEvent】开始节点（文字）
-      element.outgoing?.forEach((outLine) => {
-        canvas.addMarker(outLine.id, "highlight"); // 高亮【bpmn:SequenceFlow】连线
+      return;
+    }
+
+    // 并行网关 ##############################################
+    if (element.$type === "bpmn:ParallelGateway" && activity) {
+      const color = "highlight";
+
+      // 网关来线任务是否都已经完成
+      let complete = true;
+      element.incoming?.forEach((inLine) => {
+        const targetActivity = actList.find((m) => m.actKey === inLine.targetRef.id);
+        if (!targetActivity?.status || ["1", "2", "3"].indexOf(targetActivity.status) === -1) {
+          complete = false;
+        }
       });
-    } else if (element.$type === "bpmn:EndEvent") {
-      // 结束节点
-      // canvas.addMarker(element.id, color);
+
+      if (complete) {
+        // 设置【bpmn:ParallelGateway】并行网关的高亮
+        canvas.addMarker(element.id, color);
+        canvas.findRoot(element.id + "_label") && canvas.addMarker(element.id + "_label", color); // 高亮网关（文字）
+        // 设置往线的高亮
+        element.outgoing?.forEach((outLine) => {
+          canvas.addMarker(outLine.id, color);
+          canvas.findRoot(outLine.id + "_label") && canvas.addMarker(outLine.id + "_label", color); // 高亮连线（文字）
+        });
+      }
+      return;
+    }
+
+    // 开始节点 ##############################################
+    if (element.$type === "bpmn:StartEvent" && activity) {
+      const color = "highlight";
+      canvas.addMarker(element.id, color); // 高亮【bpmn:StartEvent】开始节点（自己）
+      canvas.findRoot(element.id + "_label") && canvas.addMarker(element.id + "_label", color); // 高亮【bpmn:StartEvent】开始节点（文字）
+      element.outgoing?.forEach((outLine) => {
+        canvas.addMarker(outLine.id, color); // 高亮【bpmn:SequenceFlow】连线
+      });
+      return;
+    }
+
+    // 结束节点 ##############################################
+    if (element.$type === "bpmn:EndEvent" && activity) {
+      const color = "highlight";
+      canvas.addMarker(element.id, color);
+      canvas.findRoot(element.id + "_label") && canvas.addMarker(element.id + "_label", color); // 高亮结束（文字）
     }
   });
 };
@@ -244,10 +240,21 @@ const getResultCss = (result?: string) => {
     // 拒绝
     return "highlight-reject";
   } else if (result === "3") {
-    // 取消
+    // 撤销
     return "highlight-cancel";
   }
   return "no-marker";
+};
+
+/** 执行条件表达式 */
+const executeConditionExpression = (params: string, expression: string) => {
+  const paramsObj = JSON.parse(params) as { [key: string]: string };
+  let evalStr = expression;
+  for (const [key, value] of Object.entries(paramsObj)) {
+    evalStr = evalStr.replaceAll(key, `'${value}'`);
+  }
+
+  return eval(evalStr.replace("${", "").replace("}", "")) as boolean;
 };
 
 /**
@@ -360,14 +367,16 @@ onBeforeUnmount(() => {
   &.djs-shape > .djs-visual {
     // 节点边框（开始、结束、任务）
     > circle:nth-child(1),
-    > rect:nth-child(1) {
+    > rect:nth-child(1),
+    > polygon:nth-child(1) {
       fill: green !important;
       stroke: green !important;
       fill-opacity: 0.2 !important;
     }
 
-    // 节点文字（开始、结束、任务）,连线文字
-    > text {
+    // 节点文字（开始、结束、任务）,连线文字, 网关图标
+    > text,
+    > path {
       fill: green !important;
     }
   }
@@ -391,15 +400,17 @@ onBeforeUnmount(() => {
   &.djs-shape > .djs-visual {
     // 节点边框（开始、结束、任务）
     > circle:nth-child(1),
-    > rect:nth-child(1) {
+    > rect:nth-child(1),
+    > polygon:nth-child(1) {
       fill: #1890ff !important;
       stroke: #1890ff !important;
       fill-opacity: 0.2 !important;
       stroke-dasharray: 4px !important;
     }
 
-    // 节点文字（开始、结束、任务）,连线文字
-    > text {
+    // 节点文字（开始、结束、任务）,连线文字, 网关图标
+    > text,
+    > path {
       fill: #1890ff !important;
     }
   }
@@ -424,14 +435,16 @@ onBeforeUnmount(() => {
   &.djs-shape > .djs-visual {
     // 节点边框（开始、结束、任务）
     > circle:nth-child(1),
-    > rect:nth-child(1) {
+    > rect:nth-child(1),
+    > polygon:nth-child(1) {
       fill: red !important;
       stroke: red !important;
       fill-opacity: 0.2 !important;
     }
 
-    // 节点文字（开始、结束、任务）,连线文字
-    > text {
+    // 节点文字（开始、结束、任务）,连线文字, 网关图标
+    > text,
+    > path {
       fill: red !important;
     }
   }
@@ -455,14 +468,16 @@ onBeforeUnmount(() => {
   &.djs-shape > .djs-visual {
     // 节点边框（开始、结束、任务）
     > circle:nth-child(1),
-    > rect:nth-child(1) {
+    > rect:nth-child(1),
+    > polygon:nth-child(1) {
       fill: grey !important;
       stroke: grey !important;
       fill-opacity: 0.2 !important;
     }
 
-    // 节点文字（开始、结束、任务）,连线文字
-    > text {
+    // 节点文字（开始、结束、任务）,连线文字, 网关图标
+    > text,
+    > path {
       fill: grey !important;
     }
   }

@@ -19,7 +19,7 @@
       <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="taskList">
+    <el-table v-loading="loading" :data="taskList" :row-key="(row:ActTaskObj)=>row.businessKey">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="流程实例ID" align="center" prop="instanceId" width="150" />
       <el-table-column label="任务类别" align="center" prop="definitionKey" width="150">

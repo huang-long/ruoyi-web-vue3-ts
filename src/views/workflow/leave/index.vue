@@ -59,6 +59,11 @@
 
     <el-dialog v-model="open" :title="title" width="500px" append-to-body>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="测试流程" prop="processType">
+          <el-select v-model="form.processType" placeholder="请选择测试流程" clearable>
+            <el-option v-for="dict in dicts.activiti_task_type" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="请假类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择请假类型" @change="chooseMedicine">
             <el-option v-for="dict in dicts.activiti_leave_type" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
@@ -100,7 +105,7 @@ const uStore = userStore();
 
 //ref对象 ################################################
 //字典数据
-const dicts = loadDicts(["activiti_leave_type", "activiti_flow_type"]);
+const dicts = loadDicts(["activiti_leave_type", "activiti_task_type"]);
 const createName = ref("");
 // 遮罩层
 const loading = ref(true);
@@ -141,6 +146,7 @@ const form = ref<LeaveObj>({
 });
 // 表单校验
 const rules = ref({
+  processType: [{ required: true, message: "测试流程不能为空", trigger: "change" }],
   type: [{ required: true, message: "请假类型不能为空", trigger: "change" }],
   title: [{ required: true, message: "标题不能为空", trigger: "blur" }],
   reason: [{ required: true, message: "原因不能为空", trigger: "blur" }],
@@ -171,6 +177,7 @@ const cancel = () => {
 const reset = () => {
   form.value = {
     id: "",
+    processType: undefined,
     type: undefined,
     title: undefined,
     reason: undefined,
@@ -206,6 +213,10 @@ const handleAdd = () => {
 const submitForm = () => {
   formRef.value.validate((valid: boolean) => {
     if (valid) {
+      // 随机测试，实际根据自己的业务来
+      if (form.value.processType == "leave2") {
+        form.value.department = new Date().getTime() % 2 == 0 ? "A1" : "A2";
+      }
       if (form.value.id) {
         updateLeave(form.value).then(() => {
           ElMessage.success("修改成功");

@@ -23,18 +23,16 @@
       <el-table v-loading="loading" :data="historyList">
         <el-table-column v-if="false" label="活动ID" align="center" prop="actId" width="60" />
         <el-table-column label="任务名称" align="center" prop="actName" width="140" />
-        <el-table-column label="状态" align="center" prop="status" width="80">
-          <template #default="scope">
-            {{ scope.row.status === "1" ? "已完成" : "未处理" }}
-          </template>
-        </el-table-column>
         <el-table-column label="办理人ID" align="center" prop="assignee" width="90" />
         <el-table-column label="办理人" align="center" prop="assigneeName" width="80" />
+        <el-table-column label="状态" align="center" prop="status" width="80">
+          <template #default="scope">
+            <dict-tag :options="dicts.activiti_flow_type" :value="scope.row.status" />
+          </template>
+        </el-table-column>
         <el-table-column label="审批意见" align="center" prop="comment">
           <template #default="scope">
-            <span v-if="['startEvent', 'endEvent'].indexOf(scope.row.actType) === -1 && scope.row.status === '1'">
-              {{ (scope.row.pass === "1" ? "同意" : "不同意") + (scope.row.reason ? "：" + scope.row.reason : "") }}
-            </span>
+            {{ scope.row.actParamsObj?.comment }}
           </template>
         </el-table-column>
         <el-table-column label="开始时间" align="center" prop="startTime" width="160" />
@@ -53,6 +51,7 @@
 </template>
 
 <script lang="ts" setup name="CompApplyAfter">
+import { loadDicts } from "@/utils/dict";
 import { watch } from "vue";
 import { computed, ref } from "vue";
 import { queryHistoryList, type TaskHistoryObj } from "@/api/workflow/activiti/task";
@@ -67,6 +66,7 @@ const props = withDefaults(
 );
 
 //ref对象 ################################################
+const dicts = loadDicts("activiti_flow_type");
 // 遮罩层
 const loading = ref(false);
 // 查询参数
@@ -118,7 +118,14 @@ const getHistoryList = () => {
   loading.value = true;
   queryHistoryList({ ...queryParams.value })
     .then((rsp) => {
-      historyList.value = rsp.rows || [];
+      if (rsp.rows) {
+        historyList.value = rsp.rows.map((item) => {
+          item.actParams && (item.actParamsObj = JSON.parse(item.actParams));
+          return item;
+        });
+      } else {
+        historyList.value = rsp.rows || [];
+      }
       total.value = rsp.total || 0;
     })
     .finally(() => {
@@ -137,4 +144,4 @@ const resetQuery = () => {
 };
 </script>
 
-<style lang="ts" scoped></style>
+<style lang="less" scoped></style>

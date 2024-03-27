@@ -2,7 +2,7 @@
   <el-dialog v-model="visible" :title="title" width="600px" append-to-body>
     <!--审批历史表格-->
     <div>
-      <leave-info v-if="definitionKey === 'leave'" :business-key="busiId"></leave-info>
+      <leave-info v-if="definitionKey.indexOf('leave') === 0" :business-key="busiId"></leave-info>
     </div>
     <template #footer>
       <div class="dialog-footer">

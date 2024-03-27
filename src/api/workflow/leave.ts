@@ -4,6 +4,8 @@ import type { QueryParam } from "../form";
 export type LeaveObj = {
   id: string;
   createName?: string;
+  processType?: string;
+  department?: string;
   type?: string;
   title?: string;
   reason?: string;
@@ -19,15 +21,6 @@ export type LeaveObj = {
 export function listLeave(query: LeaveObj & QueryParam) {
   return server.request<LeaveObj>({
     url: "/workflow/leave/list",
-    method: "get",
-    params: query,
-  });
-}
-
-// 查询请假列表
-export function listLeaveAll(query: LeaveObj & QueryParam) {
-  return server.request<LeaveObj>({
-    url: "/workflow/leave/listAll",
     method: "get",
     params: query,
   });
