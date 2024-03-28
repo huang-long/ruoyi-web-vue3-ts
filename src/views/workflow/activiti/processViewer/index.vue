@@ -322,10 +322,11 @@ const elementHover = (eventObj: { element: BpmnElement }) => {
     });
   }
   // 展示信息(审批成功的任务节点)
-  if (element.type === "bpmn:UserTask" && act?.status === "1") {
+  if (element.type === "bpmn:UserTask" && act?.status && ["1", "2"].indexOf(act?.status) >= 0) {
+    const params = act.actParams ? JSON.parse(act.actParams) : { comment: "" };
     html = `<p>审批人：${act.assigneeName}</p>
-              <p>审批结果：${act.pass === "1" ? "同意" : "驳回"}</p>
-              <p>审批意见：${act.reason ? act.reason : "无"}</p>`;
+              <p>审批结果：${act.status === "1" ? "同意" : "驳回"}</p>
+              <p>审批意见：${params.comment}</p>`;
     tOverlays.add(element.id, {
       position: { left: 0, bottom: 0 },
       html: `<div class="element-overlays">${html}</div>`,
