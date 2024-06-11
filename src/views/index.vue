@@ -3,7 +3,7 @@
     <!-- 待办、已办、办结、消息、预警 -->
     <el-row :gutter="20" class="mgb20">
       <el-col v-for="(item, index) in messageList" :key="index" :span="4">
-        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+        <el-card shadow="hover" :body-style="{ padding: '0px' }" @click="handleMessageClick(item)">
           <div class="grid-message">
             <el-icon class="grid-msg-icon" :style="{ background: item.color }">
               <component :is="item.icon" />
@@ -171,44 +171,47 @@ import * as echarts from "echarts";
 import { onBeforeUnmount } from "vue";
 import { watch } from "vue";
 import { useElementSize } from "@vueuse/core";
+import { queryTaskCount } from "@/api/workflow/activiti/task";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const messageList = ref([
   {
     type: "mytask",
     name: "我的申请",
-    count: 10,
+    count: 0,
     color: "#409EFF",
     icon: "Promotion",
-    linkUrl: "#",
+    linkUrl: "/workbench/workflow/task/myProcess",
   },
   {
     type: "todo",
-    name: "代办",
-    count: 2,
+    name: "待办",
+    count: 0,
     color: "#409EFF",
     icon: "Flag",
-    linkUrl: "#",
+    linkUrl: "/workbench/workflow/task/todo",
   },
   {
     type: "done",
     name: "已办",
-    count: 10,
+    count: 0,
     color: "#67C23A",
     icon: "SuccessFilled",
-    linkUrl: "#",
+    linkUrl: "/workbench/workflow/task/done",
   },
   {
     type: "conclude",
     name: "办结",
-    count: 3,
+    count: 0,
     color: "#67C23A",
     icon: "Checked",
-    linkUrl: "#",
+    linkUrl: "/workbench/workflow/task/done",
   },
   {
     type: "message",
     name: "我的消息",
-    count: 10,
+    count: 0,
     color: "#E6A23C",
     icon: "BellFilled",
     linkUrl: "#",
@@ -216,7 +219,7 @@ const messageList = ref([
   {
     type: "warninng",
     name: "预警信息",
-    count: 10,
+    count: 0,
     color: "#F56C6C",
     icon: "WarningFilled",
     linkUrl: "#",
@@ -604,6 +607,25 @@ watch(pageWidth, () => {
   resizeChart();
 });
 
+// 查询任务总数
+const getTaskCount = () => {
+  queryTaskCount().then(({ data }) => {
+    if (data) {
+      messageList.value[0].count = data.myProcessCount
+      messageList.value[1].count = data.todoCount
+      messageList.value[2].count = data.doneCount
+      messageList.value[3].count = data.finishCount
+    }
+  })
+};
+
+// 点击消息
+const handleMessageClick = ({ linkUrl }: { linkUrl?: string }) => {
+  if (linkUrl) {
+    router.push(linkUrl);
+  }
+}
+
 // 初始化渲染
 onMounted(() => {
   nextTick(() => {
@@ -621,6 +643,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", resizeChart);
 });
 
+getTaskCount();
 // defineExpose无需导入，直接使用
 // defineExpose({ value });
 </script>
@@ -663,7 +686,7 @@ onBeforeUnmount(() => {
 .chart-cont {
   height: 140px;
 
-  > h1 {
+  >h1 {
     color: #606266;
     font-weight: normal;
     display: flex;
@@ -671,18 +694,18 @@ onBeforeUnmount(() => {
     justify-content: space-between;
   }
 
-  > p {
+  >p {
     margin: 0;
     padding: 0;
     font-size: 30px;
     line-height: 40px;
   }
 
-  > div {
+  >div {
     height: 60px;
     width: 100%;
 
-    > p {
+    >p {
       margin: 0;
       padding-top: 10px;
       line-height: 20px;

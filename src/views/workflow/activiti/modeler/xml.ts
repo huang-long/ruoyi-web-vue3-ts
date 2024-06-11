@@ -12,7 +12,7 @@ export const activitiToCamundaXml = (xml: string, metaInfo?: XmlMetaInfo) => {
   xml = xml.replaceAll("activiti:", "camunda:");
   //显示版本信息
   if (metaInfo && metaInfo.version) {
-    xml.replace("<bpmn2:process", `<bpmn:process camunda:versionTag="${metaInfo.version}"`);
+    xml.replace("<bpmn2:process", `<bpmn2:process camunda:versionTag="${metaInfo.version}"`);
   }
   return xml;
 };

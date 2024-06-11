@@ -5,7 +5,7 @@ import type { RouteRecordRaw } from "vue-router";
 // 功能路由
 const dynamicRoutes: RouteRecordRaw[] = [
   {
-    path: "/system/user",
+    path: "/system/userinfo",
     component: () => import("@/layout/index.vue"),
     // redirect: 'noredirect',
     meta: {

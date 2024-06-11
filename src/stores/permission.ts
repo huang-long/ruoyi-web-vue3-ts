@@ -1,6 +1,6 @@
 import auth from "@/plugins/auth";
 import router from "@/router";
-import constantRoutes from "@/router/constantRoutes";
+// import constantRoutes from "@/router/constantRoutes";
 import dynamicRoutes from "@/router/dynamicRoutes";
 import { getRouters } from "@/api/menu";
 // import Layout from '@/layout/index.vue'
@@ -134,17 +134,17 @@ function filterDynamicRoutes(routes: RouteRecordRaw[], perantPath = "") {
  * @param perantPath
  * @returns
  */
-function getTagsRouterPath(routers: RouteRecordRaw[], perantPath = "") {
-  const paths: string[] = [];
-  routers.forEach((router) => {
-    paths.push(perantPath ? perantPath + "/" + router.path : router.path);
-    router.children &&
-      getTagsRouterPath(router.children, router.path).forEach((path) => {
-        paths.push(path);
-      });
-  });
-  return paths;
-}
+// function getTagsRouterPath(routers: RouteRecordRaw[], perantPath = "") {
+//   const paths: string[] = [];
+//   routers.forEach((router) => {
+//     paths.push(perantPath ? perantPath + "/" + router.path : router.path);
+//     router.children &&
+//       getTagsRouterPath(router.children, router.path).forEach((path) => {
+//         paths.push(path);
+//       });
+//   });
+//   return paths;
+// }
 
 /**
  * tagsView路由匹配
@@ -168,6 +168,42 @@ function isTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
   return false;
 }
 
+/**
+ * 深度合并两个路由，后者覆盖前者
+ * @param routers1
+ * @param routers2
+ */
+function concatRouter(routers1: RouteRecordRaw[], routers2: RouteRecordRaw[]) {
+  let map: Map<string, RouteRecordRaw> = new Map();
+  for (let router of routers2) {
+    map.set(router.path, router);
+  }
+
+  for (let router of routers1) {
+    let temp = map.get(router.path);
+    if (!temp) {
+      map.set(router.path, router);
+      continue;
+    }
+
+    if (!temp.children && router.children) {
+      temp.children = router.children;
+      continue;
+    }
+
+    if (temp.children && router.children) {
+      temp.children = concatRouter(temp.children, router.children);
+      continue;
+    }
+  }
+
+  let list: RouteRecordRaw[] = [];
+  map.forEach((router) => {
+    list.push(router);
+  });
+  return list;
+}
+
 const store = defineStore({
   id: "permission",
   state: () => {
@@ -175,7 +211,7 @@ const store = defineStore({
       sidebarMenu: [] as MenuRouter[],
       routes: [] as RouteRecordRaw[],
       tagsRouters: [] as RouteRecordRaw[],
-      tagsRouterPaths: [] as string[],
+      // tagsRouterPaths: [] as string[],
       sidebarRouters: [] as RouteRecordRaw[],
       sidebarIsCollapsed: false,
     };
@@ -191,16 +227,16 @@ const store = defineStore({
         // 向后端请求路由数据
         getRouters().then((res) => {
           const routers = res.data || [];
-          //动态添加菜单配置路由
-          this.sidebarRouters = filterSidebarRouter(routers);
-          this.sidebarRouters.forEach((route) => router.addRoute(route));
+          //菜单展示
           this.sidebarMenu = getHomeMenu().concat(dealMenuPath(routers));
-          //动态添加功能配置路由
-          const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
-          asyncRoutes.forEach((route) => router.addRoute(route));
-          this.tagsRouters = asyncRoutes.concat(this.sidebarRouters);
-          this.tagsRouterPaths = getTagsRouterPath(this.tagsRouters);
-          this.routes = constantRoutes.concat(this.tagsRouters);
+          //动态添加路由
+          this.sidebarRouters = filterSidebarRouter(routers); // 菜单路由
+          const asyncRoutes = filterDynamicRoutes(dynamicRoutes); // 功能路由
+          this.tagsRouters = concatRouter(this.sidebarRouters, asyncRoutes);
+          this.tagsRouters.forEach((route) => router.addRoute(route));
+          // this.tagsRouterPaths = getTagsRouterPath(this.tagsRouters);
+          //全部路由
+          // this.routes = concatRouter(this.tagsRouters, constantRoutes);
           resolve(this.routes);
         });
       });

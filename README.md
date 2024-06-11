@@ -17,6 +17,7 @@ admin admin123
 <img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page3.png" width = "50%" align=center /><img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page4.png" width = "50%" align=center />
 <img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page5.png" width = "50%" align=center /><img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page6.png" width = "50%" align=center />
 <img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page7.png" width = "50%" align=center /><img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page8.png" width = "50%" align=center />
+<img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page9.png" width = "50%" align=center />
 
 ## 脚本命令
 ### 依赖安装(建议用pnpm)

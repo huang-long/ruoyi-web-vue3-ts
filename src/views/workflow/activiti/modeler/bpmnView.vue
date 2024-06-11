@@ -6,7 +6,8 @@
           <el-button icon="FolderChecked" @click="saveModeler">保存</el-button>
           <el-button icon="Download" @click="downloadProcess('xml')">导出xml</el-button>
           <el-button icon="Download" @click="downloadProcess('bpmn')">导出bpmn</el-button>
-          <el-upload ref="uploadRef" :auto-upload="false" :show-file-list="false" :limit="1" accept="text/xml" @change="openProcess">
+          <el-upload ref="uploadRef" :auto-upload="false" :show-file-list="false" :limit="1" accept="text/xml"
+            @change="openProcess">
             <template #trigger>
               <el-button icon="Upload">导入</el-button>
             </template>
@@ -100,6 +101,7 @@ const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void; (
 //内部变量 ################################################
 let bpmnModeler: BpmnModeler | undefined = undefined;
 let modelData: ActModelerObj = { id: "" };
+let bpmnXml: string | undefined = ""; //模型xml
 
 //computed ################################################
 const dialogVisible = computed({
@@ -113,11 +115,6 @@ const dialogVisible = computed({
 
 // watch ################################################
 watch(dialogVisible, (value) => {
-  if (value && !bpmnModeler) {
-    nextTick(() => {
-      initModeler();
-    });
-  }
   if (value) {
     refuseModelerData();
   }
@@ -125,9 +122,13 @@ watch(dialogVisible, (value) => {
 
 // Function ################################################
 /**
- * 初始化 BpmnModeler
+ * 获取BpmnModeler
  */
-const initModeler = () => {
+const getBpmnModeler = () => {
+  if (bpmnModeler) {
+    return bpmnModeler;
+  }
+
   // 将汉化包装成一个模块
   const customTranslateModule = {
     translate: ["value", customTranslate],
@@ -148,6 +149,7 @@ const initModeler = () => {
       camunda: CamundaBpmnModdle,
     },
   });
+  return bpmnModeler;
 };
 
 /**刷新视图数据 */
@@ -156,8 +158,9 @@ const refuseModelerData = () => {
   getModelerDetail(props.modelId)
     .then(({ data }) => {
       data && (modelData = data);
-      const xml = data?.bpmnXml;
-      createNewDiagram(xml ? activitiToCamundaXml(xml) : undefined);
+      bpmnXml = data?.bpmnXml ? data?.bpmnXml : createBpmnXmlByMetaInfo();
+      bpmnXml = activitiToCamundaXml(bpmnXml)
+      loadBpmnXml(bpmnXml);
     })
     .finally(() => {
       loading.value = false;
@@ -198,11 +201,26 @@ const handlerReset = ({ key }: { key: string }) => {
         break;
       case "restart":
         command && command.clear();
-        createNewDiagram();
+        bpmnXml = createBpmnXmlByMetaInfo();
+        loadBpmnXml(bpmnXml);
         break;
     }
   }
 };
+
+/**
+ * 创建一个新的流程文件xml
+ */
+const createBpmnXmlByMetaInfo = () => {
+  const metaInfo = modelData.metaInfo ? (JSON.parse(modelData.metaInfo) as XmlMetaInfo) : {};
+  const param = {
+    key: modelData.key,
+    name: modelData.name,
+    description: metaInfo?.description,
+    version: metaInfo?.version,
+  };
+  return createBpmnXml(param);
+}
 
 /**
  * 打开文件
@@ -216,13 +234,13 @@ const openProcess = (rawFile: UploadFile) => {
   const reader = new FileReader();
   reader.readAsText(rawFile.raw, "utf8");
   reader.onload = () => {
-    if (typeof reader.result === "string" && bpmnModeler) {
+    if (typeof reader.result === "string") {
       if (reader.result.indexOf("bpmn2:definitions") <= 0) {
         ElMessage.error("请选择bpmn20标准的流程文件！");
         loading.value = false;
       } else {
-        bpmnModeler
-          .importXML(reader.result)
+        const modeler = getBpmnModeler();
+        modeler.importXML(reader.result)
           .then(({ warnings }) => {
             warnings && warnings.length > 0 && console.warn(warnings);
             warnings && warnings.length > 0 && ElMessage.warning(warnings.toString());
@@ -240,28 +258,17 @@ const openProcess = (rawFile: UploadFile) => {
 /**
  * 加载bpmn.xml配置文件
  */
-const createNewDiagram = (xml?: string) => {
+const loadBpmnXml = (xml: string) => {
   loading.value = true;
   let bpmnXml = xml;
-  if (!bpmnXml) {
-    const metaInfo = modelData.metaInfo ? (JSON.parse(modelData.metaInfo) as XmlMetaInfo) : {};
-    const param = {
-      key: modelData.key,
-      name: modelData.name,
-      description: metaInfo?.description,
-      version: metaInfo?.version,
-    };
-    bpmnXml = createBpmnXml(param);
-  }
-  bpmnModeler &&
-    bpmnModeler
-      .importXML(bpmnXml)
-      .then(({ warnings }) => {
-        warnings && warnings.length > 0 && ElMessage.warning(warnings.toString());
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+  const modeler = getBpmnModeler();
+  modeler.importXML(bpmnXml)
+    .then(({ warnings }) => {
+      warnings && warnings.length > 0 && ElMessage.warning(warnings.toString());
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 
 /**
@@ -354,8 +361,7 @@ const close = () => {
     .canvas {
       width: 100%;
       height: 100%;
-      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMGUwZTAiIG9wYWNpdHk9Ii4yIi8+PHBhdGggZD0iTTQwIDBIMHY0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PC9zdmc+")
-        repeat !important;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMGUwZTAiIG9wYWNpdHk9Ii4yIi8+PHBhdGggZD0iTTQwIDBIMHY0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PC9zdmc+") repeat !important;
     }
 
     .panel {

@@ -47,7 +47,7 @@ export function queryDoneList(query: ActTaskObj & QueryParam) {
   });
 }
 
-// 查询代办任务列表
+// 查询待办办任务列表
 export function queryTodoList(query: ActTaskObj & QueryParam) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/todoList",
@@ -90,4 +90,14 @@ export function complete(params: { taskId: string; pass: string; comment?: strin
     method: "post",
     data: params,
   });
+}
+
+// 查询已办任务列表
+export function queryTaskCount() {
+  return server.get<{
+    todoCount: number;
+    doneCount: number;
+    myProcessCount: number;
+    finishCount: number;
+  }>("/activiti/task/taskCount");
 }

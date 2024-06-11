@@ -95,7 +95,7 @@ const handleCommand = (command: string) => {
       router.push("/login");
     });
   } else if (command == "user") {
-    router.push("/system/user/profile");
+    router.push("/system/userinfo/profile");
   }
 };
 
@@ -145,7 +145,7 @@ screenfull.onchange(() => {
       align-items: center;
       font-size: 24px;
 
-      > i {
+      >i {
         cursor: pointer;
       }
 
