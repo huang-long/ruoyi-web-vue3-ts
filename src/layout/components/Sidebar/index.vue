@@ -14,7 +14,7 @@
         <template v-if="item.children && item.children.length > 0">
           <el-sub-menu :key="item.path" :index="item.path">
             <template #title>
-              <el-icon v-if="item.meta?.icon">
+              <el-icon v-if="item.meta?.icon && item.meta.icon != '#'">
                 <component :is="item.meta?.icon" />
               </el-icon>
               <span>{{ item.meta?.title }}</span>
@@ -22,7 +22,7 @@
             <template v-for="subItem in item.children">
               <el-sub-menu v-if="subItem.children && subItem.children.length > 0" :key="subItem.path" :index="subItem.path">
                 <template #title>
-                  <el-icon v-if="subItem.meta?.icon">
+                  <el-icon v-if="subItem.meta?.icon && subItem.meta.icon != '#'">
                     <component :is="subItem.meta?.icon" />
                   </el-icon>
                   {{ subItem.meta?.title }}
@@ -42,7 +42,7 @@
         </template>
         <template v-else>
           <el-menu-item :key="item.path" :index="item.path">
-            <el-icon>
+            <el-icon v-if="item.meta?.icon && item.meta.icon != '#'">
               <component :is="item.meta?.icon" />
             </el-icon>
             <template #title>{{ item.meta?.title }}</template>

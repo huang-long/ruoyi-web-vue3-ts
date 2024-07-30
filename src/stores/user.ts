@@ -47,7 +47,7 @@ const store = defineStore({
         getInfo()
           .then((res) => {
             const user = res.user;
-            const avatar = user.avatar == "" || user.avatar == null ? "/images/profile.jpg" : process.env.VUE_APP_BASE_API + user.avatar;
+            const avatar = user.avatar == "" || user.avatar == null ? "/images/profile.jpg" : import.meta.env.VITE_APP_BASE_API + user.avatar;
             if (res.roles && res.roles.length > 0) {
               // 验证返回的roles是否是一个非空数组
               this.roles = res.roles;

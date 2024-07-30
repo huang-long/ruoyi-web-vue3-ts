@@ -174,13 +174,13 @@ function isTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
  * @param routers2
  */
 function concatRouter(routers1: RouteRecordRaw[], routers2: RouteRecordRaw[]) {
-  let map: Map<string, RouteRecordRaw> = new Map();
-  for (let router of routers2) {
+  const map: Map<string, RouteRecordRaw> = new Map();
+  for (const router of routers2) {
     map.set(router.path, router);
   }
 
-  for (let router of routers1) {
-    let temp = map.get(router.path);
+  for (const router of routers1) {
+    const temp = map.get(router.path);
     if (!temp) {
       map.set(router.path, router);
       continue;
@@ -197,7 +197,7 @@ function concatRouter(routers1: RouteRecordRaw[], routers2: RouteRecordRaw[]) {
     }
   }
 
-  let list: RouteRecordRaw[] = [];
+  const list: RouteRecordRaw[] = [];
   map.forEach((router) => {
     list.push(router);
   });

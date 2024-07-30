@@ -611,12 +611,12 @@ watch(pageWidth, () => {
 const getTaskCount = () => {
   queryTaskCount().then(({ data }) => {
     if (data) {
-      messageList.value[0].count = data.myProcessCount
-      messageList.value[1].count = data.todoCount
-      messageList.value[2].count = data.doneCount
-      messageList.value[3].count = data.finishCount
+      messageList.value[0].count = data.myProcessCount;
+      messageList.value[1].count = data.todoCount;
+      messageList.value[2].count = data.doneCount;
+      messageList.value[3].count = data.finishCount;
     }
-  })
+  });
 };
 
 // 点击消息
@@ -624,7 +624,7 @@ const handleMessageClick = ({ linkUrl }: { linkUrl?: string }) => {
   if (linkUrl) {
     router.push(linkUrl);
   }
-}
+};
 
 // 初始化渲染
 onMounted(() => {
@@ -686,7 +686,7 @@ getTaskCount();
 .chart-cont {
   height: 140px;
 
-  >h1 {
+  > h1 {
     color: #606266;
     font-weight: normal;
     display: flex;
@@ -694,18 +694,18 @@ getTaskCount();
     justify-content: space-between;
   }
 
-  >p {
+  > p {
     margin: 0;
     padding: 0;
     font-size: 30px;
     line-height: 40px;
   }
 
-  >div {
+  > div {
     height: 60px;
     width: 100%;
 
-    >p {
+    > p {
       margin: 0;
       padding-top: 10px;
       line-height: 20px;

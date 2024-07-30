@@ -145,7 +145,7 @@ screenfull.onchange(() => {
       align-items: center;
       font-size: 24px;
 
-      >i {
+      > i {
         cursor: pointer;
       }
 

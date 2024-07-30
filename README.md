@@ -6,11 +6,12 @@ admin admin123
 工作流测试：zhangsan/admin123;lisi/admin123
 
 ## 功能说明
-工作台：我的流程、我的代办、我的已办  
+
+工作台：我的流程、我的待办、我的已办  
 系统管理：用户管理、角色管理、菜单管理、部门管理、岗位管理、字典管理、参数设置、通知公告、日志管理  
 系统监控：在线用户、定时任务、数据监控、服务监控、缓存监控、缓存列表  
 系统工具：表单构建、代码生成、系统接口、文件预览  
-流程管理：模型定义、流程部署、请假流程  
+流程管理：模型定义、流程部署、请假流程
 
 ## 页面展示
 <img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page1.png" width = "50%" align=center /><img src="https://gitee.com/huanglgln/ruoyi-web-vue3-ts/raw/master/public/images/page2.png" width = "50%" align=center />

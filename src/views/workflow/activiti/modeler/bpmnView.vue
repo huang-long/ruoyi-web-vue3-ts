@@ -6,8 +6,7 @@
           <el-button icon="FolderChecked" @click="saveModeler">保存</el-button>
           <el-button icon="Download" @click="downloadProcess('xml')">导出xml</el-button>
           <el-button icon="Download" @click="downloadProcess('bpmn')">导出bpmn</el-button>
-          <el-upload ref="uploadRef" :auto-upload="false" :show-file-list="false" :limit="1" accept="text/xml"
-            @change="openProcess">
+          <el-upload ref="uploadRef" :auto-upload="false" :show-file-list="false" :limit="1" accept="text/xml" @change="openProcess">
             <template #trigger>
               <el-button icon="Upload">导入</el-button>
             </template>
@@ -44,7 +43,7 @@
 </template>
 
 <script lang="ts" setup name="ActDefinitionPage">
-import { computed, watch, ref, nextTick } from "vue";
+import { computed, watch, ref } from "vue";
 import { ElMessage, type UploadFile } from "element-plus";
 import BpmnModeler from "bpmn-js/lib/Modeler"; // 引入 bpmn-js
 import type { ModdleElement } from "bpmn-js/lib/BaseModeler";
@@ -159,7 +158,7 @@ const refuseModelerData = () => {
     .then(({ data }) => {
       data && (modelData = data);
       bpmnXml = data?.bpmnXml ? data?.bpmnXml : createBpmnXmlByMetaInfo();
-      bpmnXml = activitiToCamundaXml(bpmnXml)
+      bpmnXml = activitiToCamundaXml(bpmnXml);
       loadBpmnXml(bpmnXml);
     })
     .finally(() => {
@@ -220,7 +219,7 @@ const createBpmnXmlByMetaInfo = () => {
     version: metaInfo?.version,
   };
   return createBpmnXml(param);
-}
+};
 
 /**
  * 打开文件
@@ -240,7 +239,8 @@ const openProcess = (rawFile: UploadFile) => {
         loading.value = false;
       } else {
         const modeler = getBpmnModeler();
-        modeler.importXML(reader.result)
+        modeler
+          .importXML(reader.result)
           .then(({ warnings }) => {
             warnings && warnings.length > 0 && console.warn(warnings);
             warnings && warnings.length > 0 && ElMessage.warning(warnings.toString());
@@ -260,9 +260,10 @@ const openProcess = (rawFile: UploadFile) => {
  */
 const loadBpmnXml = (xml: string) => {
   loading.value = true;
-  let bpmnXml = xml;
+  const bpmnXml = xml;
   const modeler = getBpmnModeler();
-  modeler.importXML(bpmnXml)
+  modeler
+    .importXML(bpmnXml)
     .then(({ warnings }) => {
       warnings && warnings.length > 0 && ElMessage.warning(warnings.toString());
     })
@@ -361,7 +362,8 @@ const close = () => {
     .canvas {
       width: 100%;
       height: 100%;
-      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMGUwZTAiIG9wYWNpdHk9Ii4yIi8+PHBhdGggZD0iTTQwIDBIMHY0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PC9zdmc+") repeat !important;
+      background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMTBoNDBNMTAgMHY0ME0wIDIwaDQwTTIwIDB2NDBNMCAzMGg0ME0zMCAwdjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlMGUwZTAiIG9wYWNpdHk9Ii4yIi8+PHBhdGggZD0iTTQwIDBIMHY0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PC9zdmc+")
+        repeat !important;
     }
 
     .panel {
