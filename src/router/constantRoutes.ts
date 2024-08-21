@@ -1,11 +1,14 @@
 import type { RouteRecordRaw } from "vue-router";
 // import Layout from '../layout/index.vue'
 
+export const ROUTE_NAME_LAYOUT = Symbol.for("ROUTE_NAME_LAYOUT");
+
 // 公共路由
 const constantRoutes: RouteRecordRaw[] = [
   {
     path: "",
     component: () => import("@/layout/index.vue"),
+    name: ROUTE_NAME_LAYOUT,
     redirect: "index",
     children: [
       {

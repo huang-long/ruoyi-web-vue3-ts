@@ -115,7 +115,7 @@ const dialogVisible = computed({
 // watch ################################################
 watch(dialogVisible, (value) => {
   if (value) {
-    refuseModelerData();
+    refreshModelerData();
   }
 });
 
@@ -152,7 +152,7 @@ const getBpmnModeler = () => {
 };
 
 /**刷新视图数据 */
-const refuseModelerData = () => {
+const refreshModelerData = () => {
   loading.value = true;
   getModelerDetail(props.modelId)
     .then(({ data }) => {

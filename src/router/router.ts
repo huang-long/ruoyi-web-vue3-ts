@@ -23,6 +23,9 @@ declare module "vue-router" {
     tagsTree?: TagsTree[];
     // 是否缓存
     cachedViews?: boolean;
+    // 是否缓存
     query?: string;
+    // 链接
+    link?: string;
   }
 }

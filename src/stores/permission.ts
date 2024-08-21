@@ -76,8 +76,10 @@ function filterSidebarRouter(asyncRouterMap: MenuRouter[], perantPath = "") {
         router.component = () => import("@/layout/index.vue");
       } else if (aRouter.component === "ParentView") {
         router.component = () => import("@/components/ParentView/index.vue");
-      } else if (aRouter.component === "InnerLink") {
-        router.component = () => import("@/layout/components/InnerLink/index.vue");
+        // } else if (aRouter.component === "InnerLink") {
+        //   router.component = () => import("@/layout/components/InnerLink/index.vue");
+      } else if (aRouter.component === "IframeView") {
+        router.component = () => import("@/layout/components/IframeView/index.vue");
       } else {
         router.component = modules[`/src/views/${aRouter.component}.vue`];
       }
