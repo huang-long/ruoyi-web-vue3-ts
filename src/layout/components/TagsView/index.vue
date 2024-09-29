@@ -2,8 +2,9 @@
   <div v-if="showTags" class="tags">
     <div ref="tagsRef" class="tags-box" @wheel.stop="tabsWheel">
       <ul ref="tabsUlRef">
-        <li v-for="item in tagsList" ref="tabsLiRef" :key="item.path" class="tags-li" :class="{ active: isActive(item.path) }">
-          <router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
+        <li v-for="item in tagsList" ref="tabsLiRef" :key="item.fullPath" class="tags-li"
+          :class="{ active: isActive(item.fullPath) }">
+          <router-link :to="item.fullPath" class="tags-li-title">{{ item.title }}</router-link>
           <span class="tags-li-icon" @click="closeTags(item)">
             <el-icon>
               <Close />
@@ -69,7 +70,7 @@ watch(
 
 // 关闭单个标签
 const closeTags = (tag: Tag) => {
-  tStore.closePage(tag.path);
+  tStore.closePage(tag.fullPath);
 };
 
 // 设置标签
@@ -79,9 +80,7 @@ const setTags = () => {
     tStore.updateTagsItem({
       name: route.name,
       title: route.meta.title || "",
-      path: route.fullPath,
-      cachedViews: route.meta.cachedViews,
-      fullPath: route.meta.fullPath,
+      fullPath: route.fullPath,
     });
   }
 };
@@ -101,7 +100,7 @@ const closeAll = () => {
 // 关闭其他标签
 const closeOther = () => {
   const curItem = tagsList.value.filter((item) => {
-    return item.path === route.fullPath;
+    return item.fullPath === route.fullPath;
   });
   tStore.closeTagsOther(curItem);
 };

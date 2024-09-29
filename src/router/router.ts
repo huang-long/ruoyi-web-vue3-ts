@@ -22,7 +22,7 @@ declare module "vue-router" {
     // tags 路径
     tagsTree?: TagsTree[];
     // 是否缓存
-    cachedViews?: boolean;
+    noCache?: boolean;
     // 是否缓存
     query?: string;
     // 链接

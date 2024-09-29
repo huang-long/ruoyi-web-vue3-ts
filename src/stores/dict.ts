@@ -6,13 +6,10 @@ type DictList = {
   value: DictObj[];
 };
 
-const store = defineStore({
-  id: "dict",
-  state: () => {
-    return {
-      dict: [] as DictList[],
-    };
-  },
+const store = defineStore("dict", {
+  state: () => ({
+    dict: [] as DictList[],
+  }),
   getters: {
     //方法名称参照官网
     //https://pinia.vuejs.org/core-concepts/getters.html#accessing-other-getters

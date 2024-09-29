@@ -2,7 +2,7 @@
   <div class="header">
     <!-- 折叠按钮 -->
     <div class="collapse-btn" @click="collapseChage">
-      <el-icon v-if="!collapse">
+      <el-icon v-if="!pStore.sidebarIsCollapsed">
         <Fold />
       </el-icon>
       <el-icon v-else>
@@ -71,13 +71,12 @@ const message = 2;
 const sStore = userStore();
 const pStore = permissionStore();
 const tStore = tagsViewStore();
-const collapse = computed(() => pStore.sidebarIsCollapsed);
 const username = computed(() => sStore.name);
 const isScreenfull = ref(false);
 
 // 侧边栏折叠
 const collapseChage = () => {
-  pStore.setSidebarIsCollapsed(!collapse.value);
+  pStore.setSidebarIsCollapsed(!pStore.sidebarIsCollapsed);
 };
 
 onMounted(() => {

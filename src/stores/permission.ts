@@ -10,6 +10,7 @@ import { getRouters } from "@/api/menu";
 import { defineStore } from "pinia";
 import type { RouteRecordRaw } from "vue-router";
 import type { MenuRouter } from "@/api/menu";
+import { ref, type Ref } from "vue";
 
 //引入所有views下.vue文件
 const modules = import.meta.glob("@/views/**/**.vue");
@@ -23,7 +24,7 @@ const modules = import.meta.glob("@/views/**/**.vue");
 function dealMenuPath(menuRouters: MenuRouter[], perantPath = "") {
   const routers: MenuRouter[] = [];
   menuRouters.forEach((aRouter) => {
-    aRouter.path = perantPath ? perantPath + "/" + aRouter.path : aRouter.path;
+    aRouter.meta.fullPath = perantPath ? perantPath + "/" + aRouter.path : aRouter.path;
     if (aRouter.children) {
       aRouter.children = dealMenuPath(aRouter.children, aRouter.path);
     }
@@ -40,7 +41,7 @@ function getHomeMenu() {
   const homeMenu: MenuRouter = {
     path: "/index",
     name: "index",
-    meta: { title: "首页", icon: "HomeFilled" },
+    meta: { title: "首页", icon: "HomeFilled", fullPath: "/index" },
   };
   return [homeMenu];
 }
@@ -61,7 +62,7 @@ function filterSidebarRouter(asyncRouterMap: MenuRouter[], perantPath = "") {
         icon: aRouter.meta.icon,
         noCache: aRouter.meta.noCache,
         link: aRouter.meta.link,
-        hidden: aRouter.hidden,
+        hidden: aRouter.hidden || false,
         alwaysShow: aRouter.alwaysShow,
         fullPath: fullPath,
       },
@@ -154,7 +155,7 @@ function filterDynamicRoutes(routes: RouteRecordRaw[], perantPath = "") {
  * @param fullPath
  * @returns boolean
  */
-function isTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
+function checkTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
   for (let i = 0; i < tagsRouters.length; i++) {
     const router = tagsRouters[i];
     if (fullPath == router.meta?.fullPath) {
@@ -162,7 +163,7 @@ function isTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
     }
 
     if (router.meta?.fullPath && fullPath.indexOf(router.meta.fullPath) === 0 && router.children) {
-      if (isTagsRouter(router.children, fullPath)) {
+      if (checkTagsRouter(router.children, fullPath)) {
         return true;
       }
     }
@@ -206,41 +207,32 @@ function concatRouter(routers1: RouteRecordRaw[], routers2: RouteRecordRaw[]) {
   return list;
 }
 
-const store = defineStore({
-  id: "permission",
-  state: () => {
-    return {
-      sidebarMenu: [] as MenuRouter[],
-      routes: [] as RouteRecordRaw[],
-      tagsRouters: [] as RouteRecordRaw[],
-      // tagsRouterPaths: [] as string[],
-      sidebarRouters: [] as RouteRecordRaw[],
-      sidebarIsCollapsed: false,
-    };
-  },
-  getters: {
-    //方法名称参照官网
-    //https://pinia.vuejs.org/core-concepts/getters.html#accessing-other-getters
-  },
+const store = defineStore("permission", {
+  state: () => ({
+    sidebarMenu: ref([]) as Ref<MenuRouter[]>,
+    // routes: ref([]) as Ref<RouteRecordRaw[]>,
+    tagsRouters: ref([]) as Ref<RouteRecordRaw[]>,
+    sidebarRouters: ref([]) as Ref<RouteRecordRaw[]>,
+    sidebarIsCollapsed: ref(false),
+  }),
+  getters: {},
   actions: {
     // 生成路由
     GenerateRoutes() {
-      return new Promise((resolve) => {
-        // 向后端请求路由数据
-        getRouters().then((res) => {
-          const routers = res.data || [];
-          //菜单展示
-          this.sidebarMenu = getHomeMenu().concat(dealMenuPath(routers));
-          //动态添加路由
-          this.sidebarRouters = filterSidebarRouter(routers); // 菜单路由
-          const asyncRoutes = filterDynamicRoutes(dynamicRoutes); // 功能路由
-          this.tagsRouters = concatRouter(this.sidebarRouters, asyncRoutes);
-          this.tagsRouters.forEach((route) => router.addRoute(route));
-          // this.tagsRouterPaths = getTagsRouterPath(this.tagsRouters);
-          //全部路由
-          // this.routes = concatRouter(this.tagsRouters, constantRoutes);
-          resolve(this.routes);
-        });
+      // 向后端请求路由数据
+      return getRouters().then((res) => {
+        const routers = res.data || [];
+        //菜单展示
+        this.sidebarMenu = getHomeMenu().concat(dealMenuPath(routers));
+        //动态添加路由
+        this.sidebarRouters = filterSidebarRouter(routers); // 菜单路由
+        const asyncRoutes = filterDynamicRoutes(dynamicRoutes); // 功能路由
+        this.tagsRouters = concatRouter(this.sidebarRouters, asyncRoutes); // 合并路由
+        this.tagsRouters.forEach((route) => router.addRoute(route));
+        // this.tagsRouterPaths = getTagsRouterPath(this.tagsRouters);
+        //全部路由
+        // this.routes = concatRouter(this.tagsRouters, constantRoutes);
+        return this.tagsRouters;
       });
     },
     // Sidebar 是否折叠
@@ -252,7 +244,7 @@ const store = defineStore({
       if (fullPath === "/index") {
         return true;
       }
-      return isTagsRouter(this.tagsRouters, fullPath);
+      return checkTagsRouter(this.tagsRouters, fullPath);
     },
   },
 });

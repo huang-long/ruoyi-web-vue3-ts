@@ -3,31 +3,26 @@ import type { RouteLocationNormalized, RouteRecordName } from "vue-router";
 import { defineStore } from "pinia";
 
 export type Tag = {
-  path: string;
+  fullPath: string;
   name: RouteRecordName | null | undefined;
   title: string;
-  cachedViews?: boolean;
-  fullPath?: string;
 };
 
 // declare interface TagStore {
 //   tagsList: Tag[],
 //   visitedViews: RouteLocationNormalized[],
-//   cachedViews: RouteLocationNormalized[],
 //   iframeViews: RouteLocationNormalized[],
 // }
 
-const store = defineStore({
-  id: "tagsView",
+const store = defineStore("tagsView", {
   state: () => {
     //刷新后，重新加载缓存中的页签
-    const tagsList: Tag[] = cache.session.getJSON<Tag[]>("store_tagsList") || [];
+    const tagsList = cache.session.getJSON<Tag[]>("store_tagsList") || [];
     // const route: RouteLocationNormalized | undefined
     return {
       activePath: "",
       tagsList: tagsList,
       visitedViews: [] as RouteLocationNormalized[],
-      cachedViews: [] as RouteLocationNormalized[],
       iframeViews: [] as RouteLocationNormalized[],
     };
   },
@@ -74,11 +69,13 @@ const store = defineStore({
         path = this.activePath;
       }
       // 删除当前页面
-      const index = this.tagsList.findIndex((item) => item.path === path);
+      const index = this.tagsList.findIndex((item) => item.fullPath === path);
       index >= 0 && this.delTagsItem(index);
       // 设置下一页面
-      const nextTag = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
-      this.activePath = nextTag && nextTag.path ? nextTag.path : "/index";
+      if (path == this.activePath) {
+        const nextTag = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
+        this.activePath = nextTag && nextTag.fullPath ? nextTag.fullPath : "/index";
+      }
     },
     // 关闭当前打开指定页面
     closeOpenPage(toPath: string, path?: string) {
@@ -86,7 +83,7 @@ const store = defineStore({
         path = this.activePath;
       }
       // 删除当前页面
-      const index = this.tagsList.findIndex((item) => item.path === path);
+      const index = this.tagsList.findIndex((item) => item.fullPath === path);
       index >= 0 && this.delTagsItem(index);
       // 设置下一页面
       this.activePath = toPath;

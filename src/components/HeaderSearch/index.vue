@@ -23,7 +23,7 @@
 import Fuse, { type FuseResult } from "fuse.js";
 import { isHttp } from "@/utils/validate";
 import permissionStore from "@/stores/permission";
-import { computed, nextTick, onMounted, ref, watch, watchEffect } from "vue";
+import { nextTick, onMounted, ref, watch, watchEffect } from "vue";
 import { useRouter, type RouteRecordRaw } from "vue-router";
 
 type SearchData = {
@@ -40,7 +40,6 @@ const fuse = ref<Fuse<SearchData> | undefined>(undefined);
 const headerSearchSelectRef = ref();
 const router = useRouter();
 const pStore = permissionStore();
-const routes = computed(() => pStore.routes);
 
 function click() {
   show.value = !show.value;
@@ -95,7 +94,7 @@ function initFuse(list: SearchData[]) {
 }
 // Filter out the routes that can be displayed in the sidebar
 // And generate the internationalized title
-function generateRoutes(routes: RouteRecordRaw[], basePath = "", prefixTitle: string[] = []) {
+function generateRoutes(routes: RouteRecordRaw[], prefixTitle: string[] = []) {
   let res: SearchData[] = [];
 
   for (const r of routes) {
@@ -103,9 +102,8 @@ function generateRoutes(routes: RouteRecordRaw[], basePath = "", prefixTitle: st
     if (r.meta?.hidden) {
       continue;
     }
-    const p = (r.path.length > 0 && r.path[0] === "/") || !r.path ? r.path : "/" + r.path;
     const data: SearchData = {
-      path: !isHttp(r.path) ? basePath + p : r.path,
+      path: r.meta?.fullPath ? r.meta?.fullPath : "/",
       title: [...prefixTitle],
     };
 
@@ -122,7 +120,7 @@ function generateRoutes(routes: RouteRecordRaw[], basePath = "", prefixTitle: st
 
     // recursive child routes
     if (r.children) {
-      const tempRoutes = generateRoutes(r.children, data.path, data.title);
+      const tempRoutes = generateRoutes(r.children, data.title);
       if (tempRoutes.length >= 1) {
         res = [...res, ...tempRoutes];
       }
@@ -139,11 +137,11 @@ function querySearch(query: string) {
 }
 
 onMounted(() => {
-  searchPool.value = generateRoutes(routes.value);
+  searchPool.value = generateRoutes(pStore.tagsRouters);
 });
 
 watchEffect(() => {
-  searchPool.value = generateRoutes(routes.value);
+  searchPool.value = generateRoutes(pStore.tagsRouters);
 });
 
 watch(show, (value) => {

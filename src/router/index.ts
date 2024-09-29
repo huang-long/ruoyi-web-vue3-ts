@@ -59,9 +59,10 @@ router.beforeEach((to, from, next) => {
           .then(() => {
             isRelogin.show = false;
             const pStore = permissionStore();
-            pStore.GenerateRoutes().then(() => {
-              next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
-            });
+            return pStore.GenerateRoutes();
+          })
+          .then(() => {
+            next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
           })
           .catch((err) => {
             uStore.LogOut().then(() => {

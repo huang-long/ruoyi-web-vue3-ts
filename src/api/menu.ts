@@ -12,6 +12,7 @@ export type MenuRouter = {
     icon?: string;
     noCache?: boolean;
     link?: string;
+    fullPath: string;
   };
   children?: MenuRouter[];
 };
