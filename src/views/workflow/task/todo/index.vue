@@ -63,6 +63,7 @@ import { ref } from "vue";
 import TaskComplete from "../components/complete.vue";
 import TaskHistory from "../components/history.vue";
 import ProcessViewer from "../../activiti/processViewer/dialog.vue";
+import type { ElForm } from "@/api/form";
 
 //ref对象 ################################################
 const dicts = loadDicts("activiti_task_type");
@@ -99,7 +100,7 @@ const processViewDialog = ref({
   procDefId: "",
 });
 // Element ################################################
-const queryFormRef = ref();
+const queryFormRef = ref<ElForm>();
 
 // Function ################################################
 /** 查询待办列表 */
@@ -121,7 +122,7 @@ const handleQuery = () => {
 };
 /** 重置按钮操作 */
 const resetQuery = () => {
-  queryFormRef.value.resetFields();
+  queryFormRef.value?.resetFields();
   handleQuery();
 };
 

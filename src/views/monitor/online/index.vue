@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts" setup name="OnlinePage">
+import type { ElForm } from "@/api/form";
 import { forceLogout, list as initData, type OnlineInfoObj } from "@/api/monitor/online";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { ref } from "vue";
@@ -51,7 +52,7 @@ const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 
 const queryParams = ref({
   pageNum: 1,
@@ -77,7 +78,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 强退按钮操作 */

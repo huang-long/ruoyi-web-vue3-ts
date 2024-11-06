@@ -1,10 +1,9 @@
 import type { FormContext, FormValidateCallback, FormValidationResult } from "element-plus";
-import type { App } from "vue";
+// import type { App } from "vue";
 
-export type ElForm = FormContext &
-  App & {
-    readonly validate: (callback?: FormValidateCallback | undefined) => FormValidationResult;
-  };
+export type ElForm = FormContext & {
+  readonly validate: (callback?: FormValidateCallback | undefined) => FormValidationResult;
+};
 
 export type QueryParam = {
   pageNum: number;

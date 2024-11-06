@@ -92,7 +92,7 @@ import { onActivated, ref } from "vue";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import server from "@/utils/request";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 
 const route = useRoute();
 
@@ -106,7 +106,7 @@ const total = ref(0);
 const tableNames = ref<string[]>([]);
 const dateRange = ref<string[]>([]);
 const uniqueId = ref("");
-const queryFormRef = ref();
+const queryFormRef = ref<ElForm>();
 const importRef = ref();
 
 const queryParams = ref<GenTColumn & QueryParam>({
@@ -133,7 +133,7 @@ onActivated(() => {
     uniqueId.value = time;
     queryParams.value.pageNum = Number(route.query.pageNum);
     dateRange.value = [];
-    queryFormRef.value.resetFields();
+    queryFormRef.value?.resetFields();
     getList();
   }
 });
@@ -185,7 +185,7 @@ function openImportTable() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  queryFormRef.value.resetFields();
+  queryFormRef.value?.resetFields();
   handleQuery();
 }
 /** 预览按钮 */

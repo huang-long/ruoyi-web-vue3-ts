@@ -29,6 +29,7 @@ import { ElMessage } from "element-plus";
 import { ref, watch } from "vue";
 import useStore from "@/stores/user";
 import tagsStore from "@/stores/tagsView";
+import type { ElForm } from "@/api/form";
 
 const uStore = useStore();
 const tStore = tagsStore();
@@ -44,7 +45,7 @@ const props = withDefaults(
   }
 );
 
-const userRef = ref();
+const userRef = ref<ElForm>();
 const form = ref<UserInfoObj>({ userId: "" });
 const rules = ref({
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
@@ -68,7 +69,7 @@ const rules = ref({
 
 /** 提交按钮 */
 function submit() {
-  userRef.value.validate((valid: boolean) => {
+  userRef.value?.validate((valid) => {
     if (valid) {
       updateUserProfile(form.value).then(() => {
         ElMessage.success("修改成功");

@@ -31,6 +31,7 @@ import { computed, ref } from "vue";
 import LeaveInfo from "../../leave/leaveInfo.vue";
 import { complete } from "@/api/workflow/activiti/task";
 import { ElMessage } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -60,7 +61,7 @@ const rule = ref({
 const busiId = ref("");
 
 //element ################################################
-const formRef = ref();
+const formRef = ref<ElForm>();
 
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void; (event: "ok"): void }>();
@@ -96,7 +97,7 @@ watch(
  * 审批提交
  */
 const handleSubmit = () => {
-  formRef.value.validate((valid: boolean) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       complete({ ...form.value, taskId: props.taskId })

@@ -230,6 +230,7 @@ import { loadDicts } from "@/utils/dict";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import type { ElForm } from "@/api/form";
 const router = useRouter();
 
 const dicts = loadDicts(["sys_job_group", "sys_job_status"]);
@@ -246,8 +247,8 @@ const title = ref("");
 const openView = ref(false);
 const openCron = ref(false);
 const expression = ref("");
-const jobRef = ref();
-const queryRef = ref();
+const jobRef = ref<ElForm>();
+const queryRef = ref<ElForm>();
 
 const form = ref<JobObj>({
   jobId: "",
@@ -292,7 +293,7 @@ function reset() {
     concurrent: 1,
     status: "0",
   };
-  jobRef.value && jobRef.value.resetFields();
+  jobRef.value?.resetFields();
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -301,7 +302,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 // 多选框选中数据
@@ -389,7 +390,7 @@ function handleUpdate(row: JobObj) {
 }
 /** 提交按钮 */
 function submitForm() {
-  jobRef.value.validate((valid: boolean) => {
+  jobRef.value?.validate((valid) => {
     if (valid) {
       if (form.value.jobId) {
         updateJob(form.value).then(() => {

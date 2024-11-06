@@ -33,6 +33,7 @@
 </template>
 
 <script lang="ts" setup name="ToolGenTable">
+import type { ElForm } from "@/api/form";
 import { listDbTable, importTable, type GenInfoObj } from "@/api/tool/gen";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
@@ -42,7 +43,7 @@ const visible = ref(false);
 const tables = ref<string[]>([]);
 const dbTableList = ref<GenInfoObj[]>([]);
 const tableRef = ref();
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 
 const queryParams = ref({
   pageNum: 1,
@@ -80,7 +81,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 导入按钮操作 */

@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts" setup name="ActDefinitionPage">
+import type { ElForm } from "@/api/form";
 import { listDefinition, delDefinition, suspendOrActiveApply, convert2Model, uploadDefinition, type ActDefinitionObj } from "@/api/workflow/activiti/definition";
 import { ElMessage, ElMessageBox, dayjs, type UploadRawFile, type UploadRequestOptions } from "element-plus";
 import { ref } from "vue";
@@ -101,7 +102,7 @@ const queryParams = ref({
 });
 const uploadFileList = ref([]);
 //elment ################################################
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 const uploadRef = ref();
 
 // Function ################################################
@@ -122,7 +123,7 @@ const handleQuery = () => {
 /** 重置按钮操作 */
 const resetQuery = () => {
   dateRange.value = [];
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 };
 

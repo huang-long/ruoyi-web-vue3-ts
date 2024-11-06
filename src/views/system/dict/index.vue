@@ -109,7 +109,7 @@ import server from "@/utils/request";
 import type { DictTypeObj } from "@/api/system/dict/type";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import dictStore from "@/stores/dict";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 
 const dStore = dictStore();
 const dicts = loadDicts("sys_normal_disable");
@@ -154,8 +154,8 @@ const rules = ref({
   dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }],
 });
 
-const formRef = ref();
-const queryRef = ref();
+const formRef = ref<ElForm>();
+const queryRef = ref<ElForm>();
 
 /** 查询字典类型列表 */
 const getList = () => {
@@ -228,7 +228,7 @@ const handleUpdate = (row: DictTypeObj) => {
 
 /** 提交按钮 */
 const submitForm = () => {
-  formRef.value?.validate((valid: boolean) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       const add = form.value.dictId ? false : true;
       const promise = add ? addType(form.value) : updateType(form.value);

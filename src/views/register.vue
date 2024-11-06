@@ -63,6 +63,7 @@ import { getCodeImg, register, type LoginReq } from "@/api/login";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessageBox } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 const router = useRouter();
 const equalToPassword = (rule: object, value: string, callback: (error?: Error) => void) => {
@@ -118,9 +119,10 @@ const getCode = () => {
   });
 };
 
-const registerFormRef = ref();
+const registerFormRef = ref<ElForm>();
+
 const handleRegister = () => {
-  registerFormRef.value?.validate((valid: boolean) => {
+  registerFormRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       register(registerForm.value)

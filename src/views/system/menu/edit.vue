@@ -30,7 +30,7 @@
         </el-col>
         <el-col v-if="form.menuType != 'F'" :span="24">
           <el-form-item label="菜单图标" prop="icon">
-            <el-icon-picker ref="iconSelectRef" v-model="form.icon"></el-icon-picker>
+            <el-icon-picker v-model="form.icon"></el-icon-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -175,6 +175,7 @@ import { loadDicts } from "@/utils/dict";
 import { ref } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 // 外部参数 ####################################################
 // const props = withDefaults(defineProps<{
@@ -200,8 +201,7 @@ const rules = ref({
   path: [{ required: true, message: "路由地址不能为空", trigger: "blur" }],
 });
 // ref 元素
-const iconSelectRef = ref();
-const menuRef = ref();
+const menuRef = ref<ElForm>();
 
 // emit事件 #####################################################
 const emit = defineEmits<{
@@ -273,7 +273,7 @@ function reset() {
     visible: "0",
     status: "0",
   };
-  menuRef.value && menuRef.value.resetFields();
+  menuRef.value?.resetFields();
 }
 
 /** 查询菜单详情 */
@@ -292,7 +292,7 @@ function getMenuDetail(menuId: string) {
 
 /** 提交按钮 */
 function submitForm() {
-  menuRef.value.validate((valid: boolean) => {
+  menuRef.value?.validate((valid) => {
     if (valid) {
       if (action.value === "edit") {
         updateMenu(form.value).then(() => {

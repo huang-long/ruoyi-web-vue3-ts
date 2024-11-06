@@ -19,7 +19,7 @@
       <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="taskList" :row-key="(row:ActTaskObj)=>row.businessKey">
+    <el-table v-loading="loading" :data="taskList" :row-key="(row: ActTaskObj) => row.businessKey">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="流程实例ID" align="center" prop="instanceId" width="150" />
       <el-table-column label="任务类别" align="center" prop="definitionKey" width="150">
@@ -62,6 +62,7 @@ import { ref } from "vue";
 import TaskDetail from "../components/detail.vue";
 import TaskHistory from "../components/history.vue";
 import ProcessViewer from "../../activiti/processViewer/dialog.vue";
+import type { ElForm } from "@/api/form";
 
 //ref对象 ################################################
 const dicts = loadDicts("activiti_task_type");
@@ -98,7 +99,7 @@ const processViewDialog = ref({
 });
 
 // Element ################################################
-const queryFormRef = ref();
+const queryFormRef = ref<ElForm>();
 
 // Function ################################################
 /** 查询待办列表 */
@@ -120,7 +121,7 @@ const handleQuery = () => {
 };
 /** 重置按钮操作 */
 const resetQuery = () => {
-  queryFormRef.value.resetFields();
+  queryFormRef.value?.resetFields();
   handleQuery();
 };
 

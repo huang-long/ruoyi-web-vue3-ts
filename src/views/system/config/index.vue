@@ -35,7 +35,7 @@
         <el-button v-hasPermi="['system:config:export']" type="warning" plain icon="Download" @click="handleExport">导出</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['system:config:remove']" type="danger" plain icon="Refresh" @click="handleRefreshCache">刷新缓存</el-button>
+        <el-button v-hasPermi="['system:config:refresh']" type="danger" plain icon="Refresh" @click="handleRefreshCache">刷新缓存</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
     </el-row>
@@ -68,73 +68,40 @@
     <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog v-model="open" :title="title" width="500px" append-to-body>
-      <el-form ref="configRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="参数名称" prop="configName">
-          <el-input v-model="form.configName" placeholder="请输入参数名称" />
-        </el-form-item>
-        <el-form-item label="参数键名" prop="configKey">
-          <el-input v-model="form.configKey" placeholder="请输入参数键名" />
-        </el-form-item>
-        <el-form-item label="参数键值" prop="configValue">
-          <el-input v-model="form.configValue" placeholder="请输入参数键值" />
-        </el-form-item>
-        <el-form-item label="系统内置" prop="configType">
-          <el-radio-group v-model="form.configType">
-            <el-radio v-for="dict in dicts.sys_yes_no" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <EditDialog ref="editDialogRef" @data-change="dataChange"></EditDialog>
   </div>
 </template>
 
 <script lang="ts" setup name="SysConfig">
-import type { QueryParam } from "@/api/form";
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache, type SysConfigObj } from "@/api/system/config";
+import type { ElForm, QueryParam } from "@/api/form";
+import { listConfig, delConfig, refreshCache, type SysConfigObj } from "@/api/system/config";
 import { loadDicts } from "@/utils/dict";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { ref } from "vue";
 import server from "@/utils/request";
+import EditDialog from "./edit.vue";
 
 const dicts = loadDicts(["sys_yes_no"]);
 
 const configList = ref<SysConfigObj[]>([]);
-const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref<string[]>([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
 const dateRange = ref([]);
 
-const configRef = ref();
-const queryRef = ref();
+const queryRef = ref<ElForm>();
+const editDialogRef = ref();
 
-const form = ref<SysConfigObj>({});
 const queryParams = ref<SysConfigObj & QueryParam>({
   pageNum: 1,
   pageSize: 10,
   configName: undefined,
   configKey: undefined,
   configType: undefined,
-});
-const rules = ref({
-  configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
-  configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
-  configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }],
 });
 
 /** 查询参数列表 */
@@ -146,32 +113,21 @@ function getList() {
     loading.value = false;
   });
 }
-/** 取消按钮 */
-function cancel() {
-  open.value = false;
-  reset();
-}
-/** 表单重置 */
-function reset() {
-  form.value = {
-    configId: undefined,
-    configName: undefined,
-    configKey: undefined,
-    configValue: undefined,
-    configType: "Y",
-    remark: undefined,
-  };
-  configRef.value & configRef.value.resetFields();
-}
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+
+/** 数据改变 刷新页面 */
+function dataChange() {
+  getList();
+}
+
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -182,39 +138,12 @@ function handleSelectionChange(selection: SysConfigObj[]) {
 }
 /** 新增按钮操作 */
 function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加参数";
+  editDialogRef.value?.show({ action: "add" });
 }
 /** 修改按钮操作 */
 function handleUpdate(row: SysConfigObj) {
-  reset();
   const configId = row.configId || ids.value.toString();
-  getConfig(configId).then((response) => {
-    form.value = response.data || {};
-    open.value = true;
-    title.value = "修改参数";
-  });
-}
-/** 提交按钮 */
-function submitForm() {
-  configRef.value.validate((valid: boolean) => {
-    if (valid) {
-      if (form.value.configId) {
-        updateConfig(form.value).then(() => {
-          ElMessage.success("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addConfig(form.value).then(() => {
-          ElMessage.success("新增成功");
-          open.value = false;
-          getList();
-        });
-      }
-    }
-  });
+  editDialogRef.value?.show({ action: "edit", configId: configId });
 }
 /** 删除按钮操作 */
 function handleDelete(row: SysConfigObj) {

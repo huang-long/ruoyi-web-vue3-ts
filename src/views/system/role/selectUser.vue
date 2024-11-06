@@ -48,6 +48,7 @@ import { reactive, ref } from "vue";
 import { loadDicts } from "@/utils/dict";
 import type { UserInfoObj } from "@/api/system/user";
 import { ElMessage, dayjs } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 const props = withDefaults(
   defineProps<{
@@ -65,7 +66,7 @@ const userList = ref<UserInfoObj[]>([]);
 const visible = ref(false);
 const total = ref(0);
 const userIds = ref<string[]>([]);
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 const tableRef = ref();
 
 const queryParams = reactive({
@@ -104,7 +105,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 

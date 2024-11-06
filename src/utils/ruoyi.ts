@@ -3,6 +3,7 @@
  * Copyright (c) 2019 ruoyi
  */
 
+import type { ElForm } from "@/api/form";
 import type { DictObj } from "@/api/system/dict/data";
 import type { Ref } from "vue";
 
@@ -10,8 +11,8 @@ import type { Ref } from "vue";
  * 表单重置
  * @param vueRef
  */
-export function resetForm(vueRef: Ref) {
-  vueRef.value.resetFields();
+export function resetForm(vueRef: Ref<ElForm>) {
+  vueRef.value?.resetFields();
 }
 
 // 添加日期范围

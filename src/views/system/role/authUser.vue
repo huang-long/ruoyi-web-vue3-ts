@@ -63,6 +63,7 @@ import { reactive, ref } from "vue";
 import type { UserInfoObj } from "@/api/system/user";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import tagsStore from "@/stores/tagsView";
+import type { ElForm } from "@/api/form";
 
 const tStore = tagsStore();
 const route = useRoute();
@@ -76,7 +77,7 @@ const showSearch = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const userIds = ref<string[]>([]);
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 const selectRef = ref();
 
 const queryParams = reactive({
@@ -107,7 +108,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 // 多选框选中数据

@@ -58,6 +58,7 @@ import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import { useRoute, useRouter } from "vue-router";
 import userStore from "@/stores/user";
+import type { ElForm } from "@/api/form";
 
 const router = useRouter();
 const route = useRoute();
@@ -122,12 +123,12 @@ const getCookie = () => {
   };
 };
 
-const loginFormRef = ref();
+const loginFormRef = ref<ElForm>();
 /**
  * 登录
  */
 const handleLogin = () => {
-  loginFormRef.value?.validate((valid: boolean) => {
+  loginFormRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       if (loginForm.value.rememberMe) {

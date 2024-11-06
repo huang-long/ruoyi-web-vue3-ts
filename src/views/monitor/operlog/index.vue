@@ -139,7 +139,7 @@ import { addDateRange, selectDictLabel } from "@/utils/ruoyi";
 import { list, delOperlog, cleanOperlog, type OperLogObj } from "@/api/monitor/operlog";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 
 // const { proxy } = getCurrentInstance();
 const dicts = loadDicts(["sys_oper_type", "sys_common_status"]);
@@ -154,7 +154,7 @@ const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "operTime", order: "descending" });
 
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 const logininforRef = ref();
 
 const form = ref<OperLogObj>({

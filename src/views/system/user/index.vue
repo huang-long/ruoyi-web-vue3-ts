@@ -262,12 +262,12 @@ import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import server from "@/utils/request";
 import type { PostObj } from "@/api/system/post";
 import type { RoleObj } from "@/api/system/role";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 
 const router = useRouter();
 // const { proxy } = getCurrentInstance();
-const userRef = ref();
-const queryRef = ref();
+const userRef = ref<ElForm>();
+const queryRef = ref<ElForm>();
 const deptTreeRef = ref();
 const uploadRef = ref();
 const dicts = loadDicts(["sys_normal_disable", "sys_user_sex"]);
@@ -413,7 +413,7 @@ const handleQuery = () => {
 /** 重置按钮操作 */
 const resetQuery = () => {
   dateRange.value = [];
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   queryParams.value.deptId = "";
   deptTreeRef.value.setCurrentKey(null);
   handleQuery();
@@ -535,7 +535,7 @@ const reset = () => {
     postIds: [],
     roleIds: [],
   };
-  userRef.value && userRef.value.resetFields();
+  userRef.value?.resetFields();
 };
 /** 取消按钮 */
 const cancel = () => {
@@ -570,7 +570,7 @@ const handleUpdate = (row: UserInfoObj) => {
 };
 /** 提交按钮 */
 const submitForm = () => {
-  userRef.value.validate((valid: boolean) => {
+  userRef.value?.validate((valid) => {
     if (valid) {
       if (form.value.userId) {
         updateUser(form.value).then(() => {

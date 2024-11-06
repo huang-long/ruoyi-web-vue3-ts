@@ -76,6 +76,7 @@ import { loadDicts } from "@/utils/dict";
 import { nextTick, ref } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 // 内部变量 #####################################################
 // 数据字典
@@ -86,7 +87,7 @@ const loading = ref(true);
 const showSearch = ref(true);
 const isExpandAll = ref(false);
 const refreshTable = ref(true);
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 
 const queryParams = ref({
   menuId: "",
@@ -116,7 +117,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 新增按钮操作 */

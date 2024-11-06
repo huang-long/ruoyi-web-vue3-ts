@@ -123,6 +123,7 @@ import { useRoute } from "vue-router";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import server from "@/utils/request";
 import tagsStore from "@/stores/tagsView";
+import type { ElForm } from "@/api/form";
 
 const tStore = tagsStore();
 const { dictStore } = store.initStore();
@@ -205,7 +206,7 @@ function cancel() {
   open.value = false;
   reset();
 }
-const dataRef = ref();
+const dataRef = ref<ElForm>();
 /** 表单重置 */
 function reset() {
   form.value = {
@@ -232,7 +233,7 @@ function handleClose() {
   tStore.closeOpenPage("/system/dict");
 }
 
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 /** 重置按钮操作 */
 function resetQuery() {
   queryRef.value?.resetFields();
@@ -266,7 +267,7 @@ function handleUpdate(row: DictObj) {
 }
 /** 提交按钮 */
 function submitForm() {
-  dataRef.value.validate((valid: boolean) => {
+  dataRef.value?.validate((valid) => {
     if (valid) {
       const addFlag = form.value.dictCode ? false : true;
       const subPromiss = addFlag ? addData(form.value) : updateData(form.value);

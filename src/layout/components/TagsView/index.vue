@@ -2,8 +2,7 @@
   <div v-if="showTags" class="tags">
     <div ref="tagsRef" class="tags-box" @wheel.stop="tabsWheel">
       <ul ref="tabsUlRef">
-        <li v-for="item in tagsList" ref="tabsLiRef" :key="item.fullPath" class="tags-li"
-          :class="{ active: isActive(item.fullPath) }">
+        <li v-for="item in tagsList" ref="tabsLiRef" :key="item.fullPath" class="tags-li" :class="{ active: isActive(item.fullPath) }">
           <router-link :to="item.fullPath" class="tags-li-title">{{ item.title }}</router-link>
           <span class="tags-li-icon" @click="closeTags(item)">
             <el-icon>

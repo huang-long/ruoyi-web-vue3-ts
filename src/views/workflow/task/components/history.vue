@@ -55,6 +55,7 @@ import { loadDicts } from "@/utils/dict";
 import { watch } from "vue";
 import { computed, ref } from "vue";
 import { queryHistoryList, type TaskHistoryObj } from "@/api/workflow/activiti/task";
+import type { ElForm } from "@/api/form";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -84,7 +85,7 @@ const total = ref(0);
 const historyList = ref<TaskHistoryObj[]>([]);
 
 //element ################################################
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void }>();

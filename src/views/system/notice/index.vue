@@ -62,68 +62,30 @@
     <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
 
     <!-- 添加或修改公告对话框 -->
-    <el-dialog v-model="open" :title="title" width="780px" append-to-body>
-      <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="公告标题" prop="noticeTitle">
-              <el-input v-model="form.noticeTitle" placeholder="请输入公告标题" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="公告类型" prop="noticeType">
-              <el-select v-model="form.noticeType" placeholder="请选择">
-                <el-option v-for="dict in dicts.sys_notice_type" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <el-radio v-for="dict in dicts.sys_notice_status" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="内容">
-              <editor v-model="form.noticeContent" :min-height="192" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <EditDialog ref="editDialogRef" @data-change="dataChange"></EditDialog>
   </div>
 </template>
 
 <script lang="ts" setup name="SysNotice">
-import { listNotice, getNotice, delNotice, addNotice, updateNotice, type NoticeObj } from "@/api/system/notice";
+import type { ElForm } from "@/api/form";
+import { listNotice, delNotice, type NoticeObj } from "@/api/system/notice";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { ref } from "vue";
+import EditDialog from "./edit.vue";
 
 const dicts = loadDicts(["sys_notice_status", "sys_notice_type"]);
 
 const noticeList = ref<NoticeObj[]>([]);
-const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref<string[]>([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
-const noticeRef = ref();
-const queryRef = ref();
+const editDialogRef = ref();
+const queryRef = ref<ElForm>();
 
-const form = ref<NoticeObj>({
-  noticeId: "",
-});
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
@@ -132,10 +94,6 @@ const queryParams = ref({
   noticeType: undefined,
   createBy: undefined,
   status: undefined,
-});
-const rules = ref({
-  noticeTitle: [{ required: true, message: "公告标题不能为空", trigger: "blur" }],
-  noticeType: [{ required: true, message: "公告类型不能为空", trigger: "change" }],
 });
 
 /** 查询公告列表 */
@@ -147,22 +105,11 @@ function getList() {
     loading.value = false;
   });
 }
-/** 取消按钮 */
-function cancel() {
-  open.value = false;
-  reset();
+/** 数据改变 刷新页面 */
+function dataChange() {
+  getList();
 }
-/** 表单重置 */
-function reset() {
-  form.value = {
-    noticeId: "",
-    noticeTitle: undefined,
-    noticeType: undefined,
-    noticeContent: undefined,
-    status: "0",
-  };
-  noticeRef.value && noticeRef.value.resetFields();
-}
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
@@ -170,7 +117,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -181,39 +128,12 @@ function handleSelectionChange(selection: NoticeObj[]) {
 }
 /** 新增按钮操作 */
 function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加公告";
+  editDialogRef.value?.show({ action: "add" });
 }
 /**修改按钮操作 */
 function handleUpdate(row: NoticeObj) {
-  reset();
   const noticeId = row.noticeId || ids.value.toString();
-  getNotice(noticeId).then((response) => {
-    response.data && (form.value = response.data);
-    open.value = true;
-    title.value = "修改公告";
-  });
-}
-/** 提交按钮 */
-function submitForm() {
-  noticeRef.value.validate((valid: boolean) => {
-    if (valid) {
-      if (form.value.noticeId) {
-        updateNotice(form.value).then(() => {
-          ElMessage.success("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addNotice(form.value).then(() => {
-          ElMessage.success("新增成功");
-          open.value = false;
-          getList();
-        });
-      }
-    }
-  });
+  editDialogRef.value?.show({ action: "edit", noticeId: noticeId });
 }
 /** 删除按钮操作 */
 function handleDelete(row: NoticeObj) {

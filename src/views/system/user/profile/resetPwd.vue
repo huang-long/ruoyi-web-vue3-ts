@@ -22,10 +22,11 @@ import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
 import tagsStore from "@/stores/tagsView";
 import type { FormRule } from "@form-create/element-ui";
+import type { ElForm } from "@/api/form";
 
 // const { proxy } = getCurrentInstance();
 const tStore = tagsStore();
-const pwdRef = ref();
+const pwdRef = ref<ElForm>();
 const user = reactive({
   oldPassword: "",
   newPassword: "",
@@ -53,7 +54,7 @@ const rules = ref({
 
 /** 提交按钮 */
 function submit() {
-  pwdRef.value.validate((valid: boolean) => {
+  pwdRef.value?.validate((valid) => {
     if (valid) {
       updateUserPwd(user.oldPassword, user.newPassword).then(() => {
         ElMessage.success("修改成功");

@@ -81,6 +81,7 @@ import bpmnView from "./bpmnView.vue";
 import { listModeler, delModeler, addModeler, deployModeler, type ActModelerObj } from "@/api/workflow/activiti/modeler";
 import { ref } from "vue";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
+import type { ElForm } from "@/api/form";
 
 //ref对象 ################################################
 const bpmnViewVisible = ref(false);
@@ -116,8 +117,8 @@ const rules = ref({
 });
 
 //elment ################################################
-const queryRef = ref();
-const formRef = ref();
+const queryRef = ref<ElForm>();
+const formRef = ref<ElForm>();
 
 // Function ################################################
 /** 查询模型列表 */
@@ -132,7 +133,7 @@ const getList = () => {
 // 取消按钮
 const cancel = () => {
   open.value = false;
-  formRef.value.resetFields();
+  formRef.value?.resetFields();
 };
 // 表单重置
 const reset = () => {
@@ -141,7 +142,7 @@ const reset = () => {
     name: "",
     key: "",
   };
-  queryRef.value && queryRef.value.resetFields();
+  queryRef.value?.resetFields();
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -151,7 +152,7 @@ const handleQuery = () => {
 /** 重置按钮操作 */
 const resetQuery = () => {
   dateRange.value = [];
-  queryRef.value && queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 };
 /** 新增按钮操作 */
@@ -168,7 +169,7 @@ const handleUpdate = (row: ActModelerObj) => {
 };
 /** 提交按钮 */
 const submitForm = () => {
-  formRef.value.validate((valid: boolean) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       addModeler(form.value)

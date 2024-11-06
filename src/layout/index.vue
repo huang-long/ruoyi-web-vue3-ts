@@ -7,10 +7,10 @@
       <div class="content">
         <breadcrumb></breadcrumb>
         <router-view v-slot="{ Component }">
-          <transition name="move" mode="out-in" v-if="$route.meta.noCache">
+          <transition v-if="$route.meta.noCache" name="move" mode="out-in">
             <component :is="Component" />
           </transition>
-          <transition name="move" mode="out-in" v-if="!$route.meta.noCache">
+          <transition v-if="!$route.meta.noCache" name="move" mode="out-in">
             <keep-alive>
               <component :is="Component" />
             </keep-alive>

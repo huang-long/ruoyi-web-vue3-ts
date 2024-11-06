@@ -99,6 +99,7 @@ import { ref } from "vue";
 import { ElMessage, dayjs } from "element-plus";
 import userStore from "@/stores/user";
 import server from "@/utils/request";
+import type { ElForm } from "@/api/form";
 
 //store对象 ################################################
 const uStore = userStore();
@@ -155,8 +156,8 @@ const rules = ref({
 });
 
 //elment ################################################
-const queryFormRef = ref();
-const formRef = ref();
+const queryFormRef = ref<ElForm>();
+const formRef = ref<ElForm>();
 
 // Function ################################################
 /** 查询请假列表 */
@@ -189,7 +190,7 @@ const reset = () => {
     createTime: undefined,
     updateTime: undefined,
   };
-  formRef.value && formRef.value.resetFields();
+  formRef.value?.resetFields();
 };
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -198,7 +199,7 @@ const handleQuery = () => {
 };
 /** 重置按钮操作 */
 const resetQuery = () => {
-  queryFormRef.value.resetFields();
+  queryFormRef.value?.resetFields();
   handleQuery();
 };
 /** 新增按钮操作 */
@@ -211,7 +212,7 @@ const handleAdd = () => {
 
 /** 提交按钮 */
 const submitForm = () => {
-  formRef.value.validate((valid: boolean) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       // 随机测试，实际根据自己的业务来
       if (form.value.processType == "leave2") {

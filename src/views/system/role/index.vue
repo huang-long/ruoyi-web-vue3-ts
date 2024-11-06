@@ -176,7 +176,7 @@ import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import server from "@/utils/request";
 import type { TreeDeptObj } from "@/api/system/dept";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 import type TreeStore from "element-plus/es/components/tree/src/model/tree-store";
 import type Node from "element-plus/es/components/tree/src/model/node";
 
@@ -202,8 +202,8 @@ const deptOptions = ref<TreeDeptObj[]>([]);
 const openDataScope = ref(false);
 const menuRef = ref<TreeStore>();
 const deptRef = ref<TreeStore>();
-const queryRef = ref();
-const roleRef = ref();
+const queryRef = ref<ElForm>();
+const roleRef = ref<ElForm>();
 
 /** 数据范围选项*/
 const dataScopeOptions = ref([
@@ -246,7 +246,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  queryRef.value.resetFields();
+  queryRef.value?.resetFields();
   handleQuery();
 }
 /** 删除按钮操作 */
@@ -332,7 +332,7 @@ function reset() {
     deptCheckStrictly: true,
     remark: undefined,
   };
-  roleRef.value && roleRef.value.resetFields();
+  roleRef.value?.resetFields();
 }
 /** 添加角色 */
 function handleAdd() {
@@ -429,7 +429,7 @@ function getMenuAllCheckedKeys() {
 }
 /** 提交按钮 */
 function submitForm() {
-  roleRef.value.validate((valid: boolean) => {
+  roleRef.value?.validate((valid) => {
     if (valid) {
       if (form.value.roleId) {
         form.value.menuIds = getMenuAllCheckedKeys();

@@ -77,7 +77,7 @@ import { addDateRange } from "@/utils/ruoyi";
 import { ElMessageBox, ElMessage, dayjs } from "element-plus";
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor, type LoginLogObj } from "@/api/monitor/logininfor";
 import { ref } from "vue";
-import type { QueryParam } from "@/api/form";
+import type { ElForm, QueryParam } from "@/api/form";
 
 // const { proxy } = getCurrentInstance();
 const dicts = loadDicts("sys_common_status");
@@ -93,7 +93,7 @@ const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "loginTime", order: "descending" });
 
-const queryRef = ref();
+const queryRef = ref<ElForm>();
 const logininforRef = ref();
 
 // 查询参数
