@@ -56,7 +56,7 @@ const props = withDefaults(
   }>(),
   {
     roleId: "",
-  }
+  },
 );
 
 // const { proxy } = getCurrentInstance();

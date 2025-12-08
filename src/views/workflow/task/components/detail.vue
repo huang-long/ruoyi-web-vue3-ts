@@ -26,7 +26,7 @@ const props = withDefaults(
     definitionKey: string;
     businessKey: string;
   }>(),
-  {}
+  {},
 );
 
 //ref对象 ################################################
@@ -50,7 +50,7 @@ watch(
   () => props.taskContent,
   (value) => {
     title.value = value;
-  }
+  },
 );
 watch(
   () => props.businessKey,
@@ -59,7 +59,7 @@ watch(
       const ids = props.businessKey.split(":");
       busiId.value = ids[1] ? ids[1] : props.businessKey;
     });
-  }
+  },
 );
 </script>
 

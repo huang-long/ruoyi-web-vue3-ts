@@ -33,7 +33,7 @@ export function selectDictLabel(datas: DictObj[], value: string) {
 
   for (let i = 0; i < datas.length; i++) {
     const dict = datas[i];
-    if (dict.value === value) {
+    if (dict?.value === value) {
       return dict.label;
     }
   }
@@ -41,7 +41,13 @@ export function selectDictLabel(datas: DictObj[], value: string) {
   return "";
 }
 
-// 回显数据字典（字符串、数组）
+/**
+ * 回显数据字典（字符串、数组）
+ * @param datas 数据字典规则
+ * @param value 属性值（例：01,02）
+ * @param separator 分隔符（默认逗号，可自定义）
+ * @returns
+ */
 export function selectDictLabels(datas: { [keys: string]: { value: string; label: string } }, value: string, separator: string) {
   if (value === undefined || value.length === 0) {
     return "";
@@ -55,7 +61,7 @@ export function selectDictLabels(datas: { [keys: string]: { value: string; label
   Object.keys(value.split(currentSeparator)).some((val) => {
     let match = false;
     Object.keys(datas).some((key) => {
-      if (datas[key].value == "" + temp[Number(val)]) {
+      if (datas[key]?.value == "" + temp[Number(val)]) {
         actions.push(datas[key].label + currentSeparator);
         match = true;
       }
@@ -185,6 +191,7 @@ export async function blobValidate(data: Blob) {
     JSON.parse(text);
     return false;
   } catch (error) {
+    console.log(error);
     return true;
   }
 }

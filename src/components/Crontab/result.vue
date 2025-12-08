@@ -19,7 +19,7 @@ const props = withDefaults(
   }>(),
   {
     ex: "",
-  }
+  },
 );
 
 const dayRule = ref("");
@@ -29,7 +29,7 @@ const resultList = ref<string[]>([]);
 const isShow = ref(false);
 watch(
   () => props.ex,
-  () => expressionChange()
+  () => expressionChange(),
 );
 // 表达式值变化时，开始去计算结果
 function expressionChange() {

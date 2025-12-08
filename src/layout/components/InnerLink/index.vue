@@ -14,7 +14,7 @@ const props = withDefaults(
   }>(),
   {
     src: "/",
-  }
+  },
 );
 
 const loading = ref(false);

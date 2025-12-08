@@ -92,7 +92,7 @@ watch(
   {
     immediate: true, // 这个属性是重点啦
     // deep: true // 深度监听的参数
-  }
+  },
 );
 
 /**

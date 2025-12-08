@@ -13,25 +13,25 @@
       <el-button type="primary" @click="view('word')">PreviewWord</el-button>
       <el-button type="primary" @click="view('excel')">PreviewExcel</el-button>
       <el-button type="primary" @click="view('pdf')">PreviewPdf</el-button>
+      <el-button type="primary" @click="view('pptx')">PreviewPptx</el-button>
     </el-space>
     <el-dialog v-model="dialogVisible" :title="'Preview ' + fileType" :fullscreen="true" draggable class="preview-dialog">
       <vue-office-docx v-if="fileType === 'word'" :key="'word'" :src="word" style="height: 100%" @rendered="renderedHandler" @error="errorHandler" />
       <vue-office-excel v-else-if="fileType === 'excel'" :key="'excel'" :src="excel" style="height: 100%" @rendered="renderedHandler" @error="errorHandler" />
       <vue-office-pdf v-else-if="fileType === 'pdf'" :key="'pdf'" :src="pdf" style="height: 100%" @rendered="renderedHandler" @error="errorHandler" />
+      <vue-office-pptx v-else-if="fileType === 'pptx'" :key="'pptx'" :src="pptx" style="height: 100%" @rendered="renderedHandler" @error="errorHandler" />
     </el-dialog>
   </div>
 </template>
 <script lang="ts" setup name="ToolPreivewPage">
 //引入VueOfficeDocx组件
 import VueOfficeDocx from "@vue-office/docx";
-//引入相关样式
-import "@vue-office/docx/lib/index.css";
 //引入VueOfficeExcel组件
 import VueOfficeExcel from "@vue-office/excel";
-//引入相关样式
-import "@vue-office/excel/lib/index.css";
 //引入VueOfficePdf组件
 import VueOfficePdf from "@vue-office/pdf";
+//引入VueOfficePptx组件
+import VueOfficePptx from "@vue-office/pptx";
 
 import { ref } from "vue";
 
@@ -40,6 +40,7 @@ const fileType = ref("");
 const word = ref("/word/test.docx"); //设置文档网络地址，可以是相对地址
 const excel = ref("/excel/test.xlsx"); //设置文档网络地址，可以是相对地址
 const pdf = ref("/pdf/test.pdf"); //设置文档网络地址，可以是相对地址
+const pptx = ref("/pptx/test.pptx"); //设置文档网络地址，可以是相对地址
 
 const renderedHandler = () => {
   console.log("渲染完成");
@@ -52,6 +53,11 @@ const view = (type: string) => {
   fileType.value = type;
 };
 </script>
+<style lang="less">
+//引入相关样式
+@import "/node_modules/@vue-office/docx/lib/v3/index.css";
+@import "/node_modules/@vue-office/excel/lib/v3/index.css";
+</style>
 <style lang="less" scoped>
 :deep(.preview-dialog) {
   .el-dialog__body {

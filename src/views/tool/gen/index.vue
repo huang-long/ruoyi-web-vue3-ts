@@ -206,8 +206,8 @@ function handlePreview(row: GenInfoObj) {
     });
 }
 /** 复制代码成功 */
-function copyTextSuccess() {
-  ElMessage.success("复制成功");
+function copyTextSuccess(status: boolean) {
+  ElMessage.success(status ? "复制成功" : "复制失败");
 }
 // 多选框选中数据
 function handleSelectionChange(selection: GenInfoObj[]) {

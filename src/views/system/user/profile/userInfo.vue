@@ -42,7 +42,7 @@ const props = withDefaults(
     user: () => {
       return { userId: "" };
     },
-  }
+  },
 );
 
 const userRef = ref<ElForm>();
@@ -99,6 +99,6 @@ watch(
       };
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>

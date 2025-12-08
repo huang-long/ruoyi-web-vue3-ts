@@ -241,7 +241,7 @@ const handleExport = () => {
     {
       ...queryParams.value,
     },
-    `Leave_${new Date().getTime()}.xlsx`
+    `Leave_${new Date().getTime()}.xlsx`,
   );
 };
 const chooseMedicine = () => {

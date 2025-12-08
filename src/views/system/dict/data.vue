@@ -300,7 +300,7 @@ function handleExport() {
     {
       ...queryParams,
     },
-    `dict_data_${new Date().getTime()}.xlsx`
+    `dict_data_${new Date().getTime()}.xlsx`,
   );
 }
 

@@ -10,10 +10,10 @@ export default defineConfig({
     open: true,
     proxy: {
       "^/dev-api": {
-        target: `http://127.0.0.1:8090`,
+        target: `http://127.0.0.1:8091`,
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '\/' + process.env.VUE_APP_BASE_API)
-        rewrite: (path) => path.replace(/^\/dev-api/, "/prod-api"),
+        // rewrite: (path) => path.replace(/^\/api/, '\/' + process.env.VITE_APP_BASE_API)
+        rewrite: (path) => path.replace(/^\/dev-api/, ""),
       },
     },
   },

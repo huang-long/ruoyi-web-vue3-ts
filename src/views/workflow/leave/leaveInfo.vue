@@ -30,7 +30,7 @@ const props = withDefaults(
   defineProps<{
     businessKey: string;
   }>(),
-  {}
+  {},
 );
 //ref对象 ################################################
 //字典数据
@@ -54,7 +54,7 @@ watch(
   () => props.businessKey,
   (val) => {
     val && getDatail();
-  }
+  },
 );
 
 // Function ################################################

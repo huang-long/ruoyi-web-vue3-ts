@@ -63,7 +63,7 @@ const props = withDefaults(
     modelValue: boolean; // 页面展示
     instanceId: string;
   }>(),
-  {}
+  {},
 );
 
 //ref对象 ################################################
@@ -110,7 +110,7 @@ watch(
       historyList.value = [];
       total.value = 0;
     }
-  }
+  },
 );
 
 //方法 ################################################

@@ -38,7 +38,7 @@ const props = withDefaults(
     },
     showValue: true,
     separator: ",",
-  }
+  },
 );
 
 const values = computed(() => {

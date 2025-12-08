@@ -47,14 +47,6 @@ import { computed, watch, ref } from "vue";
 import { ElMessage, type UploadFile } from "element-plus";
 import BpmnModeler from "bpmn-js/lib/Modeler"; // 引入 bpmn-js
 import type { ModdleElement } from "bpmn-js/lib/BaseModeler";
-// 导入一下有关于bpmn-js的字体库以及样式文件
-import "bpmn-js/dist/assets/diagram-js.css";
-import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
-import "bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css";
-import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
-// 右侧属性面包样式
-import "bpmn-js-properties-panel/dist/assets/properties-panel.css";
-import "bpmn-js-properties-panel/dist/assets/element-templates.css";
 // 属性面板相关模块
 import { BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule } from "bpmn-js-properties-panel";
 import CamundaBpmnModdle from "camunda-bpmn-moddle/resources/camunda.json";
@@ -64,7 +56,6 @@ import customTranslate from "../bpmn/i18n";
 import createBpmnXml, { activitiToCamundaXml, camundaToActivitiXml } from "./xml"; // 放在下面了
 // 窗格拆分器插件
 import { Splitpanes, Pane } from "splitpanes";
-import "splitpanes/dist/splitpanes.css";
 import saveAs from "file-saver";
 import type CommandStack from "diagram-js/lib/command/CommandStack";
 import { getModelerDetail, updateModeler, type ActModelerObj, type XmlMetaInfo } from "@/api/workflow/activiti/modeler";
@@ -75,7 +66,7 @@ const props = withDefaults(
     modelValue: boolean;
     modelId: string;
   }>(),
-  {}
+  {},
 );
 //ref对象 ################################################
 const loading = ref(false);
@@ -345,6 +336,17 @@ const close = () => {
 };
 </script>
 
+<style lang="less">
+// 导入一下有关于bpmn-js的字体库以及样式文件
+@import "/node_modules/bpmn-js/dist/assets/diagram-js.css";
+@import "/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
+@import "/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css";
+@import "/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
+// 右侧属性面板样式
+@import "/node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css";
+// 窗格拆分器插件
+@import "/node_modules/splitpanes/dist/splitpanes.css";
+</style>
 <style lang="less" scoped>
 .bpmn-dialog {
   :deep(.el-dialog__body) {

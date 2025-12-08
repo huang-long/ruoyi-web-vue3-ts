@@ -53,7 +53,7 @@ watch(
   () => tStore.activePath,
   (value) => {
     value != route.fullPath && router.push(value);
-  }
+  },
 );
 
 watch(
@@ -64,7 +64,7 @@ watch(
     nextTick(() => {
       scrollToActiveTag();
     });
-  }
+  },
 );
 
 // 关闭单个标签

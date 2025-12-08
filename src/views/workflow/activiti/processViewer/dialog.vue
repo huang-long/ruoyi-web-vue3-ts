@@ -17,7 +17,7 @@ const props = withDefaults(
     instanceId: string; // 流程实例id
     procDefId: string; // 流程定义id
   }>(),
-  {}
+  {},
 );
 
 //ref ################################################
@@ -44,7 +44,7 @@ watch(
   () => {
     viewer.value.instanceId = props.instanceId;
     viewer.value.procDefId = props.procDefId;
-  }
+  },
 );
 </script>
 

@@ -32,7 +32,7 @@
 
 <script lang="ts" setup name="ToolGenBasicInfoForm">
 import type { GenInfoObj } from "@/api/tool/gen";
-import { computed, ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -42,9 +42,10 @@ const props = withDefaults(
     info: () => {
       return {};
     },
-  }
+  },
 );
 
+const genInfo = ref<GenInfoObj>({});
 // 表单校验
 const rules = ref({
   tableName: [{ required: true, message: "请输入表名称", trigger: "blur" }],
@@ -53,7 +54,10 @@ const rules = ref({
   functionAuthor: [{ required: true, message: "请输入作者", trigger: "blur" }],
 });
 
-const genInfo = computed(() => {
-  return Object.assign({}, props.info);
-});
+watch(
+  () => props.info,
+  (val) => {
+    Object.assign(genInfo.value, val);
+  },
+);
 </script>

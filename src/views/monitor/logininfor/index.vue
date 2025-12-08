@@ -111,11 +111,14 @@ const queryParams = ref<LoginLogObj & QueryParam>({
 /** 查询登录日志列表 */
 function getList() {
   loading.value = true;
-  list(addDateRange(queryParams.value, dateRange.value)).then((response) => {
-    logininforList.value = response.rows || [];
-    total.value = response.total || 0;
-    loading.value = false;
-  });
+  list(addDateRange(queryParams.value, dateRange.value))
+    .then((response) => {
+      logininforList.value = response.rows || [];
+      total.value = response.total || 0;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -184,7 +187,7 @@ function handleExport() {
     {
       ...queryParams.value,
     },
-    `config_${new Date().getTime()}.xlsx`
+    `config_${new Date().getTime()}.xlsx`,
   );
 }
 

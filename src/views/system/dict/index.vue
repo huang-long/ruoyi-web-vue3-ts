@@ -265,7 +265,7 @@ const handleExport = () => {
     {
       ...queryParams,
     },
-    `type_${new Date().getTime()}.xlsx`
+    `type_${new Date().getTime()}.xlsx`,
   );
 };
 

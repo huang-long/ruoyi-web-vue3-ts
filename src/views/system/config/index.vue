@@ -164,7 +164,7 @@ function handleExport() {
     {
       ...queryParams.value,
     },
-    `config_${new Date().getTime()}.xlsx`
+    `config_${new Date().getTime()}.xlsx`,
   );
 }
 /** 刷新缓存按钮操作 */

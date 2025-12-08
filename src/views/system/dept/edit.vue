@@ -108,7 +108,7 @@ function show(param: { action: "add" | "edit"; deptId?: string }) {
   open.value = true;
   reset();
 
-  var todo = listDept();
+  let todo = listDept();
   if (param.action == "edit" && param.deptId) {
     todo = listDeptExcludeChild(param.deptId);
     action.value = "edit";

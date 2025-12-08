@@ -11,7 +11,7 @@ const props = withDefaults(
   defineProps<{
     iconClass: string;
   }>(),
-  {}
+  {},
 );
 
 const iconName = computed(() => `#icon-${props.iconClass}`);

@@ -71,7 +71,7 @@ const props = withDefaults(
     check: (value: number) => {
       return value;
     },
-  }
+  },
 );
 
 const fullYear = ref(0);
@@ -94,7 +94,7 @@ const checkboxString = computed(() => {
 });
 watch(
   () => props.cron.year,
-  (value) => changeRadioValue(value)
+  (value) => changeRadioValue(value),
 );
 watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange());
 function changeRadioValue(value: string) {

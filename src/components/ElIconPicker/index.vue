@@ -60,7 +60,7 @@ withDefaults(
   }>(),
   {
     modelValue: "",
-  }
+  },
 );
 
 watch(
@@ -70,7 +70,7 @@ watch(
       filterVal.value = "";
       inputFilter();
     }
-  }
+  },
 );
 
 const showPopover = () => {

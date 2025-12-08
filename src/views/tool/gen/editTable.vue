@@ -100,7 +100,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfoRef" :info="info" :tables="tables" />
+        <gen-info-form ref="genInfoRef" :info="info" :tables="tables" @data-change="genInfoChange" />
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
@@ -118,7 +118,7 @@ import { optionselect as getDictOptionselect, type DictTypeObj } from "@/api/sys
 import basicInfoForm from "./basicInfoForm.vue";
 import genInfoForm from "./genInfoForm.vue";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "@/api/form";
 import tagsStore from "@/stores/tagsView";
@@ -135,6 +135,15 @@ const dictOptions = ref<DictTypeObj[]>([]);
 const info = ref<GenInfoObj>({});
 const basicInfoRef = ref();
 const genInfoRef = ref();
+let genInfo: GenInfoObj = {};
+
+/**
+ * genInfo数据改变
+ * @param {GenInfoObj} data
+ */
+function genInfoChange(data: GenInfoObj) {
+  genInfo = data;
+}
 
 /** 提交按钮 */
 function submitForm() {
@@ -143,13 +152,13 @@ function submitForm() {
   Promise.all([basicForm.validate(), genForm.validate()]).then((res) => {
     const validateResult = res.every((item: boolean) => !!item);
     if (validateResult) {
-      const genTable = Object.assign({}, info.value);
+      const genTable = Object.assign({}, genInfo);
       genTable.columns = columns.value;
       genTable.params = {
-        treeCode: info.value.treeCode,
-        treeName: info.value.treeName,
-        treeParentCode: info.value.treeParentCode,
-        parentMenuId: info.value.parentMenuId,
+        treeCode: genInfo.treeCode,
+        treeName: genInfo.treeName,
+        treeParentCode: genInfo.treeParentCode,
+        parentMenuId: genInfo.parentMenuId,
       };
       updateGenTable(genTable).then((res) => {
         ElMessage.success(res.msg);
@@ -167,7 +176,7 @@ function close() {
   tStore.closeOpenPage("/tool/gen");
 }
 
-(() => {
+onMounted(() => {
   const tableId = route.params && route.params.tableId;
   if (typeof tableId === "string") {
     // 获取表详细信息
@@ -181,5 +190,5 @@ function close() {
       dictOptions.value = response.data || [];
     });
   }
-})();
+});
 </script>

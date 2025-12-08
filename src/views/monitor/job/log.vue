@@ -207,7 +207,7 @@ function handleExport() {
     {
       ...queryParams.value,
     },
-    `job_log_${new Date().getTime()}.xlsx`
+    `job_log_${new Date().getTime()}.xlsx`,
   );
 }
 

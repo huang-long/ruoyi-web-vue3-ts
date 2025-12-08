@@ -42,7 +42,7 @@ const props = withDefaults(
     background: true,
     autoScroll: true,
     hidden: false,
-  }
+  },
 );
 
 const emit = defineEmits<{

@@ -122,7 +122,7 @@ const props = withDefaults(
   {
     hideComponent: () => [],
     expression: () => "",
-  }
+  },
 );
 
 const tabTitles = ref(["秒", "分钟", "小时", "日", "月", "周", "年"]);

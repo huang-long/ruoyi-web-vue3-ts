@@ -154,7 +154,7 @@ function handleExport() {
     {
       ...queryParams.value,
     },
-    `post_${new Date().getTime()}.xlsx`
+    `post_${new Date().getTime()}.xlsx`,
   );
 }
 

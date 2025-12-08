@@ -108,7 +108,7 @@ export class Service {
       (error) => {
         console.log(error);
         Promise.reject(error);
-      }
+      },
     );
 
     // 响应拦截器
@@ -167,7 +167,7 @@ export class Service {
         }
         ElMessage({ message: message, type: "error", duration: 5 * 1000 });
         return Promise.reject(error);
-      }
+      },
     );
   }
 

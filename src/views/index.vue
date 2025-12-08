@@ -611,10 +611,10 @@ watch(pageWidth, () => {
 const getTaskCount = () => {
   queryTaskCount().then(({ data }) => {
     if (data) {
-      messageList.value[0].count = data.myProcessCount;
-      messageList.value[1].count = data.todoCount;
-      messageList.value[2].count = data.doneCount;
-      messageList.value[3].count = data.finishCount;
+      messageList.value[0] && (messageList.value[0].count = data.myProcessCount);
+      messageList.value[1] && (messageList.value[1].count = data.todoCount);
+      messageList.value[2] && (messageList.value[2].count = data.doneCount);
+      messageList.value[3] && (messageList.value[3].count = data.finishCount);
     }
   });
 };

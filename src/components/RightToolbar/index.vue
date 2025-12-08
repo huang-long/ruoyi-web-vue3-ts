@@ -64,7 +64,7 @@ const props = withDefaults(
     search: true,
     showColumnsType: "checkbox",
     gutter: 10,
-  }
+  },
 );
 
 const style = computed(() => {

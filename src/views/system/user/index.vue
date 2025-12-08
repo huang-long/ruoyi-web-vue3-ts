@@ -437,7 +437,7 @@ const handleExport = () => {
     {
       ...queryParams.value,
     },
-    `user_${new Date().getTime()}.xlsx`
+    `user_${new Date().getTime()}.xlsx`,
   );
 };
 /** 用户状态修改  */

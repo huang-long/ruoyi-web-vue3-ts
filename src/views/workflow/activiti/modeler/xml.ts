@@ -27,7 +27,7 @@ export const camundaToActivitiXml = (xml: string) => {
   xml = xml.replace(
     "<bpmn2:definitions",
     `<bpmn2:definitions typeLanguage="http://www.w3.org/2001/XMLSchema" 
-    expressionLanguage="http://www.w3.org/1999/XPath"`
+    expressionLanguage="http://www.w3.org/1999/XPath"`,
   );
   //删除版本号
   // xml = xml.replace(/camunda:versionTag="*"/, "");

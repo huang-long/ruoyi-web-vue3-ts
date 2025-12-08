@@ -18,6 +18,7 @@
           <el-select v-model="genInfo.tplWebType">
             <el-option label="Vue2 Element UI 模版" value="element-ui" />
             <el-option label="Vue3 Element Plus 模版" value="element-plus" />
+            <el-option label="Vue3 Element Plus ts 模版" value="element-plus-ts" />
           </el-select>
         </el-form-item>
       </el-col>
@@ -91,7 +92,7 @@
               <el-icon><question-filled /></el-icon>
             </el-tooltip>
           </template>
-          <tree-select
+          <el-tree-select
             v-model:value="genInfo.parentMenuId"
             :options="menuOptions"
             :obj-map="{
@@ -212,12 +213,9 @@
 
 <script lang="ts" setup name="ToolGenInfoForm">
 import { listMenu, type MenuObj } from "@/api/system/menu";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import type { GenInfoObj, GenEColumn, GenTColumn } from "@/api/tool/gen";
-
-const subColumns = ref<GenEColumn[]>([]);
-const menuOptions = ref<MenuObj[]>([]);
 
 const props = withDefaults(
   defineProps<{
@@ -231,8 +229,12 @@ const props = withDefaults(
     tables: () => {
       return [];
     },
-  }
+  },
 );
+
+const subColumns = ref<GenEColumn[]>([]);
+const menuOptions = ref<MenuObj[]>([]);
+const genInfo = ref<GenInfoObj>({});
 
 // 表单校验
 const rules = ref({
@@ -243,9 +245,7 @@ const rules = ref({
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }],
 });
 
-const genInfo = computed(() => {
-  return Object.assign({}, props.info);
-});
+const emit = defineEmits<{ (event: "dataChange", value: GenInfoObj): void }>();
 
 function subSelectChange() {
   genInfo.value.subTableFkName = "";
@@ -273,19 +273,36 @@ function getMenuTreeselect() {
 }
 
 watch(
+  () => props.info,
+  (val) => {
+    Object.assign(genInfo.value, val);
+  },
+);
+
+watch(
   () => genInfo.value.subTableName,
   (val) => {
     val && setSubTableColumns(val);
-  }
+  },
 );
 
 watch(
   () => genInfo.value.tplWebType,
   (val) => {
     if (val === "") {
-      genInfo.value.tplWebType = "element-plus";
+      genInfo.value.tplWebType = "element-plus-ts";
     }
-  }
+  },
+);
+
+watch(
+  () => genInfo.value,
+  (val) => {
+    emit("dataChange", val);
+  },
+  {
+    deep: true,
+  },
 );
 
 getMenuTreeselect();

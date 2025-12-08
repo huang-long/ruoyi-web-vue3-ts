@@ -27,7 +27,7 @@ const props = withDefaults(
     instanceId: string; // 流程实例id
     procDefId: string; // 流程定义id
   }>(),
-  {}
+  {},
 );
 
 //ref对象 ################################################
@@ -50,7 +50,7 @@ watch(
   () => {
     bpmnXml = "";
     actList = [];
-  }
+  },
 );
 
 //function ################################################
