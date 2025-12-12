@@ -1,16 +1,26 @@
 import server from "@/utils/request";
 import type { QueryParam } from "../form";
 
+/**
+ * @type GenEColumn 数据表列-类型
+ */
 export type GenEColumn = {
   columnName?: string;
   columnComment?: string;
 };
+
+/**
+ * @type GenTColumn 数据表-类型
+ */
 export type GenTColumn = {
   tableName?: string;
   tableComment?: string;
   columns?: GenEColumn[];
 };
 
+/**
+ * @type GenInfoObj 业务数据-类型
+ */
 export type GenInfoObj = {
   subTableName?: string;
   subTableFkName?: string;
@@ -41,7 +51,11 @@ export type GenInfoObj = {
   remark?: string;
 };
 
-// 查询生成表数据
+/**
+ * 查询生成表数据
+ * @param query 查询条件
+ * @returns
+ */
 export function listTable(query: GenTColumn & QueryParam) {
   return server.request<GenInfoObj>({
     url: "/tool/gen/list",
@@ -49,7 +63,12 @@ export function listTable(query: GenTColumn & QueryParam) {
     params: query,
   });
 }
-// 查询db数据库列表
+
+/**
+ * 查询db数据库列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listDbTable(query: GenTColumn & QueryParam) {
   return server.request<GenInfoObj>({
     url: "/tool/gen/db/list",
@@ -58,7 +77,11 @@ export function listDbTable(query: GenTColumn & QueryParam) {
   });
 }
 
-// 查询表详细信息
+/**
+ * 查询表详细信息
+ * @param tableId 表id
+ * @returns
+ */
 export function getGenTable(tableId: string) {
   return server.request<{
     rows?: GenEColumn[];
@@ -70,7 +93,11 @@ export function getGenTable(tableId: string) {
   });
 }
 
-// 修改代码生成信息
+/**
+ * 修改代码生成信息
+ * @param data 业务数据
+ * @returns
+ */
 export function updateGenTable(data: GenInfoObj) {
   return server.request({
     url: "/tool/gen",
@@ -79,7 +106,11 @@ export function updateGenTable(data: GenInfoObj) {
   });
 }
 
-// 导入表
+/**
+ * 导入表
+ * @param data 表名称
+ * @returns
+ */
 export function importTable(data: { tables: string }) {
   return server.request({
     url: "/tool/gen/importTable",
@@ -88,7 +119,11 @@ export function importTable(data: { tables: string }) {
   });
 }
 
-// 预览生成代码
+/**
+ * 预览生成代码
+ * @param tableId 表名id
+ * @returns
+ */
 export function previewTable(tableId: string) {
   return server.request<{ [key: string]: string }>({
     url: "/tool/gen/preview/" + tableId,
@@ -96,7 +131,11 @@ export function previewTable(tableId: string) {
   });
 }
 
-// 删除表数据
+/**
+ * 删除表数据
+ * @param tableId 表名id
+ * @returns
+ */
 export function delTable(tableId: string) {
   return server.request({
     url: "/tool/gen/" + tableId,
@@ -104,7 +143,11 @@ export function delTable(tableId: string) {
   });
 }
 
-// 生成代码（自定义路径）
+/**
+ * 生成代码（自定义路径）
+ * @param tableName 表名称
+ * @returns
+ */
 export function genCode(tableName: string) {
   return server.request({
     url: "/tool/gen/genCode/" + tableName,
@@ -112,7 +155,11 @@ export function genCode(tableName: string) {
   });
 }
 
-// 同步数据库
+/**
+ * 同步数据库
+ * @param tableName 表名称
+ * @returns
+ */
 export function synchDb(tableName: string) {
   return server.request({
     url: "/tool/gen/synchDb/" + tableName,

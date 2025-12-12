@@ -40,6 +40,7 @@ const router = createRouter({
 export const isRelogin = { show: false };
 const whiteList = ["/login", "/register"];
 
+//进度条配置
 NProgress.configure({ showSpinner: false });
 
 router.beforeEach((to, from, next) => {

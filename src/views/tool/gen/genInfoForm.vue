@@ -257,13 +257,8 @@ function tplSelectChange(value: string) {
   }
 }
 function setSubTableColumns(value: string) {
-  for (const item in props.tables) {
-    const name = props.tables[item].tableName;
-    if (value === name) {
-      subColumns.value = props.tables[item].columns || [];
-      break;
-    }
-  }
+  const table = props.tables.find((item) => item.tableName === value);
+  subColumns.value = table?.columns ?? [];
 }
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {

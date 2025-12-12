@@ -1,6 +1,9 @@
 import type { QueryParam } from "@/api/form";
 import server from "@/utils/request";
 
+/**
+ * @type DictObj 字典分类数据类型
+ */
 export type DictTypeObj = {
   dictId?: string;
   dictName?: string;
@@ -9,7 +12,11 @@ export type DictTypeObj = {
   remark?: string;
 };
 
-// 查询字典类型列表
+/**
+ * 查询字典类型列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listType(query: DictTypeObj & QueryParam) {
   return server.request<DictTypeObj>({
     url: "/system/dict/type/list",
@@ -18,7 +25,11 @@ export function listType(query: DictTypeObj & QueryParam) {
   });
 }
 
-// 查询字典类型详细
+/**
+ * 查询字典类型详细
+ * @param dictId 字典id
+ * @returns
+ */
 export function getType(dictId: string) {
   return server.request<DictTypeObj>({
     url: "/system/dict/type/" + dictId,
@@ -26,7 +37,11 @@ export function getType(dictId: string) {
   });
 }
 
-// 新增字典类型
+/**
+ * 新增字典类型
+ * @param data 字典分类数据
+ * @returns
+ */
 export function addType(data: DictTypeObj) {
   return server.request({
     url: "/system/dict/type",
@@ -35,7 +50,11 @@ export function addType(data: DictTypeObj) {
   });
 }
 
-// 修改字典类型
+/**
+ * 修改字典类型
+ * @param data 字典分类数据
+ * @returns
+ */
 export function updateType(data: DictTypeObj) {
   return server.request({
     url: "/system/dict/type",
@@ -44,7 +63,11 @@ export function updateType(data: DictTypeObj) {
   });
 }
 
-// 删除字典类型
+/**
+ * 删除字典类型
+ * @param dictId 字典id
+ * @returns
+ */
 export function delType(dictId: string) {
   return server.request({
     url: "/system/dict/type/" + dictId,
@@ -52,7 +75,10 @@ export function delType(dictId: string) {
   });
 }
 
-// 刷新字典缓存
+/**
+ * 刷新字典缓存
+ * @returns
+ */
 export function refreshCache() {
   return server.request({
     url: "/system/dict/type/refreshCache",
@@ -60,7 +86,10 @@ export function refreshCache() {
   });
 }
 
-// 获取字典选择框列表
+/**
+ * 获取字典选择框列表
+ * @returns
+ */
 export function optionselect() {
   return server.request<DictTypeObj[]>({
     url: "/system/dict/type/optionselect",

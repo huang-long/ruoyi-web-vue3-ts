@@ -4,6 +4,9 @@
 import type { Directive } from "vue";
 import userStore from "@/stores/user";
 
+/**
+ * v-hasPermi 操作权限处理
+ */
 const hasRole: Directive<HTMLElement, string[]> = {
   mounted(el, { value }) {
     const super_admin = "admin";

@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { DictTypeObj } from "./type";
 
+/**
+ * @type DictObj 字典数据类型
+ */
 export type DictObj = {
   createBy?: string;
   createTime?: string;
@@ -23,7 +26,11 @@ export type DictObj = {
   value?: string;
 };
 
-// 查询字典数据列表
+/**
+ * 查询字典数据列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listData(query: DictTypeObj & { pageNum: number; pageSize: number }) {
   return server.request<DictObj>({
     url: "/system/dict/data/list",
@@ -32,7 +39,11 @@ export function listData(query: DictTypeObj & { pageNum: number; pageSize: numbe
   });
 }
 
-// 查询字典数据详细
+/**
+ * 查询字典数据详细
+ * @param dictCode 字典编码
+ * @returns
+ */
 export function getData(dictCode: string) {
   return server.request<DictObj>({
     url: "/system/dict/data/" + dictCode,
@@ -40,7 +51,11 @@ export function getData(dictCode: string) {
   });
 }
 
-// 根据字典类型查询字典数据信息
+/**
+ * 根据字典类型查询字典数据信息
+ * @param dictType 字典类型
+ * @returns
+ */
 export function getDicts(dictType: string) {
   return server.request<DictObj[]>({
     url: "/system/dict/data/type/" + dictType,
@@ -48,7 +63,11 @@ export function getDicts(dictType: string) {
   });
 }
 
-// 新增字典数据
+/**
+ * 新增字典数据
+ * @param data 字典数据
+ * @returns
+ */
 export function addData(data: DictObj) {
   return server.request({
     url: "/system/dict/data",
@@ -57,7 +76,11 @@ export function addData(data: DictObj) {
   });
 }
 
-// 修改字典数据
+/**
+ * 修改字典数据
+ * @param data 字典数据
+ * @returns
+ */
 export function updateData(data: DictObj) {
   return server.request({
     url: "/system/dict/data",
@@ -66,7 +89,11 @@ export function updateData(data: DictObj) {
   });
 }
 
-// 删除字典数据
+/**
+ * 删除字典数据
+ * @param dictCode 字典编码
+ * @returns
+ */
 export function delData(dictCode: string) {
   return server.request({
     url: "/system/dict/data/" + dictCode,

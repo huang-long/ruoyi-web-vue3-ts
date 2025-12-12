@@ -135,7 +135,7 @@ function onRadioChange() {
       emit("update", "month", averageTotal.value);
       break;
     case 4:
-      if (checkboxList.value.length === 0) {
+      if (checkboxList.value.length === 0 && checkCopy.value[0]) {
         checkboxList.value.push(checkCopy.value[0]);
       } else {
         checkCopy.value = checkboxList.value;

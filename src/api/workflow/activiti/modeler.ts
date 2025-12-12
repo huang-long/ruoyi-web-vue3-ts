@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { QueryParam } from "../../form";
 
+/**
+ * @type XmlMetaInfo bpmn.xml-Meta-类型
+ */
 export type XmlMetaInfo = {
   key?: string;
   name?: string;
@@ -8,6 +11,9 @@ export type XmlMetaInfo = {
   version?: number;
 };
 
+/**
+ * @type ActModelerObj 生效模型数据类型
+ */
 export type ActModelerObj = {
   id: string;
   key?: string;
@@ -21,7 +27,11 @@ export type ActModelerObj = {
   metaInfo?: string;
 };
 
-// 查询模型列表
+/**
+ * 查询模型列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listModeler(query: ActModelerObj & QueryParam) {
   return server.request<ActModelerObj>({
     url: "/activiti/modeler/list",
@@ -30,7 +40,11 @@ export function listModeler(query: ActModelerObj & QueryParam) {
   });
 }
 
-// 新增模型
+/**
+ * 新增模型
+ * @param data 模型数据
+ * @returns
+ */
 export function addModeler(data: ActModelerObj) {
   return server.request<string>({
     url: "/activiti/modeler/create",
@@ -39,7 +53,11 @@ export function addModeler(data: ActModelerObj) {
   });
 }
 
-// 删除模型
+/**
+ * 删除模型
+ * @param modelId 模型id
+ * @returns
+ */
 export function delModeler(modelId: string) {
   return server.request({
     url: "/activiti/modeler/remove/" + modelId,
@@ -47,7 +65,11 @@ export function delModeler(modelId: string) {
   });
 }
 
-// 导出模型
+/**
+ * 导出模型
+ * @param modelId 模型id
+ * @returns
+ */
 export function exportModeler(modelId: string) {
   return server.request({
     url: "/activiti/modeler/export/" + modelId,
@@ -55,7 +77,11 @@ export function exportModeler(modelId: string) {
   });
 }
 
-// 部署模型
+/**
+ * 部署模型
+ * @param modelId 模型id
+ * @returns
+ */
 export function deployModeler(modelId: string) {
   return server.request({
     url: "/activiti/modeler/deploy/" + modelId,
@@ -63,7 +89,11 @@ export function deployModeler(modelId: string) {
   });
 }
 
-// 获取Modeler详情
+/**
+ * 获取模型详情
+ * @param modelId 模型id
+ * @returns
+ */
 export function getModelerDetail(modelId: string) {
   return server.request<ActModelerObj>({
     url: "/activiti/modeler/detail/" + modelId,
@@ -71,7 +101,11 @@ export function getModelerDetail(modelId: string) {
   });
 }
 
-// 部署模型
+/**
+ * 更新模型
+ * @param data 模型数据
+ * @returns
+ */
 export function updateModeler(data: ActModelerObj) {
   return server.request({
     url: "/activiti/modeler/save",

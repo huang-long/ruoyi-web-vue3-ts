@@ -158,11 +158,11 @@ function filterDynamicRoutes(routes: RouteRecordRaw[], perantPath = "") {
 function checkTagsRouter(tagsRouters: RouteRecordRaw[], fullPath: string) {
   for (let i = 0; i < tagsRouters.length; i++) {
     const router = tagsRouters[i];
-    if (fullPath == router.meta?.fullPath) {
+    if (fullPath == router?.meta?.fullPath) {
       return true;
     }
 
-    if (router.meta?.fullPath && fullPath.indexOf(router.meta.fullPath) === 0 && router.children) {
+    if (router?.meta?.fullPath && fullPath.indexOf(router.meta.fullPath) === 0 && router.children) {
       if (checkTagsRouter(router.children, fullPath)) {
         return true;
       }

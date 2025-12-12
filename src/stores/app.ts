@@ -1,8 +1,7 @@
 import Cookies from "js-cookie";
 import { defineStore } from "pinia";
 
-const store = defineStore({
-  id: "app",
+const store = defineStore("app", {
   state: () => {
     //刷新后，重新加载缓存中的页签
     const sidebarStatus = Cookies.get("sidebarStatus");

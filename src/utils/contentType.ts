@@ -75,7 +75,11 @@ typeMap.set("3g2", "video/3gpp2"); // 3GPP2 audio/video 容器 video/3gpp2、aud
 typeMap.set("7z", "application/x-7z-compressed"); // 7-zip
 
 export default typeMap;
-
+/**
+ * 获取文档类型
+ * @param filename 文件名称
+ * @returns 
+ */
 const getContentType = function (filename: string): string {
   if (!filename || filename.trim() == "") {
     throw "filename is null";

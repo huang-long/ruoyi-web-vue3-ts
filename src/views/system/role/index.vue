@@ -380,14 +380,16 @@ function getDeptTree(roleId: string) {
 function handleCheckedTreeExpand(value: boolean, type: string) {
   if (type == "menu") {
     const treeList = menuOptions.value;
-    for (let i = 0; i < treeList.length; i++) {
-      menuRef.value && (menuRef.value.nodesMap[treeList[i].id].expanded = value);
-    }
+    treeList.forEach((item) => {
+      const node = menuRef.value?.nodesMap[item.id];
+      menuRef.value && node && (node.expanded = value);
+    });
   } else if (type == "dept") {
     const treeList = deptOptions.value;
-    for (let i = 0; i < treeList.length; i++) {
-      deptRef.value && (deptRef.value.nodesMap[treeList[i].id].expanded = value);
-    }
+    treeList.forEach((item) => {
+      const node = deptRef.value?.nodesMap[item.id];
+      deptRef.value && node && (node.expanded = value);
+    });
   }
 }
 /** 树权限（全选/全不选） */

@@ -1,5 +1,8 @@
 import server from "@/utils/request";
 
+/**
+ * @type NoticeObj 公告数据类型
+ */
 export type NoticeObj = {
   noticeId: string;
   noticeTitle?: string;
@@ -9,7 +12,11 @@ export type NoticeObj = {
   status?: string;
 };
 
-// 查询公告列表
+/**
+ * 查询公告列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listNotice(query: NoticeObj & { pageNum: number; pageSize: number }) {
   return server.request<NoticeObj>({
     url: "/system/notice/list",
@@ -18,7 +25,11 @@ export function listNotice(query: NoticeObj & { pageNum: number; pageSize: numbe
   });
 }
 
-// 查询公告详细
+/**
+ * 查询公告详细
+ * @param noticeId 公告id
+ * @returns
+ */
 export function getNotice(noticeId: string) {
   return server.request<NoticeObj>({
     url: "/system/notice/" + noticeId,
@@ -26,7 +37,11 @@ export function getNotice(noticeId: string) {
   });
 }
 
-// 新增公告
+/**
+ * 新增公告
+ * @param data 公告数据
+ * @returns
+ */
 export function addNotice(data: NoticeObj) {
   return server.request({
     url: "/system/notice",
@@ -35,7 +50,11 @@ export function addNotice(data: NoticeObj) {
   });
 }
 
-// 修改公告
+/**
+ * 修改公告
+ * @param data 公告数据
+ * @returns
+ */
 export function updateNotice(data: NoticeObj) {
   return server.request({
     url: "/system/notice",
@@ -44,7 +63,11 @@ export function updateNotice(data: NoticeObj) {
   });
 }
 
-// 删除公告
+/**
+ * 删除公告
+ * @param noticeId 公告id
+ * @returns
+ */
 export function delNotice(noticeId: string) {
   return server.request({
     url: "/system/notice/" + noticeId,

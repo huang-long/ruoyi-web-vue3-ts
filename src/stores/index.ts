@@ -6,6 +6,9 @@ import userStore from "./user";
 
 export { appStore, dictStore, permissionStore, tagsViewStore, userStore };
 
+/**
+ * Store 公告入口
+ */
 export default {
   initStore() {
     return {

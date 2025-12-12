@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { QueryParam } from "../../form";
 
+/**
+ * @type ActTaskObj 任务类型
+ */
 export type ActTaskObj = {
   taskId?: string;
   taskName?: string;
@@ -17,6 +20,9 @@ export type ActTaskObj = {
   status?: string;
 };
 
+/**
+ * @type ActTaskObj 历史任务类型
+ */
 export type TaskHistoryObj = {
   actId?: string;
   actName?: string;
@@ -38,7 +44,11 @@ export type TaskHistoryObj = {
   actParamsObj?: { [key: string]: string };
 };
 
-// 查询已办任务列表
+/**
+ * 查询已办任务列表
+ * @param query 查询条件
+ * @returns
+ */
 export function queryDoneList(query: ActTaskObj & QueryParam) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/doneList",
@@ -47,7 +57,11 @@ export function queryDoneList(query: ActTaskObj & QueryParam) {
   });
 }
 
-// 查询待办办任务列表
+/**
+ * 查询待办办任务列表
+ * @param query 查询条件
+ * @returns
+ */
 export function queryTodoList(query: ActTaskObj & QueryParam) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/todoList",
@@ -56,7 +70,11 @@ export function queryTodoList(query: ActTaskObj & QueryParam) {
   });
 }
 
-// 查询我的流程列表
+/**
+ * 查询我的流程列表
+ * @param query 查询条件
+ * @returns
+ */
 export function queryMyProcess(query: ActTaskObj & QueryParam) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/myProcessList",
@@ -65,7 +83,11 @@ export function queryMyProcess(query: ActTaskObj & QueryParam) {
   });
 }
 
-// 查询流程图相关数据
+/**
+ * 查询流程图相关数据
+ * @param params 查询条件
+ * @returns
+ */
 export function queryViewerData(params: { procDefId: string; instanceId: string }) {
   return server.request<{ bpmnXml: string; actList: TaskHistoryObj[] }>({
     url: `/activiti/task/viewerData`,
@@ -74,7 +96,11 @@ export function queryViewerData(params: { procDefId: string; instanceId: string 
   });
 }
 
-// 查询历史审批
+/**
+ * 查询历史审批
+ * @param query 查询条件
+ * @returns
+ */
 export function queryHistoryList(query: TaskHistoryObj & QueryParam) {
   return server.request<TaskHistoryObj>({
     url: "/activiti/task/historyList",
@@ -83,7 +109,11 @@ export function queryHistoryList(query: TaskHistoryObj & QueryParam) {
   });
 }
 
-// 审批任务
+/**
+ * 审批任务
+ * @param params 审批任务
+ * @returns
+ */
 export function complete(params: { taskId: string; pass: string; comment?: string }) {
   return server.request<ActTaskObj>({
     url: "/activiti/task/complete",
@@ -92,7 +122,10 @@ export function complete(params: { taskId: string; pass: string; comment?: strin
   });
 }
 
-// 查询已办任务列表
+/**
+ * 查询已办任务列表
+ * @returns
+ */
 export function queryTaskCount() {
   return server.get<{
     todoCount: number;

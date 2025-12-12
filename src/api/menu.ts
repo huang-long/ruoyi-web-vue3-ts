@@ -1,5 +1,8 @@
 import server from "@/utils/request";
 
+/**
+ * @type MenuRouter 菜单路由类型
+ */
 export type MenuRouter = {
   name: string;
   path: string;
@@ -17,7 +20,10 @@ export type MenuRouter = {
   children?: MenuRouter[];
 };
 
-// 获取路由
+/**
+ * 获取路由
+ * @returns
+ */
 export const getRouters = () => {
   return server.request<MenuRouter[]>({
     url: "/getRouters",

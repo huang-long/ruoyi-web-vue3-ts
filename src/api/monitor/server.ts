@@ -1,5 +1,8 @@
 import server from "@/utils/request";
 
+/**
+ * @type ServerObj 服务器资源数据类型
+ */
 export type ServerObj = {
   cpu?: {
     cpuNum?: number;
@@ -43,7 +46,10 @@ export type ServerObj = {
   }[];
 };
 
-// 获取服务信息
+/**
+ * 获取服务信息
+ * @returns
+ */
 export function getServer() {
   return server.request<ServerObj>({
     url: "/monitor/server",

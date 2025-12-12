@@ -1,10 +1,17 @@
 import server from "@/utils/request";
+
+/**
+ * @type CacheObj 缓存数据类型
+ */
 export type CacheObj = {
   cacheName: string;
   cacheKey: string;
   cacheValue?: string;
 };
 
+/**
+ * @type CacheInfoObj 缓存统计信息类型
+ */
 export type CacheInfoObj = {
   info?: {
     redis_version?: string;
@@ -24,7 +31,10 @@ export type CacheInfoObj = {
   commandStats?: string;
 };
 
-// 查询缓存详细
+/**
+ * 查询缓存详细
+ * @returns
+ */
 export function getCache() {
   return server.request<CacheInfoObj>({
     url: "/monitor/cache",
@@ -32,7 +42,10 @@ export function getCache() {
   });
 }
 
-// 查询缓存名称列表
+/**
+ * 查询缓存详细
+ * @returns
+ */
 export function listCacheName() {
   return server.request<string[]>({
     url: "/monitor/cache/getNames",
@@ -40,7 +53,11 @@ export function listCacheName() {
   });
 }
 
-// 查询缓存键名列表
+/**
+ * 查询缓存键名列表
+ * @param cacheName 缓存名字
+ * @returns
+ */
 export function listCacheKey(cacheName: string) {
   return server.request<string[]>({
     url: "/monitor/cache/getKeys/" + cacheName,
@@ -48,7 +65,12 @@ export function listCacheKey(cacheName: string) {
   });
 }
 
-// 查询缓存内容
+/**
+ * 查询缓存内容
+ * @param cacheName 缓存名称
+ * @param cacheKey 缓存key
+ * @returns
+ */
 export function getCacheValue(cacheName: string, cacheKey: string) {
   return server.request<CacheObj>({
     url: "/monitor/cache/getValue/" + cacheName + "/" + cacheKey,
@@ -56,7 +78,11 @@ export function getCacheValue(cacheName: string, cacheKey: string) {
   });
 }
 
-// 清理指定名称缓存
+/**
+ * 清理指定名称缓存
+ * @param cacheName 缓存名称
+ * @returns
+ */
 export function clearCacheName(cacheName: string) {
   return server.request({
     url: "/monitor/cache/clearCacheName/" + cacheName,
@@ -64,7 +90,11 @@ export function clearCacheName(cacheName: string) {
   });
 }
 
-// 清理指定键名缓存
+/**
+ * 清理指定键名缓存
+ * @param cacheKey 缓存key
+ * @returns
+ */
 export function clearCacheKey(cacheKey: string) {
   return server.request({
     url: "/monitor/cache/clearCacheKey/" + cacheKey,
@@ -72,7 +102,10 @@ export function clearCacheKey(cacheKey: string) {
   });
 }
 
-// 清理全部缓存
+/**
+ * 清理全部缓存
+ * @returns
+ */
 export function clearCacheAll() {
   return server.request({
     url: "/monitor/cache/clearCacheAll",

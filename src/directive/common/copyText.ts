@@ -3,6 +3,9 @@
  */
 import type { Directive } from "vue";
 
+/**
+ * v-copyText 复制文本内容
+ */
 const copyText: Directive<HTMLElement & { $copyValue: string; $copyCallback: (status: boolean, value: string) => void; $destroyCopy: () => void }, string | VoidFunction> = {
   beforeMount(el, { value, arg }) {
     console.log(el, value, arg);

@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { UserInfoObj } from "./system/user";
 
+/**
+ * @type LoginReq 登录信息类型
+ */
 export type LoginReq = {
   username: string;
   password: string;
@@ -10,7 +13,11 @@ export type LoginReq = {
   uuid?: string;
 };
 
-// 登录方法
+/**
+ * 登录方法
+ * @param data 登录数据
+ * @returns
+ */
 export function login(data: LoginReq) {
   return server.requestT<{ token: string }>({
     url: "/login",
@@ -22,7 +29,11 @@ export function login(data: LoginReq) {
   });
 }
 
-// 注册方法
+/**
+ * 注册方法
+ * @param data 注册信息
+ * @returns
+ */
 export function register(data: LoginReq) {
   return server.request({
     url: "/register",
@@ -34,7 +45,10 @@ export function register(data: LoginReq) {
   });
 }
 
-// 获取用户详细信息
+/**
+ * 获取用户详细信息
+ * @returns
+ */
 export function getInfo() {
   return server.requestT<{
     user: UserInfoObj;
@@ -46,7 +60,10 @@ export function getInfo() {
   });
 }
 
-// 退出方法
+/**
+ * 退出方法
+ * @returns
+ */
 export function logout() {
   return server.request({
     url: "/logout",
@@ -54,7 +71,10 @@ export function logout() {
   });
 }
 
-// 获取验证码
+/**
+ * 获取验证码
+ * @returns
+ */
 export function getCodeImg() {
   return server.requestT<{
     captchaEnabled: boolean;

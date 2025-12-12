@@ -1,12 +1,15 @@
 import { defineComponent, h } from "vue";
 import svgIcon from "./index.vue";
-const modules = import.meta.glob("./../../assets/icons/svg/*.svg");
+
+// 声明以 "my" 开头的字符串类型
+// type SvgIconPath = `${string}/assets/icons/svg/${string}.svg`;
+const modules = import.meta.glob("./../../assets/icons/svg/*.svg", {});
 
 // 获取icon名称
 const filenNmes = [];
 for (const path in modules) {
-  const name = path.split("assets/icons/svg/")[1].split(".svg");
-  filenNmes.push(name[0]);
+  const name = path.split("assets/icons/svg/")[1]?.split(".svg");
+  name && name[0] && filenNmes.push(name[0]);
 }
 
 /**

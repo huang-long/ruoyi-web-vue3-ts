@@ -3,7 +3,9 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const ROUTE_NAME_LAYOUT = Symbol.for("ROUTE_NAME_LAYOUT");
 
-// 公共路由
+/**
+ * 公共路由
+ */
 const constantRoutes: RouteRecordRaw[] = [
   {
     path: "",

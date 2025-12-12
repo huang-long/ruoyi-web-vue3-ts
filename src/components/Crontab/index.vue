@@ -111,6 +111,8 @@ import CrontabWeek from "./week.vue";
 import CrontabYear from "./year.vue";
 import CrontabResult from "./result.vue";
 import { computed, onMounted, ref, watch } from "vue";
+import { getCrontabValue, isValidCrontabStr } from "./crontab.ts";
+import type { CrontabObj } from "./crontab.ts";
 
 const emit = defineEmits<{ (event: "hide"): void; (event: "fill", value: string): void }>();
 
@@ -128,8 +130,8 @@ const props = withDefaults(
 const tabTitles = ref(["秒", "分钟", "小时", "日", "月", "周", "年"]);
 // const tabActive = ref(0);
 const hideCom = ref<string[]>([]);
-const expressionC = ref("");
-const crontabValueObj = ref({
+const expressionC = ref<string>("");
+const crontabValueObj = ref<CrontabObj>({
   second: "*",
   min: "*",
   hour: "*",
@@ -148,23 +150,8 @@ function shouldHide(key: string) {
 }
 function resolveExp() {
   // 反解析 表达式
-  if (expressionC.value) {
-    const arr = expressionC.value.split(/\s+/);
-    if (arr.length >= 6) {
-      //6 位以上是合法表达式
-      const obj = {
-        second: arr[0],
-        min: arr[1],
-        hour: arr[2],
-        day: arr[3],
-        month: arr[4],
-        week: arr[5],
-        year: arr[6] ? arr[6] : "",
-      };
-      crontabValueObj.value = {
-        ...obj,
-      };
-    }
+  if (isValidCrontabStr(expressionC.value)) {
+    crontabValueObj.value = getCrontabValue(expressionC.value);
   } else {
     // 没有传入的表达式 则还原
     clearCron();

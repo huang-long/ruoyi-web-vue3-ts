@@ -194,12 +194,12 @@ function handlePreview(row: GenInfoObj) {
     previewTable(row.tableId).then((response) => {
       preview.value.data = [];
       if (response.data) {
-        for (const key in response.data) {
+        Object.entries(response.data).forEach(([key, value]) => {
           preview.value.data.push({
             key: key,
-            value: response.data[key],
+            value: value,
           });
-        }
+        });
       }
       preview.value.open = true;
       preview.value.activeName = "domain.java";

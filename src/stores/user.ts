@@ -21,7 +21,11 @@ const store = defineStore("user", {
     //https://pinia.vuejs.org/core-concepts/getters.html#accessing-other-getters
   },
   actions: {
-    // 登录
+    /**
+     * 登录
+     * @param userInfo 
+     * @returns 
+     */
     Login(userInfo: LoginReq) {
       const username = userInfo.username.trim();
       const password = userInfo.password;
@@ -34,7 +38,10 @@ const store = defineStore("user", {
       });
     },
 
-    // 获取用户信息
+    /**
+     * 获取用户信息
+     * @returns 
+     */
     GetInfo() {
       return getInfo().then((res) => {
         const user = res.user;
@@ -53,7 +60,10 @@ const store = defineStore("user", {
       });
     },
 
-    // 退出系统
+    /**
+     * 退出系统
+     * @returns 
+     */
     LogOut() {
       return logout().then(() => {
         this.token = "";
@@ -64,7 +74,10 @@ const store = defineStore("user", {
       });
     },
 
-    // 前端 登出
+    /**
+     * 前端 登出
+     * @returns 
+     */
     FedLogOut() {
       return new Promise((resolve) => {
         this.token = "";

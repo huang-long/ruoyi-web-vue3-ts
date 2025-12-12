@@ -2,7 +2,9 @@ import type { RouteRecordRaw } from "vue-router";
 // import Layout from '../layout/index.vue'
 // import HomeView from '../views/Main.vue'
 
-// 功能路由
+/**
+ * 功能路由
+ */
 const dynamicRoutes: RouteRecordRaw[] = [
   {
     path: "/system/userinfo",

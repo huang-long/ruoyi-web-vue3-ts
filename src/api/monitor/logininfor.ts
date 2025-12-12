@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { QueryParam } from "../form";
 
+/**
+ * @type LoginLogObj 登录日志日志数据类型
+ */
 export type LoginLogObj = {
   browser?: string;
   createBy?: string;
@@ -17,7 +20,12 @@ export type LoginLogObj = {
   updateTime?: string;
   userName?: string;
 };
-// 查询登录日志列表
+
+/**
+ * 查询登录日志列表
+ * @param query 查询条件
+ * @returns
+ */
 export function list(query: LoginLogObj & QueryParam) {
   return server.request<LoginLogObj>({
     url: "/monitor/logininfor/list",
@@ -26,7 +34,11 @@ export function list(query: LoginLogObj & QueryParam) {
   });
 }
 
-// 删除登录日志
+/**
+ * 删除登录日志
+ * @param infoId 日志id
+ * @returns
+ */
 export function delLogininfor(infoId: string) {
   return server.request({
     url: "/monitor/logininfor/" + infoId,
@@ -34,7 +46,11 @@ export function delLogininfor(infoId: string) {
   });
 }
 
-// 解锁用户登录状态
+/**
+ * 解锁用户登录状态
+ * @param userName 用户名称
+ * @returns
+ */
 export function unlockLogininfor(userName: string) {
   return server.request({
     url: "/monitor/logininfor/unlock/" + userName,
@@ -42,7 +58,10 @@ export function unlockLogininfor(userName: string) {
   });
 }
 
-// 清空登录日志
+/**
+ * 清空登录日志
+ * @returns
+ */
 export function cleanLogininfor() {
   return server.request({
     url: "/monitor/logininfor/clean",

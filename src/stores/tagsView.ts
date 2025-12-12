@@ -2,6 +2,9 @@ import cache from "@/plugins/cache";
 import type { RouteLocationNormalized, RouteRecordName } from "vue-router";
 import { defineStore } from "pinia";
 
+/**
+ * @type Tag 
+ */
 export type Tag = {
   fullPath: string;
   name: RouteRecordName | null | undefined;
@@ -31,10 +34,18 @@ const store = defineStore("tagsView", {
     //https://pinia.vuejs.org/core-concepts/getters.html#accessing-other-getters
   },
   actions: {
+    /**
+     * 设置选项卡数据
+     * @param tagsList 
+     */
     setTagsItem(tagsList: Tag[]) {
       this.tagsList = tagsList;
       cache.session.setJSON("store_tagsList", this.tagsList);
     },
+    /**
+     * 添加选项卡
+     * @param tag 
+     */
     addTagsItem(tag: Tag) {
       if (!this.tagsList) {
         this.tagsList = [];
@@ -42,6 +53,10 @@ const store = defineStore("tagsView", {
       this.tagsList.push(tag);
       this.setTagsItem(this.tagsList);
     },
+    /**
+     * 更新选项卡数据
+     * @param tag 
+     */
     updateTagsItem(tag: Tag) {
       const index = this.tagsList.findIndex((item) => tag.fullPath === item.fullPath);
       if (index >= 0) {
@@ -51,19 +66,33 @@ const store = defineStore("tagsView", {
         this.addTagsItem(tag);
       }
     },
+    /**
+     * 删除选项卡
+     * @param index 
+     */
     delTagsItem(index: number) {
       if (this.tagsList && this.tagsList.length > 0) {
         this.tagsList.splice(index, 1);
         this.setTagsItem(this.tagsList);
       }
     },
+    /**
+     * 清空选项卡
+     */
     clearAllTags() {
       this.setTagsItem([]);
     },
+    /**
+     * 关闭其他选项卡
+     * @param tagsList 
+     */
     closeTagsOther(tagsList: Tag[]) {
       this.setTagsItem(tagsList);
     },
-    // 关闭指定tab页签
+    /**
+     * 关闭指定tab页签
+     * @param path 页面地址
+     */
     closePage(path?: string) {
       if (!path) {
         path = this.activePath;
@@ -77,7 +106,11 @@ const store = defineStore("tagsView", {
         this.activePath = nextTag && nextTag.fullPath ? nextTag.fullPath : "/index";
       }
     },
-    // 关闭当前打开指定页面
+    /**
+     * 关闭当前打开指定页面
+     * @param toPath 跳转页面路径
+     * @param path 元页面路径
+     */
     closeOpenPage(toPath: string, path?: string) {
       if (!path) {
         path = this.activePath;

@@ -5,17 +5,22 @@ import { ref } from "vue";
 
 export type DictMapObj = { [key: string]: DictObj[] | undefined };
 
+/**
+ * 查找字典数据
+ * @param dictType 
+ * @returns 
+ */
 export const getDicts = (dictType: string | string[]) => {
   const store = dictStore();
   const types = typeof dictType == "string" ? [dictType] : dictType;
-  const DictMapObj = new Object() as DictMapObj;
+  const dictMapObj:DictMapObj = {};
 
   //查询store中存在的字典数据
   const typesNo: string[] = [];
   types.forEach((type) => {
     const dict = store.getDict(type);
     if (dict) {
-      DictMapObj[type] = dict;
+      dictMapObj[type] = dict;
     } else {
       typesNo.push(type);
     }
@@ -23,7 +28,7 @@ export const getDicts = (dictType: string | string[]) => {
 
   if (typesNo.length === 0) {
     return new Promise<DictMapObj>((resolve) => {
-      resolve(DictMapObj);
+      resolve(dictMapObj);
     });
   } else {
     //查询store中不存在的字典数据
@@ -45,9 +50,9 @@ export const getDicts = (dictType: string | string[]) => {
       Promise.all(promises).then((rsps) => {
         rsps.forEach((rsp) => {
           rsp.value && store.setDict(rsp.key, rsp.value);
-          rsp.value && (DictMapObj[rsp.key] = rsp.value);
+          rsp.value && (dictMapObj[rsp.key] = rsp.value);
         });
-        resolve(DictMapObj);
+        resolve(dictMapObj);
       });
     });
   }

@@ -31,11 +31,7 @@
 <script lang="ts" setup name="RightToolbarCmpt">
 import type { TransferKey } from "element-plus";
 import { computed, ref } from "vue";
-type transferObj = {
-  key: number;
-  label: string;
-  visible: boolean;
-};
+import { type TransferObj } from "./toolbar.ts";
 
 // 显隐数据
 const value = ref<number[]>([]);
@@ -48,7 +44,7 @@ const props = withDefaults(
     /* 是否显示检索条件 */
     showSearch?: boolean;
     /* 显隐列信息 */
-    columns?: transferObj[];
+    columns?: TransferObj[];
     /* 是否显示检索图标 */
     search?: boolean;
     /* 显隐列类型（transfer穿梭框、checkbox复选框） */

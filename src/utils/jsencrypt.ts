@@ -14,14 +14,22 @@ const privateKey =
   "YhovyloRYsM+IS9h/0BzlEAuO0ktMQIgSPT3aFAgJYwKpqRYKlLDVcflZFCKY7u3\n" +
   "UP8iWi1Qw0Y=";
 
-// 加密
+/**
+ * 加密
+ * @param txt 
+ * @returns 
+ */
 export function encrypt(txt: string) {
   const encryptor = new JSEncrypt();
   encryptor.setPublicKey(publicKey); // 设置公钥
   return encryptor.encrypt(txt); // 对数据进行加密
 }
 
-// 解密
+/**
+ * 解密
+ * @param txt 
+ * @returns 
+ */
 export function decrypt(txt: string) {
   const encryptor = new JSEncrypt();
   encryptor.setPrivateKey(privateKey); // 设置私钥

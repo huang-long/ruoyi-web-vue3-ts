@@ -15,7 +15,12 @@ export function resetForm(vueRef: Ref<ElForm>) {
   vueRef.value?.resetFields();
 }
 
-// 添加日期范围
+/**
+ * 添加日期范围
+ * @param params 
+ * @param dateRange 
+ * @returns 
+ */
 export function addDateRange<T extends { beginTime?: string; endTime?: string }>(params: T, dateRange: string[]) {
   if (params instanceof Object) {
     dateRange = Array.isArray(dateRange) ? dateRange : [];
@@ -25,7 +30,12 @@ export function addDateRange<T extends { beginTime?: string; endTime?: string }>
   return params;
 }
 
-// 回显数据字典
+/**
+ * 回显数据字典
+ * @param datas 
+ * @param value 
+ * @returns 
+ */
 export function selectDictLabel(datas: DictObj[], value: string) {
   if (!value) {
     return "";

@@ -1,5 +1,8 @@
 import server from "@/utils/request";
 
+/**
+ * @type OperLogObj 操作日志数据类型
+ */
 export type OperLogObj = {
   businessType: string;
   businessTypes?: string;
@@ -25,7 +28,12 @@ export type OperLogObj = {
   updateBy?: string;
   updateTime?: string;
 };
-// 查询操作日志列表
+
+/**
+ * 查询操作日志列表
+ * @param query 查询条件
+ * @returns
+ */
 export function list(query: OperLogObj & { pageNum: number; pageSize: number }) {
   return server.request<OperLogObj>({
     url: "/monitor/operlog/list",
@@ -34,7 +42,11 @@ export function list(query: OperLogObj & { pageNum: number; pageSize: number }) 
   });
 }
 
-// 删除操作日志
+/**
+ * 删除操作日志
+ * @param operId 操作日志id
+ * @returns
+ */
 export function delOperlog(operId: string) {
   return server.request({
     url: "/monitor/operlog/" + operId,
@@ -42,7 +54,10 @@ export function delOperlog(operId: string) {
   });
 }
 
-// 清空操作日志
+/**
+ * 清空操作日志
+ * @returns
+ */
 export function cleanOperlog() {
   return server.request({
     url: "/monitor/operlog/clean",

@@ -5,6 +5,9 @@ import type { DeptObj } from "./dept";
 import type { PostObj } from "./post";
 import type { QueryParam } from "../form";
 
+/**
+ * @type UserInfoObj 用户数据类型
+ */
 export type UserInfoObj = {
   userId: string;
   avatar?: string;
@@ -23,7 +26,11 @@ export type UserInfoObj = {
   roleIds?: string[];
 };
 
-// 查询用户列表
+/**
+ * 查询用户列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listUser(query: UserInfoObj & QueryParam) {
   return server.request<UserInfoObj>({
     url: "/system/user/list",
@@ -32,7 +39,11 @@ export function listUser(query: UserInfoObj & QueryParam) {
   });
 }
 
-// 查询用户详细
+/**
+ * 查询用户详细
+ * @param userId 用户id
+ * @returns
+ */
 export function getUser(userId: string) {
   return server.requestT<{
     data: UserInfoObj;
@@ -46,7 +57,11 @@ export function getUser(userId: string) {
   });
 }
 
-// 新增用户
+/**
+ * 新增用户
+ * @param data 用户数据
+ * @returns
+ */
 export function addUser(data: UserInfoObj) {
   return server.request({
     url: "/system/user",
@@ -55,7 +70,11 @@ export function addUser(data: UserInfoObj) {
   });
 }
 
-// 修改用户
+/**
+ * 修改用户
+ * @param data 用户数据
+ * @returns
+ */
 export function updateUser(data: UserInfoObj) {
   return server.request({
     url: "/system/user",
@@ -64,7 +83,11 @@ export function updateUser(data: UserInfoObj) {
   });
 }
 
-// 删除用户
+/**
+ * 删除用户
+ * @param userId 用户id
+ * @returns
+ */
 export function delUser(userId: string) {
   return server.request({
     url: "/system/user/" + userId,
@@ -72,7 +95,12 @@ export function delUser(userId: string) {
   });
 }
 
-// 用户密码重置
+/**
+ * 用户密码重置
+ * @param userId 用户id
+ * @param password 密码
+ * @returns
+ */
 export function resetUserPwd(userId: string, password: string) {
   const data = {
     userId,
@@ -85,7 +113,12 @@ export function resetUserPwd(userId: string, password: string) {
   });
 }
 
-// 用户状态修改
+/**
+ * 用户状态修改
+ * @param userId 用户id
+ * @param status 状态
+ * @returns
+ */
 export function changeUserStatus(userId: string, status: string) {
   const data = {
     userId,
@@ -98,7 +131,10 @@ export function changeUserStatus(userId: string, status: string) {
   });
 }
 
-// 查询用户个人信息
+/**
+ * 查询用户个人信息
+ * @returns
+ */
 export function getUserProfile() {
   return server.requestT<{
     data: UserInfoObj;
@@ -110,7 +146,11 @@ export function getUserProfile() {
   });
 }
 
-// 修改用户个人信息
+/**
+ * 修改用户个人信息
+ * @param data 用户数据
+ * @returns
+ */
 export function updateUserProfile(data: UserInfoObj) {
   return server.request({
     url: "/system/user/profile",
@@ -119,7 +159,12 @@ export function updateUserProfile(data: UserInfoObj) {
   });
 }
 
-// 用户密码重置
+/**
+ * 用户密码重置
+ * @param oldPassword 旧密码
+ * @param newPassword 新密码
+ * @returns
+ */
 export function updateUserPwd(oldPassword: string, newPassword: string) {
   const data = {
     oldPassword,
@@ -132,7 +177,11 @@ export function updateUserPwd(oldPassword: string, newPassword: string) {
   });
 }
 
-// 用户头像上传
+/**
+ * 用户头像上传
+ * @param data 头像表单数据
+ * @returns
+ */
 export function uploadAvatar(data: FormData) {
   return server.requestT<{ imgUrl: string }>({
     url: "/system/user/profile/avatar",
@@ -141,7 +190,11 @@ export function uploadAvatar(data: FormData) {
   });
 }
 
-// 查询授权角色
+/**
+ * 查询授权角色
+ * @param userId 用户id
+ * @returns
+ */
 export function getAuthRole(userId: string) {
   return server.requestT<{ user: UserInfoObj; roles: RoleObj[] }>({
     url: "/system/user/authRole/" + userId,
@@ -149,7 +202,11 @@ export function getAuthRole(userId: string) {
   });
 }
 
-// 保存授权角色
+/**
+ * 保存授权角色
+ * @param data 用户拥有角色数据
+ * @returns
+ */
 export function updateAuthRole(data: { userId: string; roleIds: string }) {
   return server.request({
     url: "/system/user/authRole",
@@ -158,7 +215,10 @@ export function updateAuthRole(data: { userId: string; roleIds: string }) {
   });
 }
 
-// 查询部门下拉树结构
+/**
+ * 查询部门下拉树结构
+ * @returns 部门树形列表
+ */
 export function deptTreeSelect() {
   return server.request<DeptObj[]>({
     url: "/system/user/deptTree",

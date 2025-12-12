@@ -17,6 +17,7 @@ export function isExternal(path: string) {
 }
 
 /**
+ * 校验用户
  * @param {string} str
  * @returns {Boolean}
  */
@@ -26,6 +27,7 @@ export function validUsername(str: string) {
 }
 
 /**
+ * url校验
  * @param {string} url
  * @returns {Boolean}
  */
@@ -36,6 +38,7 @@ export function validURL(url: string) {
 }
 
 /**
+ * 校验小写字母
  * @param {string} str
  * @returns {Boolean}
  */
@@ -45,6 +48,7 @@ export function validLowerCase(str: string) {
 }
 
 /**
+ * 校验大写字母
  * @param {string} str
  * @returns {Boolean}
  */
@@ -54,6 +58,7 @@ export function validUpperCase(str: string) {
 }
 
 /**
+ * 校验字母
  * @param {string} str
  * @returns {Boolean}
  */
@@ -72,6 +77,7 @@ export function validAlphabets(str: string) {
 // }
 
 /**
+ * 校验字符串
  * @param {string} str
  * @returns {Boolean}
  */
@@ -83,6 +89,7 @@ export function isString(str: string) {
 }
 
 /**
+ * 校验数组
  * @param {Array} arg
  * @returns {Boolean}
  */

@@ -110,13 +110,15 @@ const drawProcessView = () => {
     }
 
     const canvas = viewer.get<Canvas>("canvas");
-    const defs = canvas.getContainer().getElementsByTagName<"svg">("svg")[0].getElementsByTagName<"defs">("defs")[0];
-    //创建流程图svg标记对象(如：箭头)
-    createMarker(defs);
-    //高亮流程图
-    highlightDiagram();
-    //视图大小自适应
-    canvas.zoom("fit-viewport");
+    const defs = canvas.getContainer().getElementsByTagName<"svg">("svg")[0]?.getElementsByTagName<"defs">("defs")[0];
+    if (defs) {
+      //创建流程图svg标记对象(如：箭头)
+      createMarker(defs);
+      //高亮流程图
+      highlightDiagram();
+      //视图大小自适应
+      canvas.zoom("fit-viewport");
+    }
   });
 };
 

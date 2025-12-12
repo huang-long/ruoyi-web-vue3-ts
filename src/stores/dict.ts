@@ -8,43 +8,47 @@ type DictList = {
 
 const store = defineStore("dict", {
   state: () => ({
-    dict: [] as DictList[],
+    dictArr: [] as DictList[],
   }),
   getters: {
     //方法名称参照官网
     //https://pinia.vuejs.org/core-concepts/getters.html#accessing-other-getters
   },
   actions: {
-    // 设置字典
+    /**
+     * 设置字典
+     * @param key 
+     * @param value 
+     */
     setDict(key: string, value: DictObj[]) {
       if (key !== null && key !== "") {
-        this.dict.push({
+        this.dictArr.push({
           key: key,
           value: value,
         });
       }
     },
-    // 获取字典
+    /**
+     * 获取字典
+     * @param key 
+     * @returns 
+     */
     getDict(key: string) {
-      const index = this.dict.findIndex((dict) => dict.key == key);
-      return index >= 0 ? this.dict[index].value : null;
+      const dict = this.dictArr.find((item) => item.key == key);
+      return dict ?dict.value: undefined;
     },
-    // 删除字典
+    /**
+     * 删除字典
+     * @param key 
+     */
     removeDict(key: string) {
-      try {
-        for (let i = 0; i < this.dict.length; i++) {
-          if (this.dict[i].key == key) {
-            this.dict.splice(i, i);
-            return true;
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      this.dictArr = this.dictArr.filter(item => item.key != key);
     },
-    // 清空字典
+    /**
+     * 清空字典
+     */
     cleanDict() {
-      this.dict = [] as DictList[];
+      this.dictArr = [] as DictList[];
     },
   },
 });

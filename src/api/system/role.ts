@@ -4,6 +4,9 @@ import type { UserInfoObj } from "./user";
 import type { QueryParam } from "../form";
 import type { TreeKey } from "element-plus/es/components/tree/src/tree.type";
 
+/**
+ * @type RoleObj 角色数据类型
+ */
 export type RoleObj = {
   roleId: string;
   roleName?: string;
@@ -20,7 +23,11 @@ export type RoleObj = {
   remark?: string;
 };
 
-// 查询角色列表
+/**
+ * 查询角色列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listRole(query: RoleObj & QueryParam) {
   return server.request<RoleObj>({
     url: "/system/role/list",
@@ -29,7 +36,11 @@ export function listRole(query: RoleObj & QueryParam) {
   });
 }
 
-// 查询角色详细
+/**
+ * 查询角色详细
+ * @param roleId 角色id
+ * @returns
+ */
 export function getRole(roleId: string) {
   return server.request<RoleObj>({
     url: "/system/role/" + roleId,
@@ -37,7 +48,11 @@ export function getRole(roleId: string) {
   });
 }
 
-// 新增角色
+/**
+ * 新增角色
+ * @param data 角色数据
+ * @returns
+ */
 export function addRole(data: RoleObj) {
   return server.request({
     url: "/system/role",
@@ -46,7 +61,11 @@ export function addRole(data: RoleObj) {
   });
 }
 
-// 修改角色
+/**
+ * 修改角色
+ * @param data 角色数据
+ * @returns
+ */
 export function updateRole(data: RoleObj) {
   return server.request({
     url: "/system/role",
@@ -55,7 +74,11 @@ export function updateRole(data: RoleObj) {
   });
 }
 
-// 角色数据权限
+/**
+ * 角色数据权限
+ * @param data 角色数据
+ * @returns
+ */
 export function dataScope(data: RoleObj) {
   return server.request({
     url: "/system/role/dataScope",
@@ -64,7 +87,12 @@ export function dataScope(data: RoleObj) {
   });
 }
 
-// 角色状态修改
+/**
+ * 角色状态修改
+ * @param roleId 角色id
+ * @param status 状态
+ * @returns
+ */
 export function changeRoleStatus(roleId: string, status: string) {
   const data = {
     roleId,
@@ -77,7 +105,11 @@ export function changeRoleStatus(roleId: string, status: string) {
   });
 }
 
-// 删除角色
+/**
+ * 删除角色
+ * @param roleId 角色id
+ * @returns
+ */
 export function delRole(roleId: string) {
   return server.request({
     url: "/system/role/" + roleId,
@@ -85,7 +117,11 @@ export function delRole(roleId: string) {
   });
 }
 
-// 查询角色已授权用户列表
+/**
+ * 查询角色已授权用户列表
+ * @param query 查询条件
+ * @returns
+ */
 export function allocatedUserList(query: { pageNum: number; pageSize: number; roleId: string; userName: string; phonenumber: string }) {
   return server.request<UserInfoObj>({
     url: "/system/role/authUser/allocatedList",
@@ -94,7 +130,11 @@ export function allocatedUserList(query: { pageNum: number; pageSize: number; ro
   });
 }
 
-// 查询角色未授权用户列表
+/**
+ * 查询角色未授权用户列表
+ * @param query 查询条件
+ * @returns
+ */
 export function unallocatedUserList(query: RoleObj) {
   return server.request<UserInfoObj>({
     url: "/system/role/authUser/unallocatedList",
@@ -103,7 +143,11 @@ export function unallocatedUserList(query: RoleObj) {
   });
 }
 
-// 取消用户授权角色
+/**
+ * 取消用户授权角色
+ * @param data 用户数据
+ * @returns
+ */
 export function authUserCancel(data: { userId: string; roleId: string }) {
   return server.request({
     url: "/system/role/authUser/cancel",
@@ -112,7 +156,11 @@ export function authUserCancel(data: { userId: string; roleId: string }) {
   });
 }
 
-// 批量取消用户授权角色
+/**
+ * 批量取消用户授权角色
+ * @param data 角色授权用户数据
+ * @returns
+ */
 export function authUserCancelAll(data: { roleId: string; userIds: string }) {
   return server.request({
     url: "/system/role/authUser/cancelAll",
@@ -121,7 +169,11 @@ export function authUserCancelAll(data: { roleId: string; userIds: string }) {
   });
 }
 
-// 授权用户选择
+/**
+ * 授权用户选择
+ * @param data 角色授权用户数据
+ * @returns
+ */
 export function authUserSelectAll(data: { roleId: string; userIds: string }) {
   return server.request({
     url: "/system/role/authUser/selectAll",
@@ -130,7 +182,11 @@ export function authUserSelectAll(data: { roleId: string; userIds: string }) {
   });
 }
 
-// 根据角色ID查询部门树结构
+/**
+ * 根据角色ID查询部门树结构
+ * @param roleId 角色id
+ * @returns
+ */
 export function deptTreeSelect(roleId: string) {
   return server.requestT<{ depts: TreeDeptObj[]; checkedKeys: number[] }>({
     url: "/system/role/deptTree/" + roleId,

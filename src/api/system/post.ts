@@ -1,5 +1,8 @@
 import server from "@/utils/request";
 
+/**
+ * @type PostObj 岗位数据类型
+ */
 export type PostObj = {
   postId: string;
   postCode?: string;
@@ -8,7 +11,12 @@ export type PostObj = {
   status?: string;
   remark?: string;
 };
-// 查询岗位列表
+
+/**
+ * 查询岗位列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listPost(query: PostObj & { pageNum: number; pageSize: number }) {
   return server.request<PostObj>({
     url: "/system/post/list",
@@ -17,7 +25,11 @@ export function listPost(query: PostObj & { pageNum: number; pageSize: number })
   });
 }
 
-// 查询岗位详细
+/**
+ * 查询岗位详细
+ * @param postId 岗位id
+ * @returns
+ */
 export function getPost(postId: string) {
   return server.request<PostObj>({
     url: "/system/post/" + postId,
@@ -25,7 +37,11 @@ export function getPost(postId: string) {
   });
 }
 
-// 新增岗位
+/**
+ * 新增岗位
+ * @param data 岗位数据
+ * @returns
+ */
 export function addPost(data: PostObj) {
   return server.request({
     url: "/system/post",
@@ -34,7 +50,11 @@ export function addPost(data: PostObj) {
   });
 }
 
-// 修改岗位
+/**
+ * 修改岗位
+ * @param data 岗位数据
+ * @returns
+ */
 export function updatePost(data: PostObj) {
   return server.request({
     url: "/system/post",
@@ -43,7 +63,11 @@ export function updatePost(data: PostObj) {
   });
 }
 
-// 删除岗位
+/**
+ * 删除岗位
+ * @param postId 公告id
+ * @returns
+ */
 export function delPost(postId: string) {
   return server.request({
     url: "/system/post/" + postId,

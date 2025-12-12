@@ -1,6 +1,9 @@
 import server from "@/utils/request";
 import type { QueryParam } from "../../form";
 
+/**
+ * @type ActDefinitionObj 流程定义信息数据类型
+ */
 export type ActDefinitionObj = {
   id: string;
   key?: string;
@@ -12,7 +15,11 @@ export type ActDefinitionObj = {
   suspendState?: number;
 };
 
-// 查询ActDefinition列表
+/**
+ * 查询流程定义信息列表
+ * @param query 查询条件
+ * @returns
+ */
 export function listDefinition(query: ActDefinitionObj & QueryParam) {
   return server.request<ActDefinitionObj>({
     url: "/activiti/processDefinition/list",
@@ -21,7 +28,11 @@ export function listDefinition(query: ActDefinitionObj & QueryParam) {
   });
 }
 
-// 挂起激活转换
+/**
+ * 挂起\激活\转换 流程
+ * @param data 流程定义信息
+ * @returns
+ */
 export function suspendOrActiveApply(data: ActDefinitionObj) {
   return server.request({
     url: "/activiti/processDefinition/suspendOrActiveApply",
@@ -30,7 +41,11 @@ export function suspendOrActiveApply(data: ActDefinitionObj) {
   });
 }
 
-// 删除ActDefinition
+/**
+ * 删除流程
+ * @param id 流程id
+ * @returns
+ */
 export function delDefinition(id: string) {
   return server.request({
     url: "/activiti/processDefinition/remove/" + id,
@@ -38,7 +53,11 @@ export function delDefinition(id: string) {
   });
 }
 
-// 流程定义转成模型
+/**
+ * 流程定义转成模型
+ * @param data 流程id
+ * @returns
+ */
 export function convert2Model(data: { processDefinitionId: string }) {
   return server.request({
     url: "/activiti/processDefinition/convert2Model",
@@ -47,7 +66,11 @@ export function convert2Model(data: { processDefinitionId: string }) {
   });
 }
 
-// 上传并部署流程定义
+/**
+ * 上传并部署流程定义
+ * @param data 流程文件bpmn.xml
+ * @returns
+ */
 export function uploadDefinition(data: { file: File }) {
   return server.request({
     url: "/activiti/processDefinition/upload",

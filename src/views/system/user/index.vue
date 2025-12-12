@@ -71,17 +71,17 @@
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column v-if="columns[0].visible" key="userId" label="用户编号" align="center" prop="userId" />
-          <el-table-column v-if="columns[1].visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column v-if="columns[2].visible" key="nickName" label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column v-if="columns[3].visible" key="deptName" label="部门" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
-          <el-table-column v-if="columns[4].visible" key="phonenumber" label="手机号码" align="center" prop="phonenumber" width="120" />
-          <el-table-column v-if="columns[5].visible" key="status" label="状态" align="center">
+          <el-table-column v-if="columns[0]?.visible" key="userId" label="用户编号" align="center" prop="userId" />
+          <el-table-column v-if="columns[1]?.visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
+          <el-table-column v-if="columns[2]?.visible" key="nickName" label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
+          <el-table-column v-if="columns[3]?.visible" key="deptName" label="部门" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
+          <el-table-column v-if="columns[4]?.visible" key="phonenumber" label="手机号码" align="center" prop="phonenumber" width="120" />
+          <el-table-column v-if="columns[5]?.visible" key="status" label="状态" align="center">
             <template #default="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="handleStatusChange(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column v-if="columns[6].visible" label="创建时间" align="center" prop="createTime" width="160">
+          <el-table-column v-if="columns[6]?.visible" label="创建时间" align="center" prop="createTime" width="160">
             <template #default="scope">
               <span>{{ dayjs(scope.row.createTime).format("YYYY-MM-DD HH:mm:ss") }}</span>
             </template>
@@ -263,6 +263,7 @@ import server from "@/utils/request";
 import type { PostObj } from "@/api/system/post";
 import type { RoleObj } from "@/api/system/role";
 import type { ElForm, QueryParam } from "@/api/form";
+import { type TransferObj } from "@/components/RightToolbar/toolbar.ts";
 
 const router = useRouter();
 // const { proxy } = getCurrentInstance();
@@ -302,7 +303,7 @@ const upload = reactive({
   url: import.meta.env.VITE_APP_BASE_API + "/system/user/importData",
 });
 // 列显隐信息
-const columns = ref([
+const columns = ref<TransferObj[]>([
   { key: 0, label: `用户编号`, visible: true },
   { key: 1, label: `用户名称`, visible: true },
   { key: 2, label: `用户昵称`, visible: true },
