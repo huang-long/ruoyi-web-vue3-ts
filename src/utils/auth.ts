@@ -3,15 +3,15 @@ import Cookies from "js-cookie";
 const TokenKey = "Admin-Token";
 /**
  * 获取token
- * @returns 
+ * @returns
  */
 export function getToken() {
   return Cookies.get(TokenKey);
 }
 /**
  * 设置token
- * @param token 
- * @returns 
+ * @param token
+ * @returns
  */
 export function setToken(token: string) {
   return Cookies.set(TokenKey, token);
@@ -19,7 +19,7 @@ export function setToken(token: string) {
 
 /**
  * 删除token
- * @returns 
+ * @returns
  */
 export function removeToken() {
   return Cookies.remove(TokenKey);

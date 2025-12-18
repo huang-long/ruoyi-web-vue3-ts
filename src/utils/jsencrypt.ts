@@ -16,8 +16,8 @@ const privateKey =
 
 /**
  * 加密
- * @param txt 
- * @returns 
+ * @param txt
+ * @returns
  */
 export function encrypt(txt: string) {
   const encryptor = new JSEncrypt();
@@ -27,8 +27,8 @@ export function encrypt(txt: string) {
 
 /**
  * 解密
- * @param txt 
- * @returns 
+ * @param txt
+ * @returns
  */
 export function decrypt(txt: string) {
   const encryptor = new JSEncrypt();

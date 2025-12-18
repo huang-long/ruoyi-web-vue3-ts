@@ -23,8 +23,8 @@ const store = defineStore("user", {
   actions: {
     /**
      * 登录
-     * @param userInfo 
-     * @returns 
+     * @param userInfo
+     * @returns
      */
     Login(userInfo: LoginReq) {
       const username = userInfo.username.trim();
@@ -40,7 +40,7 @@ const store = defineStore("user", {
 
     /**
      * 获取用户信息
-     * @returns 
+     * @returns
      */
     GetInfo() {
       return getInfo().then((res) => {
@@ -62,7 +62,7 @@ const store = defineStore("user", {
 
     /**
      * 退出系统
-     * @returns 
+     * @returns
      */
     LogOut() {
       return logout().then(() => {
@@ -76,7 +76,7 @@ const store = defineStore("user", {
 
     /**
      * 前端 登出
-     * @returns 
+     * @returns
      */
     FedLogOut() {
       return new Promise((resolve) => {

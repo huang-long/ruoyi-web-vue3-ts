@@ -78,7 +78,7 @@ export default typeMap;
 /**
  * 获取文档类型
  * @param filename 文件名称
- * @returns 
+ * @returns
  */
 const getContentType = function (filename: string): string {
   if (!filename || filename.trim() == "") {

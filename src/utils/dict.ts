@@ -7,13 +7,13 @@ export type DictMapObj = { [key: string]: DictObj[] | undefined };
 
 /**
  * 查找字典数据
- * @param dictType 
- * @returns 
+ * @param dictType
+ * @returns
  */
 export const getDicts = (dictType: string | string[]) => {
   const store = dictStore();
   const types = typeof dictType == "string" ? [dictType] : dictType;
-  const dictMapObj:DictMapObj = {};
+  const dictMapObj: DictMapObj = {};
 
   //查询store中存在的字典数据
   const typesNo: string[] = [];

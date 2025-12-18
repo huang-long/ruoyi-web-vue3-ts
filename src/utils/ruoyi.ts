@@ -17,9 +17,9 @@ export function resetForm(vueRef: Ref<ElForm>) {
 
 /**
  * 添加日期范围
- * @param params 
- * @param dateRange 
- * @returns 
+ * @param params
+ * @param dateRange
+ * @returns
  */
 export function addDateRange<T extends { beginTime?: string; endTime?: string }>(params: T, dateRange: string[]) {
   if (params instanceof Object) {
@@ -32,9 +32,9 @@ export function addDateRange<T extends { beginTime?: string; endTime?: string }>
 
 /**
  * 回显数据字典
- * @param datas 
- * @param value 
- * @returns 
+ * @param datas
+ * @param value
+ * @returns
  */
 export function selectDictLabel(datas: DictObj[], value: string) {
   if (!value) {

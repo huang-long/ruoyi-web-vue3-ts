@@ -17,8 +17,8 @@ const store = defineStore("dict", {
   actions: {
     /**
      * 设置字典
-     * @param key 
-     * @param value 
+     * @param key
+     * @param value
      */
     setDict(key: string, value: DictObj[]) {
       if (key !== null && key !== "") {
@@ -30,19 +30,19 @@ const store = defineStore("dict", {
     },
     /**
      * 获取字典
-     * @param key 
-     * @returns 
+     * @param key
+     * @returns
      */
     getDict(key: string) {
       const dict = this.dictArr.find((item) => item.key == key);
-      return dict ?dict.value: undefined;
+      return dict ? dict.value : undefined;
     },
     /**
      * 删除字典
-     * @param key 
+     * @param key
      */
     removeDict(key: string) {
-      this.dictArr = this.dictArr.filter(item => item.key != key);
+      this.dictArr = this.dictArr.filter((item) => item.key != key);
     },
     /**
      * 清空字典

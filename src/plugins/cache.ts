@@ -4,9 +4,9 @@
 const sessionCache = {
   /**
    * 设置缓存
-   * @param key 
-   * @param value 
-   * @returns 
+   * @param key
+   * @param value
+   * @returns
    */
   set(key: string, value: string) {
     if (!sessionStorage) {
@@ -18,8 +18,8 @@ const sessionCache = {
   },
   /**
    * 获取缓存
-   * @param key 
-   * @returns 
+   * @param key
+   * @returns
    */
   get(key: string) {
     if (!sessionStorage) {
@@ -30,11 +30,11 @@ const sessionCache = {
     }
     return sessionStorage.getItem(key);
   },
-/**
- * 设置缓存数据
- * @param key 
- * @param jsonValue 
- */
+  /**
+   * 设置缓存数据
+   * @param key
+   * @param jsonValue
+   */
   setJSON(key: string, jsonValue: object) {
     if (jsonValue != null) {
       this.set(key, JSON.stringify(jsonValue));
@@ -42,8 +42,8 @@ const sessionCache = {
   },
   /**
    * 获取缓存数据
-   * @param key 
-   * @returns 
+   * @param key
+   * @returns
    */
   getJSON<T>(key: string) {
     const value = this.get(key);
@@ -55,7 +55,7 @@ const sessionCache = {
   },
   /**
    * 删除缓存
-   * @param key 
+   * @param key
    */
   remove(key: string) {
     sessionStorage.removeItem(key);
@@ -68,9 +68,9 @@ const sessionCache = {
 const localCache = {
   /**
    * 设置缓存
-   * @param key 
-   * @param value 
-   * @returns 
+   * @param key
+   * @param value
+   * @returns
    */
   set(key: string, value: string) {
     if (!localStorage) {
@@ -82,8 +82,8 @@ const localCache = {
   },
   /**
    * 获取缓存
-   * @param key 
-   * @returns 
+   * @param key
+   * @returns
    */
   get(key: string) {
     if (!localStorage) {
@@ -96,8 +96,8 @@ const localCache = {
   },
   /**
    * 设置缓存
-   * @param key 
-   * @param jsonValue 
+   * @param key
+   * @param jsonValue
    */
   setJSON(key: string, jsonValue: object) {
     if (jsonValue != null) {
@@ -106,8 +106,8 @@ const localCache = {
   },
   /**
    * 获取缓存
-   * @param key 
-   * @returns 
+   * @param key
+   * @returns
    */
   getJSON<T>(key: string) {
     const value = this.get(key);
@@ -117,7 +117,7 @@ const localCache = {
   },
   /**
    * 删除缓存
-   * @param key 
+   * @param key
    */
   remove(key: string) {
     localStorage.removeItem(key);

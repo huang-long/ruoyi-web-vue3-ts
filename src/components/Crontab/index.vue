@@ -35,58 +35,62 @@
         <p class="title">时间表达式</p>
         <table>
           <thead>
-            <th v-for="item of tabTitles" :key="item">{{ item }}</th>
-            <th>Cron 表达式</th>
+            <tr>
+              <th v-for="item of tabTitles" :key="item">{{ item }}</th>
+              <th>Cron 表达式</th>
+            </tr>
           </thead>
           <tbody>
-            <td>
-              <span v-if="crontabValueObj.second.length < 10">{{ crontabValueObj.second }}</span>
-              <el-tooltip v-else :content="crontabValueObj.second" placement="top">
-                <span>{{ crontabValueObj.second }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.min.length < 10">{{ crontabValueObj.min }}</span>
-              <el-tooltip v-else :content="crontabValueObj.min" placement="top">
-                <span>{{ crontabValueObj.min }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.hour.length < 10">{{ crontabValueObj.hour }}</span>
-              <el-tooltip v-else :content="crontabValueObj.hour" placement="top">
-                <span>{{ crontabValueObj.hour }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.day.length < 10">{{ crontabValueObj.day }}</span>
-              <el-tooltip v-else :content="crontabValueObj.day" placement="top">
-                <span>{{ crontabValueObj.day }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.month.length < 10">{{ crontabValueObj.month }}</span>
-              <el-tooltip v-else :content="crontabValueObj.month" placement="top">
-                <span>{{ crontabValueObj.month }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.week.length < 10">{{ crontabValueObj.week }}</span>
-              <el-tooltip v-else :content="crontabValueObj.week" placement="top">
-                <span>{{ crontabValueObj.week }}</span>
-              </el-tooltip>
-            </td>
-            <td>
-              <span v-if="crontabValueObj.year.length < 10">{{ crontabValueObj.year }}</span>
-              <el-tooltip v-else :content="crontabValueObj.year" placement="top">
-                <span>{{ crontabValueObj.year }}</span>
-              </el-tooltip>
-            </td>
-            <td class="result">
-              <span v-if="crontabValueString.length < 90">{{ crontabValueString }}</span>
-              <el-tooltip v-else :content="crontabValueString" placement="top">
-                <span>{{ crontabValueString }}</span>
-              </el-tooltip>
-            </td>
+            <tr>
+              <td>
+                <span v-if="crontabValueObj.second.length < 10">{{ crontabValueObj.second }}</span>
+                <el-tooltip v-else :content="crontabValueObj.second" placement="top">
+                  <span>{{ crontabValueObj.second }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.min.length < 10">{{ crontabValueObj.min }}</span>
+                <el-tooltip v-else :content="crontabValueObj.min" placement="top">
+                  <span>{{ crontabValueObj.min }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.hour.length < 10">{{ crontabValueObj.hour }}</span>
+                <el-tooltip v-else :content="crontabValueObj.hour" placement="top">
+                  <span>{{ crontabValueObj.hour }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.day.length < 10">{{ crontabValueObj.day }}</span>
+                <el-tooltip v-else :content="crontabValueObj.day" placement="top">
+                  <span>{{ crontabValueObj.day }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.month.length < 10">{{ crontabValueObj.month }}</span>
+                <el-tooltip v-else :content="crontabValueObj.month" placement="top">
+                  <span>{{ crontabValueObj.month }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.week.length < 10">{{ crontabValueObj.week }}</span>
+                <el-tooltip v-else :content="crontabValueObj.week" placement="top">
+                  <span>{{ crontabValueObj.week }}</span>
+                </el-tooltip>
+              </td>
+              <td>
+                <span v-if="crontabValueObj.year.length < 10">{{ crontabValueObj.year }}</span>
+                <el-tooltip v-else :content="crontabValueObj.year" placement="top">
+                  <span>{{ crontabValueObj.year }}</span>
+                </el-tooltip>
+              </td>
+              <td class="result">
+                <span v-if="crontabValueString.length < 90">{{ crontabValueString }}</span>
+                <el-tooltip v-else :content="crontabValueString" placement="top">
+                  <span>{{ crontabValueString }}</span>
+                </el-tooltip>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -111,9 +115,6 @@ import CrontabWeek from "./week.vue";
 import CrontabYear from "./year.vue";
 import CrontabResult from "./result.vue";
 import { computed, onMounted, ref, watch } from "vue";
-import { getCrontabValue, isValidCrontabStr } from "./crontab.ts";
-import type { CrontabObj } from "./crontab.ts";
-
 const emit = defineEmits<{ (event: "hide"): void; (event: "fill", value: string): void }>();
 
 const props = withDefaults(
@@ -123,7 +124,7 @@ const props = withDefaults(
   }>(),
   {
     hideComponent: () => [],
-    expression: () => "",
+    expression: () => "* * * * * ?",
   },
 );
 
@@ -131,7 +132,7 @@ const tabTitles = ref(["秒", "分钟", "小时", "日", "月", "周", "年"]);
 // const tabActive = ref(0);
 const hideCom = ref<string[]>([]);
 const expressionC = ref<string>("");
-const crontabValueObj = ref<CrontabObj>({
+const crontabValueObj = ref({
   second: "*",
   min: "*",
   hour: "*",
@@ -150,8 +151,15 @@ function shouldHide(key: string) {
 }
 function resolveExp() {
   // 反解析 表达式
-  if (isValidCrontabStr(expressionC.value)) {
-    crontabValueObj.value = getCrontabValue(expressionC.value);
+  if (expressionC.value) {
+    const arr = expressionC.value.split(/\s+/);
+    crontabValueObj.value.second = arr[0] ? arr[0] : "*";
+    crontabValueObj.value.min = arr[1] ? arr[1] : "*";
+    crontabValueObj.value.hour = arr[2] ? arr[2] : "*";
+    crontabValueObj.value.day = arr[3] ? arr[3] : "*";
+    crontabValueObj.value.month = arr[4] ? arr[4] : "*";
+    crontabValueObj.value.week = arr[5] ? arr[5] : "?";
+    crontabValueObj.value.year = arr[6] ? arr[6] : "";
   } else {
     // 没有传入的表达式 则还原
     clearCron();

@@ -3,7 +3,7 @@ import type { RouteLocationNormalized, RouteRecordName } from "vue-router";
 import { defineStore } from "pinia";
 
 /**
- * @type Tag 
+ * @type Tag
  */
 export type Tag = {
   fullPath: string;
@@ -36,7 +36,7 @@ const store = defineStore("tagsView", {
   actions: {
     /**
      * 设置选项卡数据
-     * @param tagsList 
+     * @param tagsList
      */
     setTagsItem(tagsList: Tag[]) {
       this.tagsList = tagsList;
@@ -44,7 +44,7 @@ const store = defineStore("tagsView", {
     },
     /**
      * 添加选项卡
-     * @param tag 
+     * @param tag
      */
     addTagsItem(tag: Tag) {
       if (!this.tagsList) {
@@ -55,7 +55,7 @@ const store = defineStore("tagsView", {
     },
     /**
      * 更新选项卡数据
-     * @param tag 
+     * @param tag
      */
     updateTagsItem(tag: Tag) {
       const index = this.tagsList.findIndex((item) => tag.fullPath === item.fullPath);
@@ -68,7 +68,7 @@ const store = defineStore("tagsView", {
     },
     /**
      * 删除选项卡
-     * @param index 
+     * @param index
      */
     delTagsItem(index: number) {
       if (this.tagsList && this.tagsList.length > 0) {
@@ -84,7 +84,7 @@ const store = defineStore("tagsView", {
     },
     /**
      * 关闭其他选项卡
-     * @param tagsList 
+     * @param tagsList
      */
     closeTagsOther(tagsList: Tag[]) {
       this.setTagsItem(tagsList);

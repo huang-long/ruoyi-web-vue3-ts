@@ -40,7 +40,7 @@ export default {
   /**
    * 验证用户是否具备某权限
    * @param permission 权限
-   * @returns 
+   * @returns
    */
   hasPermi(permission: string) {
     return authPermission(permission);
@@ -48,7 +48,7 @@ export default {
   /**
    * 验证用户是否含有指定权限，只需包含其中一个
    * @param permissions 权限数组
-   * @returns 
+   * @returns
    */
   hasPermiOr(permissions: string[]) {
     return permissions.some((item) => {
@@ -58,7 +58,7 @@ export default {
   /**
    * 验证用户是否含有指定权限，必须全部拥有
    * @param permissions 权限数组
-   * @returns 
+   * @returns
    */
   hasPermiAnd(permissions: string[]) {
     return permissions.every((item) => {
@@ -68,7 +68,7 @@ export default {
   /**
    * 验证用户是否具备某角色
    * @param role 角色
-   * @returns 
+   * @returns
    */
   hasRole(role: string) {
     return authRole(role);
@@ -76,7 +76,7 @@ export default {
   /**
    * 验证用户是否含有指定角色，只需包含其中一个
    * @param roles 角色数组
-   * @returns 
+   * @returns
    */
   hasRoleOr(roles: string[]) {
     return roles.some((item) => {
@@ -86,7 +86,7 @@ export default {
   /**
    * 验证用户是否含有指定角色，必须全部拥有
    * @param roles 角色数组
-   * @returns 
+   * @returns
    */
   hasRoleAnd(roles: string[]) {
     return roles.every((item) => {
