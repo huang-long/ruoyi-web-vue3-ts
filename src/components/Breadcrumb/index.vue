@@ -14,6 +14,9 @@ import { ref, watchEffect } from "vue";
 import type { RouteLocationRaw, RouteMeta } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
 
+/**
+ * @type CrumbObj 面包屑对象
+ */
 type CrumbObj = {
   path: string;
   meta: RouteMeta;
@@ -24,6 +27,9 @@ const route = useRoute();
 const router = useRouter();
 const levelList = ref<CrumbObj[]>([]);
 
+/**
+ * 获取面包屑列表
+ */
 function getBreadcrumb() {
   levelList.value = [];
   route.matched.forEach((item) => {
@@ -39,6 +45,10 @@ function getBreadcrumb() {
   levelList.value = [index].concat(levelList.value);
 }
 
+/**
+ * 点击切换页面
+ * @param item
+ */
 function handleLink(item: CrumbObj) {
   const { redirect, path } = item;
   if (redirect) {
@@ -55,6 +65,7 @@ watchEffect(() => {
   }
   getBreadcrumb();
 });
+
 getBreadcrumb();
 </script>
 

@@ -40,21 +40,23 @@
 
 <script lang="ts" setup name="CompCrontabYear">
 import { computed, onMounted, ref, watch } from "vue";
+import { checkNumber, type CrontabKey, type CrontabObj } from "./crontab";
 
-const emit = defineEmits<{ (event: "update", name: "second" | "min" | "hour" | "day" | "month" | "week" | "year", value: string): void }>();
+const emit = defineEmits<{
+  /**
+   * 更新数据
+   * @param name 日期关键字
+   * @param value 值
+   */
+  (event: "update", name: CrontabKey, value: string): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
-    cron: {
-      second: string;
-      min: string;
-      hour: string;
-      day: string;
-      month: string;
-      week: string;
-      year: string;
-    };
-    check: (value: number, minLimit: number, maxLimit: number) => number;
+    /**
+     * @type CrontabObj Crontab表达式对象
+     */
+    cron: CrontabObj;
   }>(),
   {
     cron: () => {
@@ -67,9 +69,6 @@ const props = withDefaults(
         week: "?",
         year: "",
       };
-    },
-    check: (value: number) => {
-      return value;
     },
   },
 );
@@ -97,6 +96,11 @@ watch(
   (value) => changeRadioValue(value),
 );
 watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange());
+
+/**
+ * 日期改变重新计算规则
+ * @param value
+ */
 function changeRadioValue(value: string) {
   if (value === "") {
     radioValue.value = 1;
@@ -104,19 +108,23 @@ function changeRadioValue(value: string) {
     radioValue.value = 2;
   } else if (value.indexOf("-") > -1) {
     const indexArr = value.split("-");
-    cycle01.value = props.check(Number(indexArr[0]), fullYear.value, maxFullYear.value - 1);
-    cycle02.value = props.check(Number(indexArr[1]), cycle01.value + 1, maxFullYear.value);
+    cycle01.value = checkNumber(Number(indexArr[0]), fullYear.value, maxFullYear.value - 1);
+    cycle02.value = checkNumber(Number(indexArr[1]), cycle01.value + 1, maxFullYear.value);
     radioValue.value = 3;
   } else if (value.indexOf("/") > -1) {
     const indexArr = value.split("/");
-    average01.value = props.check(Number(indexArr[1]), fullYear.value, maxFullYear.value - 1);
-    average02.value = props.check(Number(indexArr[0]), 1, 10);
+    average01.value = checkNumber(Number(indexArr[1]), fullYear.value, maxFullYear.value - 1);
+    average02.value = checkNumber(Number(indexArr[0]), 1, 10);
     radioValue.value = 4;
   } else {
     checkboxList.value = [...new Set<number>(value.split(",").map((item) => Number(item)))];
     radioValue.value = 5;
   }
 }
+
+/**
+ * 单选按钮值变化时，重新计算规则
+ */
 function onRadioChange() {
   switch (radioValue.value) {
     case 1:
@@ -141,6 +149,10 @@ function onRadioChange() {
       break;
   }
 }
+
+/**
+ * 初始化
+ */
 onMounted(() => {
   fullYear.value = Number(new Date().getFullYear());
   maxFullYear.value = fullYear.value + 10;

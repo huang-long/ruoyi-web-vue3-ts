@@ -2,31 +2,31 @@
   <div>
     <el-tabs type="border-card">
       <el-tab-pane v-if="shouldHide('second')" label="秒">
-        <CrontabSecond ref="cronsecond" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabSecond ref="cronsecond" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('min')" label="分钟">
-        <CrontabMin ref="cronmin" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabMin ref="cronmin" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('hour')" label="小时">
-        <CrontabHour ref="cronhour" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabHour ref="cronhour" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('day')" label="日">
-        <CrontabDay ref="cronday" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabDay ref="cronday" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('month')" label="月">
-        <CrontabMonth ref="cronmonth" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabMonth ref="cronmonth" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('week')" label="周">
-        <CrontabWeek ref="cronweek" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabWeek ref="cronweek" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('year')" label="年">
-        <CrontabYear ref="cronyear" :check="checkNumber" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabYear ref="cronyear" :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
     </el-tabs>
 
@@ -115,11 +115,29 @@ import CrontabWeek from "./week.vue";
 import CrontabYear from "./year.vue";
 import CrontabResult from "./result.vue";
 import { computed, onMounted, ref, watch } from "vue";
-const emit = defineEmits<{ (event: "hide"): void; (event: "fill", value: string): void }>();
+import type { CrontabKey, CrontabObj } from "./crontab";
+
+const emit = defineEmits<{
+  /**
+   * 隐藏弹窗
+   */
+  (event: "hide"): void;
+  /**
+   * 填充表达式
+   */
+  (event: "fill", value: string): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
-    hideComponent?: string[];
+    /**
+     * 需要隐藏的组件，可选值
+     * @type CrontabKey[]
+     */
+    hideComponent?: CrontabKey[];
+    /**
+     * crontab表达式
+     */
     expression?: string;
   }>(),
   {
@@ -132,7 +150,7 @@ const tabTitles = ref(["秒", "分钟", "小时", "日", "月", "周", "年"]);
 // const tabActive = ref(0);
 const hideCom = ref<string[]>([]);
 const expressionC = ref<string>("");
-const crontabValueObj = ref({
+const crontabValueObj = ref<CrontabObj>({
   second: "*",
   min: "*",
   hour: "*",
@@ -146,9 +164,18 @@ const crontabValueString = computed(() => {
   return obj.second + " " + obj.min + " " + obj.hour + " " + obj.day + " " + obj.month + " " + obj.week + (obj.year === "" ? "" : " " + obj.year);
 });
 watch(expressionC, () => resolveExp());
+
+/**
+ * 控制主键是否显示
+ * @param key
+ */
 function shouldHide(key: string) {
   return !(hideCom.value && hideCom.value.includes(key));
 }
+
+/**
+ * 解析表达式
+ */
 function resolveExp() {
   // 反解析 表达式
   if (expressionC.value) {
@@ -165,34 +192,33 @@ function resolveExp() {
     clearCron();
   }
 }
-// tab切换值
-// function tabCheck(index: number) {
-//   tabActive.value = index;
-// }
-// 由子组件触发，更改表达式组成的字段值
-function updateCrontabValue(name: "second" | "min" | "hour" | "day" | "month" | "week" | "year", value: string) {
+
+/**
+ * 由子组件触发，更改表达式组成的字段值
+ * @param name crontab字段名
+ * @param value 字段值
+ */
+function updateCrontabValue(name: CrontabKey, value: string) {
   crontabValueObj.value[name] = value;
 }
-// 表单选项的子组件校验数字格式（通过-props传递）
-function checkNumber(value: number, minLimit: number, maxLimit: number) {
-  // 检查必须为整数
-  value = Math.floor(value);
-  if (value < minLimit) {
-    value = minLimit;
-  } else if (value > maxLimit) {
-    value = maxLimit;
-  }
-  return value;
-}
-// 隐藏弹窗
+
+/**
+ * 隐藏弹窗
+ */
 function hidePopup() {
   emit("hide");
 }
-// 填充表达式
+/**
+ * 填充表达式
+ */
 function submitFill() {
   emit("fill", crontabValueString.value);
   hidePopup();
 }
+
+/**
+ * 还原选择项
+ */
 function clearCron() {
   // 还原选择项
   crontabValueObj.value = {
@@ -205,6 +231,10 @@ function clearCron() {
     year: "",
   };
 }
+
+/**
+ * 初始化
+ */
 onMounted(() => {
   expressionC.value = props.expression;
   hideCom.value = props.hideComponent;

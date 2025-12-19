@@ -40,13 +40,12 @@ function expressionChange() {
       // endDate: '2023-01-01T00:00:00Z', // 结束时间
       // startDate: '2023-01-01T00:00:00Z', // 开始时间
       tz: "Asia/Shanghai", //时区，默认：Europe/London
-      strict: true, //严格模式，默认：false
+      strict: false, //严格模式，默认：false
     };
     const interval = CronExpressionParser.parse(props.ex, options);
-
     resultList.value = interval.take(5).map((date) => date.toString());
   } catch (err) {
-    console.log("没有达到条件的结果！:", err);
+    console.error("没有达到条件的结果！:", err);
     resultList.value = ["没有达到条件的结果！"];
   }
 

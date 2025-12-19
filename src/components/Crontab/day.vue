@@ -52,21 +52,23 @@
 </template>
 <script lang="ts" setup name="CompCrontabDay">
 import { computed, ref, watch } from "vue";
+import { type CrontabObj, type CrontabKey, checkNumber } from "./crontab";
 
-const emit = defineEmits<{ (event: "update", name: "second" | "min" | "hour" | "day" | "month" | "week" | "year", value: string): void }>();
+const emit = defineEmits<{
+  /**
+   * 更新数据
+   * @param name 日期关键字
+   * @param value 值
+   */
+  (event: "update", name: CrontabKey, value: string): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
-    cron: {
-      second: string;
-      min: string;
-      hour: string;
-      day: string;
-      month: string;
-      week: string;
-      year: string;
-    };
-    check: (value: number, minLimit: number, maxLimit: number) => number;
+    /**
+     * @type CrontabObj Crontab表达式对象
+     */
+    cron: CrontabObj;
   }>(),
   {
     cron: () => {
@@ -79,9 +81,6 @@ const props = withDefaults(
         week: "?",
         year: "",
       };
-    },
-    check: (value: number) => {
-      return value;
     },
   },
 );
@@ -111,6 +110,11 @@ watch(
   (value) => changeRadioValue(value),
 );
 watch([radioValue, cycleTotal, averageTotal, workdayTotal, checkboxString], () => onRadioChange());
+
+/**
+ * 日期改变重新计算规则
+ * @param value
+ */
 function changeRadioValue(value: string) {
   if (value === "*") {
     radioValue.value = 1;
@@ -118,17 +122,17 @@ function changeRadioValue(value: string) {
     radioValue.value = 2;
   } else if (value.indexOf("-") > -1) {
     const indexArr = value.split("-");
-    cycle01.value = props.check(Number(indexArr[0]), 1, 30);
-    cycle02.value = props.check(Number(indexArr[1]), cycle01.value + 1, 31);
+    cycle01.value = checkNumber(Number(indexArr[0]), 1, 30);
+    cycle02.value = checkNumber(Number(indexArr[1]), cycle01.value + 1, 31);
     radioValue.value = 3;
   } else if (value.indexOf("/") > -1) {
     const indexArr = value.split("/");
-    average01.value = props.check(Number(indexArr[0]), 1, 30);
-    average02.value = props.check(Number(indexArr[1]), 1, 31 - average01.value);
+    average01.value = checkNumber(Number(indexArr[0]), 1, 30);
+    average02.value = checkNumber(Number(indexArr[1]), 1, 31 - average01.value);
     radioValue.value = 4;
   } else if (value.indexOf("W") > -1) {
     const indexArr = value.split("W");
-    workday.value = props.check(Number(indexArr[0]), 1, 31);
+    workday.value = checkNumber(Number(indexArr[0]), 1, 31);
     radioValue.value = 5;
   } else if (value === "L") {
     radioValue.value = 6;
@@ -137,7 +141,9 @@ function changeRadioValue(value: string) {
     radioValue.value = 7;
   }
 }
-// 单选按钮值变化时
+/**
+ * 单选按钮值变化时，重新计算规则
+ */
 function onRadioChange() {
   if (radioValue.value === 2 && props.cron.week === "?") {
     emit("update", "week", "*");
