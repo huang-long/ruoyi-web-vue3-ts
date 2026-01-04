@@ -83,7 +83,11 @@ export function selectDictLabels(datas: { [keys: string]: { value: string; label
   return actions.join("").substring(0, actions.join("").length - 1);
 }
 
-// 转换字符串，undefined,null等转化为""
+/**
+ * 转换字符串，undefined,null等转化为""
+ * @param str 
+ * @returns 
+ */
 export function parseStrEmpty(str: string) {
   if (!str || str == "undefined" || str == "null") {
     return "";

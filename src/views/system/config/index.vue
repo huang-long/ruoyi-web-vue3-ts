@@ -104,7 +104,9 @@ const queryParams = ref<SysConfigObj & QueryParam>({
   configType: undefined,
 });
 
-/** 查询参数列表 */
+/**
+ * 查询参数列表
+ */
 function getList() {
   loading.value = true;
   listConfig(addDateRange(queryParams.value, dateRange.value)).then((response) => {
@@ -113,39 +115,53 @@ function getList() {
     loading.value = false;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 数据改变 刷新页面 */
+/**
+ * 数据改变 刷新页面
+ */
 function dataChange() {
   getList();
 }
 
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: SysConfigObj[]) {
   ids.value = selection.map((item) => item.configId || "");
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd() {
   editDialogRef.value?.show({ action: "add" });
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ */
 function handleUpdate(row: SysConfigObj) {
   const configId = row.configId || ids.value.toString();
   editDialogRef.value?.show({ action: "edit", configId: configId });
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete(row: SysConfigObj) {
   const configIds = row.configId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？')
@@ -157,7 +173,9 @@ function handleDelete(row: SysConfigObj) {
       ElMessage.success("删除成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "system/config/export",
@@ -167,7 +185,9 @@ function handleExport() {
     `config_${new Date().getTime()}.xlsx`,
   );
 }
-/** 刷新缓存按钮操作 */
+/**
+ * 刷新缓存按钮操作
+ */
 function handleRefreshCache() {
   refreshCache().then(() => {
     ElMessage.success("刷新缓存成功");

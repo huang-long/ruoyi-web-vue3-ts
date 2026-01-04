@@ -9,6 +9,9 @@ import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
+    /**
+     * 图标名称
+     */
     iconClass: string;
   }>(),
   {},

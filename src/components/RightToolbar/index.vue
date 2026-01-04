@@ -41,15 +41,25 @@ const title = ref("显示/隐藏");
 const open = ref(false);
 const props = withDefaults(
   defineProps<{
-    /* 是否显示检索条件 */
+    /**
+     * 是否显示检索条件
+     */
     showSearch?: boolean;
-    /* 显隐列信息 */
+    /**
+     * 显隐列信息
+     */
     columns?: TransferObj[];
-    /* 是否显示检索图标 */
+    /**
+     * 是否显示检索图标
+     */
     search?: boolean;
-    /* 显隐列类型（transfer穿梭框、checkbox复选框） */
+    /**
+     * 显隐列类型（transfer穿梭框、checkbox复选框）
+     */
     showColumnsType?: string;
-    /* 右外边距 */
+    /**
+     * 右外边距
+     */
     gutter?: number;
   }>(),
   {
@@ -72,19 +82,36 @@ const style = computed(() => {
   return {};
 });
 
-const emit = defineEmits<{ (event: "update:showSearch", val: boolean): void; (event: "queryTable"): void }>();
+const emit = defineEmits<{
+  /**
+   * 显示/隐藏检索条件
+   * @param val 显示/隐藏
+   */
+  (event: "update:showSearch", val: boolean): void;
+  /**
+   * 刷新
+   */
+  (event: "queryTable"): void;
+}>();
 
-// 搜索
+/**
+ * 搜索
+ */
 function toggleSearch() {
   emit("update:showSearch", !props.showSearch);
 }
 
-// 刷新
+/**
+ * 刷新
+ */
 function refresh() {
   emit("queryTable");
 }
 
-// 右侧列表元素变化
+/**
+ * 右侧列表元素变化
+ * @param data 列表元素
+ */
 function dataChange(data: TransferKey[]) {
   props.columns?.forEach((item) => {
     const key = item.key;
@@ -92,7 +119,9 @@ function dataChange(data: TransferKey[]) {
   });
 }
 
-// 打开显隐列dialog
+/**
+ * 打开显隐列dialog
+ */
 function showColumn() {
   open.value = true;
 }

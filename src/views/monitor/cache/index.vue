@@ -155,6 +155,9 @@ const cache = ref<CacheInfoObj>({});
 const commandstats = ref(null);
 const usedmemory = ref(null);
 
+/**
+ * 加载缓存监控数据列表
+ */
 function getList() {
   const load = ElLoading.service({ text: "正在加载缓存监控数据，请稍候！" });
   getCache().then((response) => {

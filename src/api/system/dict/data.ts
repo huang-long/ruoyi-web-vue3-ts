@@ -21,8 +21,14 @@ export type DictObj = {
   elTagType?: string;
   elTagClass?: string;
   status?: string;
-  default?: boolean;
+  default?: boolean;  
+  /**
+   * 字典属性名称
+   */
   label?: string;
+  /**
+   * 字典属性值
+   */
   value?: string;
 };
 

@@ -33,6 +33,12 @@ const user = reactive({
   confirmPassword: "",
 });
 
+/**
+ * 密码校验器
+ * @param rule
+ * @param value
+ * @param callback
+ */
 const equalToPassword = (rule: FormRule, value: string, callback: (error?: Error) => void) => {
   if (user.newPassword !== value) {
     callback(new Error("两次输入的密码不一致"));
@@ -52,7 +58,9 @@ const rules = ref({
   ],
 });
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submit() {
   pwdRef.value?.validate((valid) => {
     if (valid) {
@@ -62,7 +70,9 @@ function submit() {
     }
   });
 }
-/** 关闭按钮 */
+/**
+ * 关闭按钮
+ */
 function close() {
   tStore.closePage();
 }

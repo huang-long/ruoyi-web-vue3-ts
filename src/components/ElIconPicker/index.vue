@@ -52,7 +52,13 @@ const myIconList = ref<string[]>([]);
 const filterVal = ref("");
 const showPopv = ref(false);
 
-const emit = defineEmits<{ (event: "update:modelValue", value: string): void }>();
+const emit = defineEmits<{
+  /**
+   * 双向绑定 v-model 默认modelValue
+   * @param modelValue
+   */
+  (event: "update:modelValue", value: string): void;
+}>();
 
 withDefaults(
   defineProps<{
@@ -73,17 +79,27 @@ watch(
   },
 );
 
+/**
+ * 显示图标列表
+ */
 const showPopover = () => {
   filterVal.value = "";
   showPopv.value = true;
 };
 
+/**
+ * 选择icon
+ * @param icon icon名称
+ */
 const chooseIcon = (icon: string) => {
   emit("update:modelValue", icon);
   showPopv.value = false;
 };
 
-// 图标过滤查询
+/**
+ * 图标过滤查询
+ * @param val icon名称
+ */
 const inputFilter = (val?: string) => {
   if (val) {
     elIconList.value = elIcons.filter((item) => item.toLowerCase().indexOf(val.toLowerCase()) !== -1);
@@ -96,7 +112,9 @@ const inputFilter = (val?: string) => {
   }
 };
 
-// 清除选中
+/**
+ * 清除选中icon
+ */
 const clearPicker = () => {
   emit("update:modelValue", "");
 };

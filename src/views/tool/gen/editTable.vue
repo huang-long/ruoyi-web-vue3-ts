@@ -145,7 +145,9 @@ function genInfoChange(data: GenInfoObj) {
   genInfo = data;
 }
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   const basicForm = basicInfoRef.value.$refs.basicInfoForm as ElForm;
   const genForm = genInfoRef.value.$refs.genInfoForm as ElForm;

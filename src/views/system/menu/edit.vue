@@ -205,6 +205,9 @@ const menuRef = ref<ElForm>();
 
 // emit事件 #####################################################
 const emit = defineEmits<{
+  /**
+   * 刷新数据事件
+   */
   (event: "refreshData"): void;
 }>();
 
@@ -233,7 +236,9 @@ function show(options: { action: "add" | "edit"; parentId?: string; menuId?: str
   }
 }
 
-/** 查询菜单下拉树结构 */
+/**
+ * 查询菜单下拉树结构
+ */
 function getTreeselect() {
   menuOptions.value = [];
   loading.value = true;
@@ -249,17 +254,24 @@ function getTreeselect() {
     });
 }
 
+/**
+ * 菜单类型改变
+ */
 function menuTypeChange() {
   if (form.value.menuType == "M" || form.value.menuType == "F") {
     form.value.isFrame = "1";
   }
 }
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     menuId: "",
@@ -276,21 +288,23 @@ function reset() {
   menuRef.value?.resetFields();
 }
 
-/** 查询菜单详情 */
+/**
+ * 查询菜单详情
+ */
 function getMenuDetail(menuId: string) {
   loading.value = true;
   getMenu(menuId)
     .then((response) => {
       response.data && (form.value = response.data);
-      // id后台为number类型，0的场合显示有问题（本来想将所有id换成uuid，暂时没得时间，就现在这样吧）
-      // form.value.parentId = form.value.parentId?.toString();
     })
     .finally(() => {
       loading.value = false;
     });
 }
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   menuRef.value?.validate((valid) => {
     if (valid) {

@@ -90,7 +90,9 @@ const subLoading = ref(false);
 const nowCacheName = ref("");
 const tableHeight = ref(window.innerHeight - 200);
 
-/** 查询缓存名称列表 */
+/**
+ * 查询缓存名称列表
+ */
 function getCacheNames() {
   loading.value = true;
   listCacheName().then((response) => {
@@ -99,13 +101,18 @@ function getCacheNames() {
   });
 }
 
-/** 刷新缓存名称列表 */
+/**
+ * 刷新缓存名称列表
+ */
 function refreshCacheNames() {
   getCacheNames();
   ElMessage.success("刷新缓存列表成功");
 }
 
-/** 清理指定名称缓存 */
+/**
+ * 清理指定名称缓存
+ * @param row
+ */
 function handleClearCacheName(row: CacheObj) {
   clearCacheName(row.cacheName).then(() => {
     ElMessage.success("清理缓存名称[" + row.cacheName + "]成功");
@@ -113,7 +120,10 @@ function handleClearCacheName(row: CacheObj) {
   });
 }
 
-/** 查询缓存键名列表 */
+/**
+ * 查询缓存键名列表
+ * @param row
+ */
 function getCacheKeys(row?: CacheObj) {
   const cacheName = row !== undefined ? row.cacheName : nowCacheName.value.toString();
   if (cacheName === "") {
@@ -127,13 +137,18 @@ function getCacheKeys(row?: CacheObj) {
   });
 }
 
-/** 刷新缓存键名列表 */
+/**
+ * 刷新缓存键名列表
+ */
 function refreshCacheKeys() {
   getCacheKeys();
   ElMessage.success("刷新键名列表成功");
 }
 
-/** 清理指定键名缓存 */
+/**
+ * 清理指定键名缓存
+ * @param cacheKey
+ */
 function handleClearCacheKey(cacheKey: string) {
   clearCacheKey(cacheKey).then(() => {
     ElMessage.success("清理缓存键名[" + cacheKey + "]成功");
@@ -141,24 +156,35 @@ function handleClearCacheKey(cacheKey: string) {
   });
 }
 
-/** 列表前缀去除 */
+/**
+ * 列表前缀去除
+ * @param row
+ */
 function nameFormatter(row: CacheObj) {
   return row.cacheName.replace(":", "");
 }
 
-/** 键名前缀去除 */
+/**
+ * 键名前缀去除
+ * @param cacheKey
+ */
 function keyFormatter(cacheKey: string) {
   return cacheKey.replace(nowCacheName.value, "");
 }
 
-/** 查询缓存内容详细 */
+/**
+ * 查询缓存内容详细
+ * @param cacheKey
+ */
 function handleCacheValue(cacheKey: string) {
   getCacheValue(nowCacheName.value, cacheKey).then((response) => {
     response.data && (cacheForm.value = response.data);
   });
 }
 
-/** 清理全部缓存 */
+/**
+ * 清理全部缓存
+ */
 function handleClearCacheAll() {
   clearCacheAll().then(() => {
     ElMessage.success("清理全部缓存成功");

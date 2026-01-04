@@ -177,7 +177,9 @@ const rules = ref({
   dictSort: [{ required: true, message: "数据顺序不能为空", trigger: "blur" }],
 });
 
-/** 查询字典类型详细 */
+/**
+ * 查询字典类型详细
+ */
 function getTypes(dictId: string) {
   getType(dictId).then((response) => {
     queryParams.value.dictType = response.data?.dictType;
@@ -186,13 +188,17 @@ function getTypes(dictId: string) {
   });
 }
 
-/** 查询字典类型列表 */
+/**
+ * 查询字典类型列表
+ */
 function getTypeList() {
   getDictOptionselect().then((response) => {
     typeOptions.value = response.data || [];
   });
 }
-/** 查询字典数据列表 */
+/**
+ * 查询字典数据列表
+ */
 function getList() {
   loading.value = true;
   listData(queryParams.value).then((response) => {
@@ -201,13 +207,17 @@ function getList() {
     loading.value = false;
   });
 }
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
 const dataRef = ref<ElForm>();
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     dictType: "",
@@ -222,50 +232,66 @@ function reset() {
   };
   dataRef.value?.resetFields();
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 返回按钮操作 */
+/**
+ * 返回按钮操作
+ */
 function handleClose() {
   tStore.closeOpenPage("/system/dict");
 }
 
 const queryRef = ref<ElForm>();
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   queryParams.value.dictType = defaultDictType.value;
   handleQuery();
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = "添加字典数据";
   form.value.dictType = queryParams.value.dictType || "";
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: DictObj[]) {
   ids.value = selection.map((item) => item.dictCode);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row
+ */
 function handleUpdate(row: DictObj) {
   reset();
   const dictCode = row.dictCode || ids.value[0];
-  getData(dictCode).then((response) => {
-    if (response.data) {
-      form.value = response.data;
-      open.value = true;
-      title.value = "修改字典数据";
-    }
-  });
+  dictCode &&
+    getData(dictCode).then((response) => {
+      if (response.data) {
+        form.value = response.data;
+        open.value = true;
+        title.value = "修改字典数据";
+      }
+    });
 }
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   dataRef.value?.validate((valid) => {
     if (valid) {
@@ -280,7 +306,10 @@ function submitForm() {
     }
   });
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row
+ */
 function handleDelete(row: DictObj) {
   const dictCodes = row.dictCode || ids.value.toString();
   ElMessageBox.confirm('是否确认删除字典编码为"' + dictCodes + '"的数据项？')
@@ -293,7 +322,9 @@ function handleDelete(row: DictObj) {
       queryParams.value.dictType && dictStore.removeDict(queryParams.value.dictType);
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "system/dict/data/export",

@@ -76,23 +76,36 @@ const form = ref<UserInfoObj>({
   userId: "",
 });
 
-/** 单击选中行数据 */
+/**
+ * 单击选中行数据
+ * @param row 选中行数据
+ */
 function clickRow(row: RoleObj) {
   roleRef.value.toggleRowSelection(row);
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ * @param selection 选中行数据
+ */
 function handleSelectionChange(selection: RoleObj[]) {
   roleIds.value = selection.map((item) => item.roleId);
 }
-/** 保存选中的数据编号 */
+/**
+ * 保存选中的数据编号
+ * @param row 选中行数据
+ */
 function getRowKey(row: RoleObj) {
   return row.roleId;
 }
-/** 关闭按钮 */
+/**
+ * 关闭按钮
+ */
 function close() {
   tStore.closePage("/system/user");
 }
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   const userId = form.value.userId;
   const rIds = roleIds.value.join(",");

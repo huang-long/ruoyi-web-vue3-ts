@@ -108,7 +108,9 @@ const queryParams = ref<LoginLogObj & QueryParam>({
   infoId: "",
 });
 
-/** 查询登录日志列表 */
+/**
+ * 查询登录日志列表
+ */
 function getList() {
   loading.value = true;
   list(addDateRange(queryParams.value, dateRange.value))
@@ -120,33 +122,43 @@ function getList() {
       loading.value = false;
     });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
 
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   queryParams.value.pageNum = 1;
   logininforRef.value.sort(defaultSort.value.prop, defaultSort.value.order);
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: LoginLogObj[]) {
   ids.value = selection.map((item) => item.infoId);
   multiple.value = !selection.length;
   single.value = selection.length != 1;
   selectName.value = selection.map((item) => item.userName || "");
 }
-/** 排序触发事件 */
+/**
+ * 排序触发事件
+ */
 function handleSortChange({ prop, order }: { prop: string; order: string }) {
   queryParams.value.orderByColumn = prop;
   queryParams.value.isAsc = order;
   getList();
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete(row: LoginLogObj) {
   const infoIds = row.infoId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?')
@@ -158,7 +170,9 @@ function handleDelete(row: LoginLogObj) {
       ElMessage.success("删除成功");
     });
 }
-/** 清空按钮操作 */
+/**
+ * 清空按钮操作
+ */
 function handleClean() {
   ElMessageBox.confirm("是否确认清空所有登录日志数据项?")
     .then(function () {
@@ -169,7 +183,9 @@ function handleClean() {
       ElMessage.success("清空成功");
     });
 }
-/** 解锁按钮操作 */
+/**
+ * 解锁按钮操作
+ */
 function handleUnlock() {
   const username = selectName.value.toString();
   ElMessageBox.confirm('是否确认解锁用户"' + username + '"数据项?')
@@ -180,7 +196,9 @@ function handleUnlock() {
       ElMessage.success("用户" + username + "解锁成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "monitor/logininfor/export",

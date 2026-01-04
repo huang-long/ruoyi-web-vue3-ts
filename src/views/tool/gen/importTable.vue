@@ -54,37 +54,53 @@ const queryParams = ref({
 
 const emit = defineEmits<{ (event: "ok"): void }>();
 
-/** 查询参数列表 */
+/**
+ * 查询参数列表
+ */
 function show() {
   getList();
   visible.value = true;
 }
-/** 单击选择行 */
+/**
+ * 单击选择行
+ * @param row 选中行数据
+ */
 function clickRow(row: GenInfoObj) {
   tableRef.value.toggleRowSelection(row);
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ * @param selection 选中行数据
+ */
 function handleSelectionChange(selection: GenInfoObj[]) {
   tables.value = selection.map((item) => item.tableName || "");
 }
-/** 查询表数据 */
+/**
+ * 查询表数据
+ */
 function getList() {
   listDbTable(queryParams.value).then((res) => {
     dbTableList.value = res.rows || [];
     total.value = res.total || 0;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 导入按钮操作 */
+/**
+ * 导入按钮操作
+ */
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {

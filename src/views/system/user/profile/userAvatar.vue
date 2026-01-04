@@ -71,46 +71,68 @@ const visible = ref(false);
 const title = ref("修改头像");
 const cropperRef = ref();
 
-//图片裁剪数据
+/** 图片裁剪数据 */
 const options = reactive({
-  img: uStore.avatar, // 裁剪图片的地址
-  autoCrop: true, // 是否默认生成截图框
-  autoCropWidth: 200, // 默认生成截图框宽度
-  autoCropHeight: 200, // 默认生成截图框高度
-  fixedBox: true, // 固定截图框大小 不允许改变
-  outputType: "png", // 默认生成截图为PNG格式
-  filename: "avatar", // 文件名称
+  /** 裁剪图片的地址 */
+  img: uStore.avatar,
+  /** 是否默认生成截图框 */
+  autoCrop: true,
+  /** 默认生成截图框宽度 */
+  autoCropWidth: 200,
+  /** 默认生成截图框高度 */
+  autoCropHeight: 200,
+  /** 固定截图框大小 不允许改变 */
+  fixedBox: true,
+  /** 默认生成截图为PNG格式 */
+  outputType: "png",
+  /** 文件名称 */
+  filename: "avatar",
+  /** 预览数据 */
   previews: {
     url: "",
     img: "",
-  }, //预览数据
+  },
   visible: false,
 });
 
-/** 编辑头像 */
+/**
+ * 编辑头像
+ */
 function editCropper() {
   open.value = true;
 }
-/** 打开弹出层结束时的回调 */
+/**
+ * 打开弹出层结束时的回调
+ */
 function modalOpened() {
   visible.value = true;
 }
 /** 覆盖默认上传行为 */
 // function requestUpload() {}
-/** 向左旋转 */
+/**
+ * 向左旋转
+ */
 function rotateLeft() {
   cropperRef.value.rotateLeft();
 }
-/** 向右旋转 */
+/**
+ * 向右旋转
+ */
 function rotateRight() {
   cropperRef.value.rotateRight();
 }
-/** 图片缩放 */
+/**
+ * 图片缩放
+ * @param num 放缩比例
+ */
 function changeScale(num: number) {
   num = num || 1;
   cropperRef.value.changeScale(num);
 }
-/** 上传预处理 */
+/**
+ * 上传预处理
+ * @param file 文件
+ */
 function beforeUpload(file: File) {
   if (file.type.indexOf("image/") == -1) {
     ElMessage.error("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
@@ -123,7 +145,9 @@ function beforeUpload(file: File) {
     };
   }
 }
-/** 上传图片 */
+/**
+ * 上传图片
+ */
 function uploadImg() {
   cropperRef.value.getCropBlob((data: Blob) => {
     const formData = new FormData();
@@ -137,11 +161,16 @@ function uploadImg() {
     });
   });
 }
-/** 实时预览 */
+/**
+ * 实时预览
+ * @param data url：图像地址；img：图像名称
+ */
 function realTime(data: { url: string; img: string }) {
   options.previews = data;
 }
-/** 关闭窗口 */
+/**
+ * 关闭窗口
+ */
 function closeDialog() {
   options.img = uStore.avatar;
   options.visible = false;

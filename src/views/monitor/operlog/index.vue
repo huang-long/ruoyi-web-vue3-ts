@@ -174,7 +174,9 @@ const queryParams = ref<OperLogObj & QueryParam>({
   operId: "",
 });
 
-/** 查询登录日志 */
+/**
+ * 查询登录日志
+ */
 function getList() {
   loading.value = true;
   list(addDateRange(queryParams.value, dateRange.value)).then((response) => {
@@ -183,39 +185,53 @@ function getList() {
     loading.value = false;
   });
 }
-/** 操作日志类型字典翻译 */
+/**
+ * 操作日志类型字典翻译
+ */
 function typeFormat(row: OperLogObj) {
   return selectDictLabel(dicts.value.sys_oper_type || [], row.businessType);
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   queryParams.value.pageNum = 1;
   logininforRef.value.sort(defaultSort.value.prop, defaultSort.value.order);
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: OperLogObj[]) {
   ids.value = selection.map((item) => item.operId);
   multiple.value = !selection.length;
 }
-/** 排序触发事件 */
+/**
+ * 排序触发事件
+ */
 function handleSortChange({ prop, order }: { prop: string; order: string }) {
   queryParams.value.orderByColumn = prop;
   queryParams.value.isAsc = order;
   getList();
 }
-/** 详细按钮操作 */
+/**
+ * 详细按钮操作
+ */
 function handleView(row: OperLogObj) {
   open.value = true;
   form.value = row;
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete(row: OperLogObj) {
   const operIds = row.operId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?')
@@ -227,7 +243,9 @@ function handleDelete(row: OperLogObj) {
       ElMessage.success("删除成功");
     });
 }
-/** 清空按钮操作 */
+/**
+ * 清空按钮操作
+ */
 function handleClean() {
   ElMessageBox.confirm("是否确认清空所有操作日志数据项?")
     .then(function () {
@@ -238,7 +256,9 @@ function handleClean() {
       ElMessage.success("清空成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "monitor/operlog/export",

@@ -54,9 +54,17 @@ const rules = ref({
   postSort: [{ required: true, message: "岗位顺序不能为空", trigger: "blur" }],
 });
 
-const emit = defineEmits<{ (event: "dataChange"): void }>();
+const emit = defineEmits<{
+  /**
+   * 数据改变时触发
+   */
+  (event: "dataChange"): void;
+}>();
 
-/** 打开页面 */
+/**
+ * 打开页面
+ * @param param  action：页面操作类型，postId：岗位id
+ */
 function show(param: { action: "add" | "edit"; postId?: string }) {
   open.value = true;
   reset();
@@ -78,12 +86,16 @@ function show(param: { action: "add" | "edit"; postId?: string }) {
   }
 }
 
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     postId: "",
@@ -96,7 +108,9 @@ function reset() {
   postRef.value?.resetFields();
 }
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   postRef.value?.validate((valid) => {
     if (valid) {

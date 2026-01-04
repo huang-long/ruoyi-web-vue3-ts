@@ -125,7 +125,10 @@ const resetQuery = () => {
   handleQuery();
 };
 
-/** 详情 */
+/**
+ * 详情
+ * @param row 选中数据
+ */
 const handleDialog = (row: ActTaskObj) => {
   detailDialog.value.visible = true;
   detailDialog.value.taskId = row.taskId || "";
@@ -134,12 +137,18 @@ const handleDialog = (row: ActTaskObj) => {
   detailDialog.value.businessKey = row.businessKey || "";
 };
 
-/** 查看历史 */
+/**
+ * 查看历史
+ * @param row 选中数据
+ */
 const handleShowHistory = (row: ActTaskObj) => {
   histroyDialog.value.visible = true;
   histroyDialog.value.instanceId = row.instanceId || "";
 };
-/** 查看流程图 */
+/**
+ * 查看流程图
+ * @param row 选中数据
+ */
 const handleProcessView = (row: ActTaskObj) => {
   processViewDialog.value.visible = true;
   processViewDialog.value.instanceId = row.instanceId || "";

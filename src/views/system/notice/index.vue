@@ -96,7 +96,9 @@ const queryParams = ref({
   status: undefined,
 });
 
-/** 查询公告列表 */
+/**
+ * 查询公告列表
+ */
 function getList() {
   loading.value = true;
   listNotice(queryParams.value).then((response) => {
@@ -105,12 +107,16 @@ function getList() {
     loading.value = false;
   });
 }
-/** 数据改变 刷新页面 */
+/**
+ * 数据改变 刷新页面
+ */
 function dataChange() {
   getList();
 }
 
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
@@ -120,22 +126,33 @@ function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ * @param selection 选中行数据
+ */
 function handleSelectionChange(selection: NoticeObj[]) {
   ids.value = selection.map((item) => item.noticeId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd() {
   editDialogRef.value?.show({ action: "add" });
 }
-/**修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row 选中行数据
+ */
 function handleUpdate(row: NoticeObj) {
   const noticeId = row.noticeId || ids.value.toString();
   editDialogRef.value?.show({ action: "edit", noticeId: noticeId });
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row 选中行数据
+ */
 function handleDelete(row: NoticeObj) {
   const noticeIds = row.noticeId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')

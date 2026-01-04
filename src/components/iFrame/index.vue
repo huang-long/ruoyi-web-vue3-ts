@@ -8,6 +8,9 @@
 import { computed, onMounted, ref } from "vue";
 
 const props = defineProps<{
+  /**
+   * iframe页面 src
+   */
   src: string;
 }>();
 

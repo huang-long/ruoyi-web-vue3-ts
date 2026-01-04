@@ -87,6 +87,11 @@ onMounted(() => {
 
 // 用户名下拉菜单选择事件
 const router = useRouter();
+
+/**
+ * 用户名下拉菜单选择事件
+ * @param command 菜单选择
+ */
 const handleCommand = (command: string) => {
   if (command == "loginout") {
     sStore.LogOut().then(() => {
@@ -98,6 +103,9 @@ const handleCommand = (command: string) => {
   }
 };
 
+/**
+ * 全屏切换
+ */
 const toggleFullscreen = () => {
   //判断是否支持全屏
   if (screenfull.isEnabled) {

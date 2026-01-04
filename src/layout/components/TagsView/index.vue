@@ -67,12 +67,17 @@ watch(
   },
 );
 
-// 关闭单个标签
+/**
+ * 关闭标签
+ * @param tag
+ */
 const closeTags = (tag: Tag) => {
   tStore.closePage(tag.fullPath);
 };
 
-// 设置标签
+/**
+ * 设置标签
+ */
 const setTags = () => {
   // 更新tags数据
   if (pStore.isTagsRouter(route.meta.fullPath || "")) {
@@ -91,18 +96,27 @@ tStore.activePath = route.fullPath;
 //   setTags(to);
 // });
 
-// 关闭全部标签
+/**
+ * 关闭所有标签
+ */
 const closeAll = () => {
   tStore.clearAllTags();
   router.push("/index");
 };
-// 关闭其他标签
+/**
+ * 关闭其他标签
+ */
 const closeOther = () => {
   const curItem = tagsList.value.filter((item) => {
     return item.fullPath === route.fullPath;
   });
   tStore.closeTagsOther(curItem);
 };
+
+/**
+ * 标签操作
+ * @param command 操作方式
+ */
 const handleTags = (command: string) => {
   command === "other" ? closeOther() : closeAll();
 };
@@ -118,6 +132,10 @@ let translateX = 0;
 const tagsRef = ref();
 const tabsUlRef = ref();
 const tabsLiRef = ref();
+/**
+ * 滚轮滑动操作
+ * @param event
+ */
 const tabsWheel = (e: WheelEvent) => {
   translateX = translateX - e.deltaY;
   const max = tagsRef.value.offsetWidth - tabsUlRef.value.offsetWidth;
@@ -133,7 +151,9 @@ const tabsWheel = (e: WheelEvent) => {
   tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
   e.preventDefault();
 };
-// 定位到当前tag
+/**
+ * 定位到当前tag
+ */
 const scrollToActiveTag = () => {
   tabsLiRef.value.forEach((item: VueElement) => {
     if (item.className && item.className.indexOf("active") >= 0) {

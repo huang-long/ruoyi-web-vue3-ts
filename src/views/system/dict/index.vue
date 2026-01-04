@@ -205,7 +205,10 @@ const handleAdd = () => {
   title.value = "添加字典类型";
 };
 
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ * @param selection 选择的列表数据
+ */
 const handleSelectionChange = (selection: DictTypeObj[]) => {
   ids.value = [];
   selection.forEach((item) => {
@@ -219,11 +222,12 @@ const handleSelectionChange = (selection: DictTypeObj[]) => {
 const handleUpdate = (row: DictTypeObj) => {
   reset();
   const dictId = row.dictId || ids.value[0];
-  getType(dictId).then((response) => {
-    response.data && (form.value = response.data);
-    open.value = true;
-    title.value = "修改字典类型";
-  });
+  dictId &&
+    getType(dictId).then((response) => {
+      response.data && (form.value = response.data);
+      open.value = true;
+      title.value = "修改字典类型";
+    });
 };
 
 /** 提交按钮 */

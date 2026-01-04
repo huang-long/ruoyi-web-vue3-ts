@@ -3,7 +3,12 @@ import { getDicts as requestDicts } from "@/api/system/dict/data";
 import type { DictObj } from "@/api/system/dict/data";
 import { ref } from "vue";
 
-export type DictMapObj = { [key: string]: DictObj[] | undefined };
+export type DictMapObj = { 
+  /**
+   * 字典类型
+   */
+  [key: string]: DictObj[] | undefined 
+};
 
 /**
  * 查找字典数据

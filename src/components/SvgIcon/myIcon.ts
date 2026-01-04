@@ -5,7 +5,9 @@ import svgIcon from "./index.vue";
 // type SvgIconPath = `${string}/assets/icons/svg/${string}.svg`;
 const modules = import.meta.glob("./../../assets/icons/svg/*.svg", {});
 
-// 获取icon名称
+/**
+ *  icons文件名数组
+ */
 const filenNmes = [];
 for (const path in modules) {
   const name = path.split("assets/icons/svg/")[1]?.split(".svg");

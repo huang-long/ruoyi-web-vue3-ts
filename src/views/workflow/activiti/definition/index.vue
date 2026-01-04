@@ -152,6 +152,7 @@ const handelConfirm = () => {
 
 /**
  * 上传文件之前处理
+ * @param file 工作流文件
  */
 const uploadBeforeUpload = (file: UploadRawFile) => {
   const isRightSize = file.size / 1024 / 1024 < 2;
@@ -163,6 +164,7 @@ const uploadBeforeUpload = (file: UploadRawFile) => {
 
 /**
  * 上传文件
+ * @param options 文件数据
  */
 const submitUpload = (options: UploadRequestOptions) => {
   uploadDefinition({ file: options.file }).then((response) => {
@@ -176,7 +178,10 @@ const submitUpload = (options: UploadRequestOptions) => {
   });
 };
 
-/** 激活挂起按钮操作 */
+/**
+ * 激活挂起按钮操作
+ * @param row 选中数据
+ */
 const handleState = (row: ActDefinitionObj) => {
   const pid = row.id;
   const suspendState = row.suspendState;
@@ -196,7 +201,10 @@ const handleState = (row: ActDefinitionObj) => {
     });
 };
 
-/** 转模型按钮操作 */
+/**
+ * 转模型按钮操作
+ * @param row 选中数据
+ */
 const handleConvert = (row: ActDefinitionObj) => {
   const pid = row.id;
   ElMessageBox.confirm('是否确认将ID为"' + pid + '"的流程定义转换成流程模型?')
@@ -213,7 +221,10 @@ const handleConvert = (row: ActDefinitionObj) => {
       loading.value = false;
     });
 };
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row 选中数据
+ */
 const handleDelete = (row: ActDefinitionObj) => {
   const deploymentId = row.deploymentId;
   deploymentId &&

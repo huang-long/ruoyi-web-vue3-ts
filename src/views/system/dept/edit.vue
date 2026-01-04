@@ -101,9 +101,16 @@ const rules = ref({
   ],
 });
 
-const emit = defineEmits<{ (event: "dataChange"): void }>();
+const emit = defineEmits<{
+  /**
+   * 数据改变触发事件
+   */
+  (event: "dataChange"): void;
+}>();
 
-/** 打开页面 */
+/**
+ * 打开页面
+ */
 function show(param: { action: "add" | "edit"; deptId?: string }) {
   open.value = true;
   reset();
@@ -133,12 +140,16 @@ function show(param: { action: "add" | "edit"; deptId?: string }) {
     });
 }
 
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     deptId: "",
@@ -153,7 +164,9 @@ function reset() {
   deptRef.value?.resetFields();
 }
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   deptRef.value?.validate((valid) => {
     if (valid) {

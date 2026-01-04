@@ -77,33 +77,46 @@ const queryParams = reactive({
   phonenumber: undefined,
 });
 
-// 显示弹框
+/**
+ * 显示弹框
+ */
 function show() {
   queryParams.roleId = props.roleId;
   getList();
   visible.value = true;
 }
-/**选择行 */
+/**
+ * 选择行
+ */
 function clickRow(row: UserInfoObj) {
   tableRef.value.toggleRowSelection(row);
 }
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ * @param selection 选中行数据
+ */
 function handleSelectionChange(selection: UserInfoObj[]) {
   userIds.value = selection.map((item) => item.userId);
 }
-// 查询表数据
+/**
+ * 查询表数据
+ */
 function getList() {
   unallocatedUserList(queryParams).then((res) => {
     userList.value = res.rows || [];
     total.value = res.total || 0;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
@@ -111,7 +124,9 @@ function resetQuery() {
 
 const emit = defineEmits<{ (event: "ok"): void }>();
 
-/** 选择授权用户操作 */
+/**
+ * 选择授权用户操作
+ */
 function handleSelectUser() {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");

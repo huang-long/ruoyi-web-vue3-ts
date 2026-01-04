@@ -84,7 +84,9 @@ const queryParams = ref({
   status: "",
 });
 
-/** 查询部门列表 */
+/**
+ * 查询部门列表
+ */
 function getList() {
   loading.value = true;
   listDept(queryParams.value).then((response) => {
@@ -92,20 +94,28 @@ function getList() {
     loading.value = false;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd(row: DeptObj | undefined) {
   editDialogRef.value?.show({ action: "add", deptId: row?.deptId });
 }
-/** 展开/折叠操作 */
+/**
+ * 展开/折叠操作
+ */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -113,12 +123,16 @@ function toggleExpandAll() {
     refreshTable.value = true;
   });
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ */
 function handleUpdate(row: DeptObj) {
   editDialogRef.value?.show({ action: "edit", deptId: row.deptId });
 }
 
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete(row: DeptObj) {
   ElMessageBox.confirm('是否确认删除名称为"' + row.deptName + '"的数据项?')
     .then(function () {

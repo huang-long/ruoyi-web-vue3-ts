@@ -366,6 +366,9 @@ import { ref } from "vue";
 
 const server = ref<ServerObj>({});
 
+/**
+ * 获取服务监控数据
+ */
 function getList() {
   const load = ElLoading.service({ text: "正在加载服务监控数据，请稍候！" });
   getServer().then((response) => {

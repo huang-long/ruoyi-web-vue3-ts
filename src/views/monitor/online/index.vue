@@ -62,7 +62,9 @@ const queryParams = ref({
   tokenId: "",
 });
 
-/** 查询登录日志列表 */
+/**
+ * 查询登录日志列表
+ */
 function getList() {
   loading.value = true;
   initData(queryParams.value).then((response) => {
@@ -71,17 +73,23 @@ function getList() {
     loading.value = false;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   pageNum.value = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 强退按钮操作 */
+/**
+ * 强退按钮操作
+ */
 function handleForceLogout(row: OnlineInfoObj) {
   ElMessageBox.confirm('是否确认强退名称为"' + row.userName + '"的用户?')
     .then(function () {

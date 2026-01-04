@@ -52,9 +52,16 @@ const rules = ref({
   configValue: [{ required: true, message: "参数键值不能为空", trigger: "blur" }],
 });
 
-const emit = defineEmits<{ (event: "dataChange"): void }>();
+const emit = defineEmits<{
+  /**
+   * 数据改变触发事件
+   */
+  (event: "dataChange"): void;
+}>();
 
-/** 打开页面 */
+/**
+ * 打开页面
+ */
 function show(param: { action: "add" | "edit"; configId?: string }) {
   open.value = true;
   reset();
@@ -76,12 +83,16 @@ function show(param: { action: "add" | "edit"; configId?: string }) {
   }
 }
 
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     configId: undefined,
@@ -94,7 +105,9 @@ function reset() {
   configRef.value?.resetFields();
 }
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   configRef.value?.validate((valid) => {
     if (valid) {

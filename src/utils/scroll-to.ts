@@ -27,6 +27,10 @@ function move(amount: number) {
   document.body.scrollTop = amount;
 }
 
+/**
+ * 获取页面 scrollTop
+ * @returns 
+ */
 function position() {
   return document.documentElement.scrollTop || document.body.scrollTop;
 }

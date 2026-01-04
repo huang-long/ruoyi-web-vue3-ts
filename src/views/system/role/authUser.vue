@@ -88,7 +88,9 @@ const queryParams = reactive({
   phonenumber: "",
 });
 
-/** 查询授权用户列表 */
+/**
+ * 查询授权用户列表
+ */
 function getList() {
   loading.value = true;
   allocatedUserList(queryParams).then((response) => {
@@ -97,30 +99,44 @@ function getList() {
     loading.value = false;
   });
 }
-// 返回按钮
+/**
+ * 返回按钮
+ */
 function handleClose() {
   tStore.closeOpenPage("/system/role");
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ * @param selection 选中行数据
+ */
 function handleSelectionChange(selection: UserInfoObj[]) {
   userIds.value = selection.map((item) => item.userId);
   multiple.value = !selection.length;
 }
-/** 打开授权用户表弹窗 */
+/**
+ * 打开授权用户表弹窗
+ */
 function openSelectUser() {
   selectRef.value.show();
 }
-/** 取消授权按钮操作 */
+/**
+ * 取消授权按钮操作
+ * @param row 选中行数据
+ */
 function cancelAuthUser(row: UserInfoObj) {
   ElMessageBox.confirm('确认要取消该用户"' + row.userName + '"角色吗？')
     .then(function () {
@@ -131,7 +147,9 @@ function cancelAuthUser(row: UserInfoObj) {
       ElMessage.success("取消授权成功");
     });
 }
-/** 批量取消授权按钮操作 */
+/**
+ * 批量取消授权按钮操作
+ */
 function cancelAuthUserAll() {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");

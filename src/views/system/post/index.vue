@@ -96,7 +96,9 @@ const queryParams = ref({
   status: "",
 });
 
-/** 查询岗位列表 */
+/**
+ * 查询岗位列表
+ */
 function getList() {
   loading.value = true;
   listPost(queryParams.value).then((response) => {
@@ -106,36 +108,52 @@ function getList() {
   });
 }
 
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 多选框选中数据 */
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: PostObj[]) {
   ids.value = selection.map((item) => item.postId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd() {
   editDialogRef.value?.show({ action: "add" });
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row 选中行数据
+ */
 function handleUpdate(row: PostObj) {
   const postId = row.postId || ids.value.toString();
   editDialogRef.value?.show({ action: "edit", postId: postId });
 }
-/** 数据改变 刷新页面 */
+/**
+ * 数据改变 刷新页面
+ */
 function dataChange() {
   getList();
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row 选中行数据
+ */
 function handleDelete(row: PostObj) {
   const postIds = row.postId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？')
@@ -147,7 +165,9 @@ function handleDelete(row: PostObj) {
       ElMessage.success("删除成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "system/post/export",

@@ -47,9 +47,9 @@ import { getNotice, addNotice, updateNotice, type NoticeObj } from "@/api/system
 import { loadDicts } from "@/utils/dict";
 import { ElMessage } from "element-plus";
 import { onBeforeUnmount, ref } from "vue";
-import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import type { IDomEditor } from "@wangeditor/editor";
+import "@wangeditor/editor-next/dist/css/style.css"; // 引入 css
+import { Editor, Toolbar } from "@wangeditor-next/editor-for-vue";
+import type { IDomEditor } from "@wangeditor-next/editor";
 
 const dicts = loadDicts(["sys_notice_status", "sys_notice_type"]);
 
@@ -71,13 +71,24 @@ const rules = ref({
 const toolbarConfig = {};
 const editorConfig = { placeholder: "请输入内容..." };
 
+/**
+ * 创建编辑器成功
+ * @param editor
+ */
 const handleCreated = (editor: IDomEditor) => {
   editorRef.value = editor; // 记录 editor 实例，重要！
 };
 
-const emit = defineEmits<{ (event: "dataChange"): void }>();
+const emit = defineEmits<{
+  /**
+   * 数据发生改变
+   */
+  (event: "dataChange"): void;
+}>();
 
-/** 打开页面 */
+/**
+ * 打开页面
+ */
 function show(param: { action: "add" | "edit"; noticeId?: string }) {
   open.value = true;
   reset();
@@ -100,12 +111,16 @@ function show(param: { action: "add" | "edit"; noticeId?: string }) {
   }
 }
 
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 重置表单
+ */
 function reset() {
   form.value = {
     noticeId: "",
@@ -116,7 +131,9 @@ function reset() {
   };
   noticeRef.value?.resetFields();
 }
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   noticeRef.value?.validate((valid) => {
     if (valid) {
@@ -139,7 +156,9 @@ function submitForm() {
   });
 }
 
-// 组件销毁时，也及时销毁编辑器
+/**
+ * 组件销毁时，也及时销毁编辑器
+ */
 onBeforeUnmount(() => {
   editorRef.value?.destroy();
 });

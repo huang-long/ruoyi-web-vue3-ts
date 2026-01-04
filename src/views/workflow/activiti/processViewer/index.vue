@@ -72,6 +72,7 @@ const getBpmnModeler = () => {
 
 /**
  * 当组件显示，重新渲染
+ * @param visible 是否显示
  */
 const onElementVisibility = (visible: boolean) => {
   visible && queryData();
@@ -230,7 +231,10 @@ const highlightDiagram = () => {
   });
 };
 
-/** 根据活动状态，设置高亮样式 */
+/**
+ * 根据活动状态，设置高亮样式
+ * @param result 状态
+ */
 const getResultCss = (result?: string) => {
   if (result === "0") {
     // 待办
@@ -248,7 +252,11 @@ const getResultCss = (result?: string) => {
   return "no-marker";
 };
 
-/** 执行条件表达式 */
+/**
+ * 执行条件表达式
+ * @param params
+ * @param expression
+ */
 const executeConditionExpression = (params: string, expression: string) => {
   const paramsObj = JSON.parse(params) as { [key: string]: string };
   let evalStr = expression;
@@ -261,6 +269,7 @@ const executeConditionExpression = (params: string, expression: string) => {
 
 /**
  * 获取活动 outgoing 出线
+ * @param actKey
  */
 const getActivityOutgoing = (actKey?: string): BpmnElement[] => {
   if (!actKey) {
@@ -306,6 +315,7 @@ const getOverlays = () => {
 
 /**
  * 流程图的元素 hover事件
+ * @param eventObj 节点元素
  */
 const elementHover = (eventObj: { element: BpmnElement }) => {
   if (!eventObj) return;

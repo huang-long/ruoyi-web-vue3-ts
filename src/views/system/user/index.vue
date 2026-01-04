@@ -377,7 +377,11 @@ const rePwdRules = ref({
   ],
 });
 
-/** 通过条件过滤节点  */
+/**
+ * 通过条件过滤节点
+ * @param value 值
+ * @param data 数据
+ */
 const filterNode = (value: string, data: { label: string }) => {
   if (!value) return true;
   return data.label.indexOf(value) !== -1;
@@ -386,13 +390,17 @@ const filterNode = (value: string, data: { label: string }) => {
 watch(deptName, (val) => {
   deptTreeRef.value.filter(val);
 });
-/** 查询部门下拉树结构 */
+/**
+ * 查询部门下拉树结构
+ */
 const getDeptTree = () => {
   deptTreeSelect().then((response) => {
     deptOptions.value = response.data || [];
   });
 };
-/** 查询用户列表 */
+/**
+ * 查询用户列表
+ */
 const getList = () => {
   loading.value = true;
   listUser(addDateRange(queryParams.value, dateRange.value)).then((res) => {
@@ -401,7 +409,10 @@ const getList = () => {
     total.value = res.total || 0;
   });
 };
-/** 节点单击事件 */
+/**
+ * 节点单击事件
+ * @param data 选中节点数据
+ */
 const handleNodeClick = (data: { id: string }) => {
   queryParams.value.deptId = data.id;
   handleQuery();
@@ -419,7 +430,10 @@ const resetQuery = () => {
   deptTreeRef.value.setCurrentKey(null);
   handleQuery();
 };
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row 选中行数据
+ */
 const handleDelete = (row: UserInfoObj) => {
   const userIds = row.userId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？')
@@ -431,7 +445,9 @@ const handleDelete = (row: UserInfoObj) => {
       ElMessage.success("删除成功");
     });
 };
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 const handleExport = () => {
   server.download(
     "system/user/export",
@@ -441,7 +457,10 @@ const handleExport = () => {
     `user_${new Date().getTime()}.xlsx`,
   );
 };
-/** 用户状态修改  */
+/**
+ * 用户状态修改
+ * @param row 选中行数据
+ */
 const handleStatusChange = (row: UserInfoObj) => {
   const text = row.status === "0" ? "启用" : "停用";
   ElMessageBox.confirm('确认要"' + text + '""' + row.userName + '"用户吗?')
@@ -468,17 +487,25 @@ const handleStatusChange = (row: UserInfoObj) => {
 //       break;
 //   }
 // }
-/** 跳转角色分配 */
+/**
+ * 跳转角色分配
+ * @param row 选中行数据
+ */
 const handleAuthRole = (row: UserInfoObj) => {
   const userId = row.userId;
   router.push("/system/user-auth/role/" + userId);
 };
-/** 重置密码按钮操作 */
+/**
+ * 重置密码按钮操作
+ * @param row 选中行数据
+ */
 const handleResetPwd = (row: UserInfoObj) => {
   rePwdOpen.value = true;
   rePwdForm.value.userId = row.userId;
 };
-/** 重置密码提交 */
+/**
+ * 重置密码提交
+ */
 const submitRePwdForm = () => {
   rePwdRef.value.validate().then((valid: boolean) => {
     if (valid) {
@@ -489,26 +516,39 @@ const submitRePwdForm = () => {
     }
   });
 };
-/** 选择条数  */
+/**
+ * 选择条数
+ * @param row 选中行数据
+ */
 const handleSelectionChange = (selection: UserInfoObj[]) => {
   ids.value = selection.map((item) => item.userId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 };
-/** 导入按钮操作 */
+/**
+ * 导入按钮操作
+ */
 const handleImport = () => {
   upload.title = "用户导入";
   upload.open = true;
 };
-/** 下载模板操作 */
+/**
+ * 下载模板操作
+ */
 const importTemplate = () => {
   server.download("system/user/importTemplate", {}, `user_template_${new Date().getTime()}.xlsx`);
 };
-/**文件上传中处理 */
+/**
+ * 文件上传中处理
+ */
 const handleFileUploadProgress = () => {
   upload.isUploading = true;
 };
-/** 文件上传成功处理 */
+/**
+ * 文件上传成功处理
+ * @param response 响应结果
+ * @param file 文件
+ */
 const handleFileSuccess = (response: { msg: string }, file: File) => {
   upload.open = false;
   upload.isUploading = false;
@@ -516,11 +556,15 @@ const handleFileSuccess = (response: { msg: string }, file: File) => {
   ElMessage.success(response.msg);
   getList();
 };
-/** 提交上传文件 */
+/**
+ * 提交上传文件
+ */
 const submitFileForm = () => {
   uploadRef.value.submit();
 };
-/** 重置操作表单 */
+/**
+ * 重置操作表单
+ */
 const reset = () => {
   form.value = {
     userId: "",
@@ -538,12 +582,16 @@ const reset = () => {
   };
   userRef.value?.resetFields();
 };
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 const cancel = () => {
   open.value = false;
   reset();
 };
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 const handleAdd = () => {
   reset();
   getUser(form.value.userId).then((response) => {
@@ -554,7 +602,10 @@ const handleAdd = () => {
     form.value.password = "";
   });
 };
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row 选中行数据
+ */
 const handleUpdate = (row: UserInfoObj) => {
   reset();
   const userId = row.userId || ids.value.toString();
@@ -569,7 +620,9 @@ const handleUpdate = (row: UserInfoObj) => {
     form.value.password = "";
   });
 };
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 const submitForm = () => {
   userRef.value?.validate((valid) => {
     if (valid) {

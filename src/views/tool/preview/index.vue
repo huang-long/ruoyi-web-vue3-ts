@@ -42,12 +42,24 @@ const excel = ref("/excel/test.xlsx"); //设置文档网络地址，可以是相
 const pdf = ref("/pdf/test.pdf"); //设置文档网络地址，可以是相对地址
 const pptx = ref("/pptx/test.pptx"); //设置文档网络地址，可以是相对地址
 
+/**
+ * 渲染完成
+ */
 const renderedHandler = () => {
   console.log("渲染完成");
 };
+
+/**
+ * 渲染失败
+ */
 const errorHandler = () => {
   console.log("渲染失败");
 };
+
+/**
+ * 显示预览
+ * @param type
+ */
 const view = (type: string) => {
   dialogVisible.value = true;
   fileType.value = type;

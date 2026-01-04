@@ -144,7 +144,9 @@ const queryParams = ref<JobLogObj & QueryParam>({
   jobGroup: undefined,
 });
 
-/** 查询调度日志列表 */
+/**
+ * 查询调度日志列表
+ */
 function getList() {
   loading.value = true;
   listJobLog(addDateRange(queryParams.value, dateRange.value)).then((response) => {
@@ -153,32 +155,46 @@ function getList() {
     loading.value = false;
   });
 }
-// 返回按钮
+/**
+ * 导出按钮操作
+ */
 function handleClose() {
   tStore.closeOpenPage("/monitor/job");
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   handleQuery();
 }
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ * @param selection
+ */
 function handleSelectionChange(selection: JobLogObj[]) {
   ids.value = selection.map((item) => item.jobLogId);
   multiple.value = !selection.length;
 }
-/** 详细按钮操作 */
+/**
+ * 详细按钮操作
+ * @param row
+ */
 function handleView(row: JobLogObj) {
   open.value = true;
   form.value = row;
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete() {
   ElMessageBox.confirm('是否确认删除调度日志编号为"' + ids.value.toString() + '"的数据项?')
     .then(function () {
@@ -189,7 +205,9 @@ function handleDelete() {
       ElMessage.success("删除成功");
     });
 }
-/** 清空按钮操作 */
+/**
+ * 清空按钮操作
+ */
 function handleClean() {
   ElMessageBox.confirm("是否确认清空所有调度日志数据项?")
     .then(function () {
@@ -200,7 +218,9 @@ function handleClean() {
       ElMessage.success("清空成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "monitor/jobLog/export",

@@ -24,6 +24,9 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 
+/**
+ * 返回首页
+ */
 const back = () => {
   if (route.query.noGoBack) {
     router.push({ path: "/" });

@@ -100,7 +100,9 @@ const queryParams = ref({
 const editDialogRef = ref();
 
 // function #####################################################
-/** 查询菜单列表 */
+/**
+ * 查询菜单列表
+ */
 function getList() {
   loading.value = true;
   listMenu(queryParams.value)
@@ -111,20 +113,29 @@ function getList() {
       loading.value = false;
     });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ * @param row
+ */
 function handleAdd(row: MenuObj) {
   editDialogRef.value.show({ action: "add", parentId: row.menuId });
 }
-/** 展开/折叠操作 */
+/**
+ * 展开/折叠操作
+ */
 function toggleExpandAll() {
   refreshTable.value = false;
   isExpandAll.value = !isExpandAll.value;
@@ -132,12 +143,18 @@ function toggleExpandAll() {
     refreshTable.value = true;
   });
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row
+ */
 function handleUpdate(row: MenuObj) {
   editDialogRef.value.show({ action: "edit", menuId: row.menuId });
 }
 
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row
+ */
 function handleDelete(row: MenuObj) {
   ElMessageBox.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?')
     .then(function () {

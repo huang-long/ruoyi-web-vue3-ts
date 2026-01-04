@@ -214,6 +214,7 @@ const createBpmnXmlByMetaInfo = () => {
 
 /**
  * 打开文件
+ * @param rawFile 流程文件
  */
 const openProcess = (rawFile: UploadFile) => {
   if (!rawFile.raw) {
@@ -248,6 +249,7 @@ const openProcess = (rawFile: UploadFile) => {
 };
 /**
  * 加载bpmn.xml配置文件
+ * @param xml bpmn流程
  */
 const loadBpmnXml = (xml: string) => {
   loading.value = true;
@@ -305,8 +307,8 @@ const saveModeler = () => {
     });
 };
 
-// 下载流程图到本地
 /**
+ * 下载流程图到本地
  * @param {string} type
  * @param {string} name
  */

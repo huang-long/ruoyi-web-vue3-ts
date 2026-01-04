@@ -138,7 +138,9 @@ onActivated(() => {
   }
 });
 
-/** 查询表集合 */
+/**
+ * 查询表集合
+ */
 function getList() {
   loading.value = true;
   listTable(addDateRange(queryParams.value, dateRange.value)).then((response) => {
@@ -147,12 +149,17 @@ function getList() {
     loading.value = false;
   });
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 生成代码操作 */
+/**
+ * 生成代码操作
+ * @param row 选中行数据
+ */
 function handleGenTable(row: GenInfoObj) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
@@ -167,7 +174,10 @@ function handleGenTable(row: GenInfoObj) {
     server.download("/tool/gen/batchGenCode?tables=" + tbNames, {}, "ruoyi.zip");
   }
 }
-/** 同步数据库操作 */
+/**
+ * 同步数据库操作
+ * @param row 选中行数据
+ */
 function handleSynchDb(row: GenInfoObj) {
   const tableName = row.tableName;
   ElMessageBox.confirm('确认要强制同步"' + tableName + '"表结构吗？')
@@ -178,17 +188,24 @@ function handleSynchDb(row: GenInfoObj) {
       ElMessage.success("同步成功");
     });
 }
-/** 打开导入表弹窗 */
+/**
+ * 打开导入表弹窗
+ */
 function openImportTable() {
   importRef.value.show();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   dateRange.value = [];
   queryFormRef.value?.resetFields();
   handleQuery();
 }
-/** 预览按钮 */
+/**
+ * 预览按钮
+ * @param row 选中行数据
+ */
 function handlePreview(row: GenInfoObj) {
   row.tableId &&
     previewTable(row.tableId).then((response) => {
@@ -205,18 +222,27 @@ function handlePreview(row: GenInfoObj) {
       preview.value.activeName = "domain.java";
     });
 }
-/** 复制代码成功 */
+/**
+ * 复制代码成功
+ * @param status 成功失败状态
+ */
 function copyTextSuccess(status: boolean) {
   ElMessage.success(status ? "复制成功" : "复制失败");
 }
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ * @param selection 选中数据
+ */
 function handleSelectionChange(selection: GenInfoObj[]) {
   ids.value = selection.map((item) => item.tableId || "");
   tableNames.value = selection.map((item) => item.tableName || "");
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param selection 选中数据
+ */
 function handleEditTable(row: GenInfoObj) {
   const tableId = row.tableId || ids.value[0];
   router.push({
@@ -224,7 +250,10 @@ function handleEditTable(row: GenInfoObj) {
     query: { pageNum: queryParams.value.pageNum },
   });
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param selection 选中数据
+ */
 function handleDelete(row: GenInfoObj) {
   const tableIds = row.tableId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？')

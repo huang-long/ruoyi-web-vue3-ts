@@ -135,7 +135,9 @@ const cancel = () => {
   open.value = false;
   formRef.value?.resetFields();
 };
-// 表单重置
+/**
+ * 表单重置
+ */
 const reset = () => {
   form.value = {
     id: "",
@@ -161,13 +163,18 @@ const handleAdd = () => {
   open.value = true;
   title.value = "添加模型";
 };
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ * @param row 选中行数据
+ */
 const handleUpdate = (row: ActModelerObj) => {
   reset();
   modelId.value = row.id;
   bpmnViewVisible.value = true;
 };
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 const submitForm = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
@@ -188,7 +195,10 @@ const submitForm = () => {
     }
   });
 };
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ * @param row 选中数据
+ */
 const handleDelete = (row: ActModelerObj) => {
   const modelIds = row.id;
   ElMessageBox.confirm('是否确认删除ID为"' + modelIds + '"的数据项?')
@@ -204,11 +214,17 @@ const handleDelete = (row: ActModelerObj) => {
       loading.value = false;
     });
 };
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ * @param row 选中数据
+ */
 const handleExport = (row: ActModelerObj) => {
   server.download("/activiti/modeler/export/" + row.id, {}, `modeler_${new Date().getTime()}.bpmn`);
 };
-/** 部署按钮操作 */
+/**
+ * 部署按钮操作
+ * @param row 选中数据
+ */
 const handleDeploy = (row: ActModelerObj) => {
   const modelId = row.id;
   ElMessageBox.confirm('是否确认部署ID为"' + modelId + '"的数据项?')

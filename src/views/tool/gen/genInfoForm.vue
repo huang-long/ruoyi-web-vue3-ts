@@ -236,7 +236,7 @@ const subColumns = ref<GenEColumn[]>([]);
 const menuOptions = ref<MenuObj[]>([]);
 const genInfo = ref<GenInfoObj>({});
 
-// 表单校验
+/** 表单校验 */
 const rules = ref({
   tplCategory: [{ required: true, message: "请选择生成模板", trigger: "blur" }],
   packageName: [{ required: true, message: "请输入生成包路径", trigger: "blur" }],
@@ -245,22 +245,42 @@ const rules = ref({
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }],
 });
 
-const emit = defineEmits<{ (event: "dataChange", value: GenInfoObj): void }>();
+const emit = defineEmits<{
+  /**
+   * 数据改变事件
+   */
+  (event: "dataChange", value: GenInfoObj): void;
+}>();
 
+/**
+ * 关联子表的表名选择改变事件
+ */
 function subSelectChange() {
   genInfo.value.subTableFkName = "";
 }
+
+/**
+ * 模板选择改变事件
+ * @param value 选中值
+ */
 function tplSelectChange(value: string) {
   if (value !== "sub") {
     genInfo.value.subTableName = "";
     genInfo.value.subTableFkName = "";
   }
 }
+
+/**
+ * 选择表格列属性
+ * @param value 选中值
+ */
 function setSubTableColumns(value: string) {
   const table = props.tables.find((item) => item.tableName === value);
   subColumns.value = table?.columns ?? [];
 }
-/** 查询菜单下拉树结构 */
+/**
+ * 查询菜单下拉树结构
+ */
 function getMenuTreeselect() {
   listMenu().then((response) => {
     response.data && (menuOptions.value = handleTree(response.data, "menuId"));

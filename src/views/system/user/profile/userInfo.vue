@@ -67,7 +67,9 @@ const rules = ref({
   ],
 });
 
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submit() {
   userRef.value?.validate((valid) => {
     if (valid) {
@@ -80,7 +82,9 @@ function submit() {
   });
 }
 
-/** 关闭按钮 */
+/**
+ * 关闭按钮
+ */
 function close() {
   tStore.closePage();
 }

@@ -267,7 +267,9 @@ const rules = ref({
   cronExpression: [{ required: true, message: "cron执行表达式不能为空", trigger: "change" }],
 });
 
-/** 查询定时任务列表 */
+/**
+ * 查询定时任务列表
+ */
 function getList() {
   loading.value = true;
   listJob(queryParams.value).then((response) => {
@@ -276,12 +278,16 @@ function getList() {
     loading.value = false;
   });
 }
-/** 取消按钮 */
+/**
+ * 取消按钮
+ */
 function cancel() {
   open.value = false;
   reset();
 }
-/** 表单重置 */
+/**
+ * 表单重置
+ */
 function reset() {
   form.value = {
     jobId: "",
@@ -295,17 +301,23 @@ function reset() {
   };
   jobRef.value?.resetFields();
 }
-/** 搜索按钮操作 */
+/**
+ * 搜索按钮操作
+ */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 重置按钮操作 */
+/**
+ * 重置按钮操作
+ */
 function resetQuery() {
   queryRef.value?.resetFields();
   handleQuery();
 }
-// 多选框选中数据
+/**
+ * 多选框选中数据
+ */
 function handleSelectionChange(selection: JobObj[]) {
   ids.value = selection.map((item) => item.jobId);
   single.value = selection.length != 1;
@@ -327,7 +339,10 @@ function handleSelectionChange(selection: JobObj[]) {
 //       break;
 //   }
 // }
-// 任务状态修改
+/**
+ * 任务状态修改
+ * @param row
+ */
 function handleStatusChange(row: JobObj) {
   const text = row.status === "0" ? "启用" : "停用";
   ElMessageBox.confirm('确认要"' + text + '""' + row.jobName + '"任务吗?')
@@ -341,7 +356,9 @@ function handleStatusChange(row: JobObj) {
       row.status = row.status === "0" ? "1" : "0";
     });
 }
-/* 立即执行一次 */
+/**
+ * 立即执行一次
+ */
 function handleRun(row: JobObj) {
   ElMessageBox.confirm('确认要立即执行一次"' + row.jobName + '"任务吗?')
     .then(function () {
@@ -351,34 +368,46 @@ function handleRun(row: JobObj) {
       ElMessage.success("执行成功");
     });
 }
-/** 任务详细信息 */
+/**
+ * 任务详细信息
+ */
 function handleView(row: JobObj) {
   getJob(row.jobId).then((response) => {
     response.data && (form.value = response.data);
     openView.value = true;
   });
 }
-/** cron表达式按钮操作 */
+/**
+ * cron表达式按钮操作
+ */
 function handleShowCron() {
   form.value.cronExpression && (expression.value = form.value.cronExpression);
   openCron.value = true;
 }
-/** 确定后回传值 */
+/**
+ * 确定后回传值
+ */
 function crontabFill(value: string) {
   form.value.cronExpression = value;
 }
-/** 任务日志列表查询 */
+/**
+ * 任务日志列表查询
+ */
 function handleJobLog(row: JobObj) {
   const jobId = row.jobId || "0";
   router.push("/monitor/job-log/index/" + jobId);
 }
-/** 新增按钮操作 */
+/**
+ * 新增按钮操作
+ */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = "添加任务";
 }
-/** 修改按钮操作 */
+/**
+ * 修改按钮操作
+ */
 function handleUpdate(row: JobObj) {
   reset();
   const jobId = row.jobId || ids.value.toString();
@@ -388,7 +417,9 @@ function handleUpdate(row: JobObj) {
     title.value = "修改任务";
   });
 }
-/** 提交按钮 */
+/**
+ * 提交按钮
+ */
 function submitForm() {
   jobRef.value?.validate((valid) => {
     if (valid) {
@@ -408,7 +439,9 @@ function submitForm() {
     }
   });
 }
-/** 删除按钮操作 */
+/**
+ * 删除按钮操作
+ */
 function handleDelete(row: JobObj) {
   const jobIds = row.jobId || ids.value.toString();
   ElMessageBox.confirm('是否确认删除定时任务编号为"' + jobIds + '"的数据项?')
@@ -420,7 +453,9 @@ function handleDelete(row: JobObj) {
       ElMessage.success("删除成功");
     });
 }
-/** 导出按钮操作 */
+/**
+ * 导出按钮操作
+ */
 function handleExport() {
   server.download(
     "monitor/job/export",

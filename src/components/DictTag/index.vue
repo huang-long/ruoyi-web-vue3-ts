@@ -27,9 +27,21 @@ import type { DictObj } from "@/api/system/dict/data";
 
 const props = withDefaults(
   defineProps<{
-    options?: DictObj[]; // 数据
+    /**
+     * 字典数据列表
+     */
+    options?: DictObj[];
+    /**
+     * 字典数据值
+     */
     value: number | string | string[];
+    /**
+     * 是否显示未匹配到的数据
+     */
     showValue?: boolean;
+    /**
+     * 分割符号
+     */
     separator?: string;
   }>(),
   {
@@ -41,11 +53,17 @@ const props = withDefaults(
   },
 );
 
+/**
+ * 字典数据值
+ */
 const values = computed(() => {
   if (props.value === null || typeof props.value === "undefined" || props.value === "") return [];
   return Array.isArray(props.value) ? props.value.map((item) => "" + item) : String(props.value).split(props.separator);
 });
 
+/**
+ * 是否有未匹配的数据
+ */
 const unmatch = computed(() => {
   // 没有value不显示
   if (props.value === null || typeof props.value === "undefined" || props.value === "" || props.options?.length === 0) {
@@ -60,7 +78,11 @@ const unmatch = computed(() => {
   });
   return unmatch; // 返回标志的值
 });
-// 记录未匹配的项
+
+/**
+ * 记录未匹配的数据列表
+ * @return 未匹配的数据列表
+ */
 const unmatchArray = computed(() => {
   const unList: string[] = [];
   // 没有value不显示
@@ -76,6 +98,10 @@ const unmatchArray = computed(() => {
   return unList; // 返回标志的值
 });
 
+/**
+ * 返回未匹配的数据支付串，空格拼接
+ * @param array 未匹配的数据列表
+ */
 function handleArray(array: string[]) {
   if (array.length === 0) return "";
   return array.reduce((pre, cur) => {

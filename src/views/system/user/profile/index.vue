@@ -87,6 +87,10 @@ const form = ref<{ user: UserInfoObj; roleGroup: string; postGroup: string }>({
   postGroup: "",
 });
 const activeTab = ref("userinfo");
+
+/**
+ * 获取用户数据
+ */
 function getUser() {
   getUserProfile().then((rsp) => {
     form.value.user = rsp.data;

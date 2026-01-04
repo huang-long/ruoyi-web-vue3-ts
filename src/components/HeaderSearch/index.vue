@@ -41,17 +41,29 @@ const headerSearchSelectRef = ref();
 const router = useRouter();
 const pStore = permissionStore();
 
+/**
+ * 点击展开功能搜索
+ */
 function click() {
   show.value = !show.value;
   if (show.value) {
     headerSearchSelectRef.value && headerSearchSelectRef.value.focus();
   }
 }
+
+/**
+ * 点击关闭功能搜索
+ */
 function close() {
   headerSearchSelectRef.value && headerSearchSelectRef.value.blur();
   options.value = [];
   show.value = false;
 }
+
+/**
+ * 输入框搜索值改变触发事件
+ * @param val 搜索值
+ */
 function change(val: SearchData) {
   const path = val.path;
   const query = val.query;
@@ -73,6 +85,11 @@ function change(val: SearchData) {
     show.value = false;
   });
 }
+
+/**
+ * 初始化功能数据列表
+ * @param list 功能数据
+ */
 function initFuse(list: SearchData[]) {
   fuse.value = new Fuse(list, {
     shouldSort: true,
@@ -92,13 +109,17 @@ function initFuse(list: SearchData[]) {
     ],
   });
 }
-// Filter out the routes that can be displayed in the sidebar
-// And generate the internationalized title
+/**
+ * 过滤掉可以在侧边栏显示的路由,并生成国际化标题
+ *
+ * @param routes 路由列表
+ * @param prefixTitle 路由标题
+ */
 function generateRoutes(routes: RouteRecordRaw[], prefixTitle: string[] = []) {
   let res: SearchData[] = [];
 
   for (const r of routes) {
-    // skip hidden router
+    // 跳过隐藏路由器
     if (r.meta?.hidden) {
       continue;
     }
@@ -118,7 +139,7 @@ function generateRoutes(routes: RouteRecordRaw[], prefixTitle: string[] = []) {
       data.query = r.meta.query;
     }
 
-    // recursive child routes
+    //递归子路由
     if (r.children) {
       const tempRoutes = generateRoutes(r.children, data.title);
       if (tempRoutes.length >= 1) {
@@ -128,6 +149,11 @@ function generateRoutes(routes: RouteRecordRaw[], prefixTitle: string[] = []) {
   }
   return res;
 }
+
+/**
+ * 查询功能数据
+ * @param query 查询值
+ */
 function querySearch(query: string) {
   if (query !== "") {
     options.value = fuse.value?.search(query) || [];
@@ -136,14 +162,23 @@ function querySearch(query: string) {
   }
 }
 
+/**
+ * 初始化搜索数据
+ */
 onMounted(() => {
   searchPool.value = generateRoutes(pStore.tagsRouters);
 });
 
+/**
+ * 监听路由变化
+ */
 watchEffect(() => {
   searchPool.value = generateRoutes(pStore.tagsRouters);
 });
 
+/**
+ * 监听显示状态
+ */
 watch(show, (value) => {
   if (value) {
     document.body.addEventListener("click", close);
@@ -152,6 +187,9 @@ watch(show, (value) => {
   }
 });
 
+/**
+ * 监听搜索数据变化
+ */
 watch(searchPool, (list) => {
   initFuse(list);
 });
