@@ -95,7 +95,7 @@
 <script lang="ts" setup name="LeavePage">
 import { listLeave, addLeave, updateLeave, type LeaveObj } from "@/api/workflow/leave";
 import { loadDicts } from "@/utils/dict";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { ElMessage, dayjs } from "element-plus";
 import userStore from "@/stores/user";
 import server from "@/utils/request";
@@ -156,8 +156,8 @@ const rules = ref({
 });
 
 //elment ################################################
-const queryFormRef = ref<ElForm>();
-const formRef = ref<ElForm>();
+const queryFormRef = useTemplateRef<ElForm>("queryFormRef");
+const formRef = useTemplateRef<ElForm>("formRef");
 
 // Function ################################################
 /** 查询请假列表 */

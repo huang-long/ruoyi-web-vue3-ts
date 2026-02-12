@@ -6,7 +6,7 @@
 
 <script lang="ts" setup name="ProcessViewer">
 import { vElementVisibility } from "@vueuse/components";
-import { ref, watch, onBeforeUnmount } from "vue";
+import { ref, watch, onBeforeUnmount, useTemplateRef } from "vue";
 import BpmnViewer from "bpmn-js/lib/Viewer";
 // 导入一下有关于bpmn-js的字体库以及样式文件
 import "bpmn-js/dist/assets/diagram-js.css";
@@ -35,7 +35,7 @@ const props = withDefaults(
 const loading = ref(false);
 
 //elment ################################################
-const canvasRef = ref();
+const canvasRef = useTemplateRef<HTMLElement>("canvasRef");
 
 //内部变量 ################################################
 let bpmnViewer: BpmnViewer | undefined = undefined;
@@ -61,7 +61,7 @@ const getBpmnModeler = () => {
   if (!bpmnViewer) {
     //初始化视图对象
     bpmnViewer = new BpmnViewer({
-      container: canvasRef.value,
+      container: canvasRef.value || undefined,
       bpmnRenderer: {},
     });
     //初始化监听事件

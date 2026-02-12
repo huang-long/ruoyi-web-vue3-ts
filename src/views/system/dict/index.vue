@@ -102,7 +102,7 @@
 
 <script lang="ts" setup name="DictPage">
 import { loadDicts } from "@/utils/dict";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, useTemplateRef } from "vue";
 import { addDateRange } from "@/utils/ruoyi";
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
 import server from "@/utils/request";
@@ -154,8 +154,8 @@ const rules = ref({
   dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }],
 });
 
-const formRef = ref<ElForm>();
-const queryRef = ref<ElForm>();
+const formRef = useTemplateRef<ElForm>("formRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 /** 查询字典类型列表 */
 const getList = () => {

@@ -44,11 +44,11 @@
 
 <script lang="ts" setup name="SelectUser">
 import { authUserSelectAll, unallocatedUserList } from "@/api/system/role";
-import { reactive, ref } from "vue";
+import { reactive, ref, useTemplateRef } from "vue";
 import { loadDicts } from "@/utils/dict";
 import type { UserInfoObj } from "@/api/system/user";
-import { ElMessage, dayjs } from "element-plus";
-import type { ElForm } from "@/api/form";
+import { ElMessage, ElTable, dayjs } from "element-plus";
+import type { ElForm, ElTableInstance } from "@/api/form";
 
 const props = withDefaults(
   defineProps<{
@@ -66,8 +66,8 @@ const userList = ref<UserInfoObj[]>([]);
 const visible = ref(false);
 const total = ref(0);
 const userIds = ref<string[]>([]);
-const queryRef = ref<ElForm>();
-const tableRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const tableRef = useTemplateRef<ElTableInstance>("tableRef");
 
 const queryParams = reactive({
   pageNum: 1,
@@ -89,7 +89,7 @@ function show() {
  * 选择行
  */
 function clickRow(row: UserInfoObj) {
-  tableRef.value.toggleRowSelection(row);
+  tableRef.value?.toggleRowSelection(row);
 }
 /**
  * 多选框选中数据

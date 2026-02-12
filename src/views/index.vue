@@ -1,5 +1,5 @@
 <template>
-  <div ref="homePage" class="page">
+  <div ref="homePageRef" class="page">
     <!-- 待办、已办、办结、消息、预警 -->
     <el-row :gutter="20" class="mgb20">
       <el-col v-for="(item, index) in messageList" :key="index" :span="4">
@@ -71,7 +71,7 @@
               </el-dropdown>
             </h1>
             <p>40000</p>
-            <div ref="refChart1"></div>
+            <div ref="chartRef1"></div>
           </div>
         </el-card>
       </el-col>
@@ -97,7 +97,7 @@
               </el-dropdown>
             </h1>
             <p>￥400,000.00</p>
-            <div ref="refChart2"></div>
+            <div ref="chartRef2"></div>
           </div>
         </el-card>
       </el-col>
@@ -109,7 +109,7 @@
               <span>投入成本</span>
             </h1>
             <p>￥380,000.00</p>
-            <div ref="refChart3"></div>
+            <div ref="chartRef3"></div>
           </div>
         </el-card>
       </el-col>
@@ -119,12 +119,12 @@
     <el-row :gutter="20" class="mgb20">
       <el-col :span="8">
         <el-card shadow="hover" :body-style="{ padding: '10px' }">
-          <div ref="refChart4" class="chart-cont2"></div>
+          <div ref="chartRef4" class="chart-cont2"></div>
         </el-card>
       </el-col>
       <el-col :span="16">
         <el-card shadow="hover" :body-style="{ padding: '10px' }">
-          <div ref="refChart5" class="chart-cont2"></div>
+          <div ref="chartRef5" class="chart-cont2"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -166,7 +166,7 @@
   </div>
 </template>
 <script lang="ts" setup name="homePage">
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, useTemplateRef } from "vue";
 import * as echarts from "echarts";
 import { onBeforeUnmount } from "vue";
 import { watch } from "vue";
@@ -288,12 +288,12 @@ const tableData2 = [
 ];
 
 // 图标1
-const refChart1 = ref();
+const chartRef1 = useTemplateRef<HTMLElement>("chartRef1");
 let myChart1: echarts.EChartsType;
 const initChart1 = () => {
-  if (refChart1.value) {
+  if (chartRef1.value) {
     //初始化echarts实例
-    myChart1 = echarts.init(refChart1.value);
+    myChart1 = echarts.init(chartRef1.value);
     // 指定图表的配置项和数据
     const option = {
       grid: {
@@ -335,12 +335,12 @@ const initChart1 = () => {
 };
 
 // 图标1
-const refChart2 = ref();
+const chartRef2 = useTemplateRef<HTMLElement>("chartRef2");
 let myChart2: echarts.EChartsType;
 const initChart2 = () => {
-  if (refChart2.value) {
+  if (chartRef2.value) {
     //初始化echarts实例
-    myChart2 = echarts.init(refChart2.value);
+    myChart2 = echarts.init(chartRef2.value);
     // 指定图表的配置项和数据
     const option = {
       grid: {
@@ -386,12 +386,12 @@ const initChart2 = () => {
 };
 
 // 图标3
-const refChart3 = ref();
+const chartRef3 = useTemplateRef<HTMLElement>("chartRef3");
 let myChart3: echarts.EChartsType;
 const initChart3 = () => {
-  if (refChart3.value) {
+  if (chartRef3.value) {
     //初始化echarts实例
-    myChart3 = echarts.init(refChart3.value);
+    myChart3 = echarts.init(chartRef3.value);
     // 指定图表的配置项和数据
     const option = {
       grid: {
@@ -432,12 +432,12 @@ const initChart3 = () => {
 };
 
 // 图标3
-const refChart4 = ref();
+const chartRef4 = useTemplateRef<HTMLElement>("chartRef4");
 let myChart4: echarts.EChartsType;
 const initChart4 = () => {
-  if (refChart4.value) {
+  if (chartRef4.value) {
     //初始化echarts实例
-    myChart4 = echarts.init(refChart4.value);
+    myChart4 = echarts.init(chartRef4.value);
     // 指定图表的配置项和数据
     const option = {
       title: {
@@ -481,12 +481,12 @@ const initChart4 = () => {
 };
 
 // 图标5
-const refChart5 = ref();
+const chartRef5 = useTemplateRef<HTMLElement>("chartRef5");
 let myChart5: echarts.EChartsType;
 const initChart5 = () => {
-  if (refChart5.value) {
+  if (chartRef5.value) {
     //初始化echarts实例
-    myChart5 = echarts.init(refChart5.value);
+    myChart5 = echarts.init(chartRef5.value);
     // 指定图表的配置项和数据
     const option = {
       title: {
@@ -601,8 +601,8 @@ const resizeChart = () => {
 };
 
 // 监听页面大小变化
-const homePage = ref();
-const { width: pageWidth } = useElementSize(homePage);
+const homePageRef = useTemplateRef<HTMLElement>("homePageRef");
+const { width: pageWidth } = useElementSize(homePageRef);
 watch(pageWidth, () => {
   resizeChart();
 });

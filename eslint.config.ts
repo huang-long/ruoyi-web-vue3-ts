@@ -10,16 +10,16 @@ export default defineConfig([
   //eslint默认常规配置
   eslint.configs.recommended,
   //tseslint默认常规配置
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   //Vue默认常规配置
-  pluginVue.configs["flat/essential"],
+  ...pluginVue.configs["flat/essential"],
   //tseslint自定义配置
   {
     files: ["src/**/*.{ts,vue}"],
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        parser: tseslint.parser,
+        parser: tseslint.parser, //ts官方解析器
         ecmaVersion: "latest",
         project: "./tsconfig.app.json", // 指定 tsconfig.json 路径
         sourceType: "module",

@@ -14,8 +14,9 @@
 
 <script lang="ts" setup name="CompTaskDetail">
 import { nextTick, watch } from "vue";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import LeaveInfo from "../../leave/leaveInfo.vue";
+import { useVModel } from "@vueuse/core";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -36,14 +37,7 @@ const busiId = ref("");
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void }>();
 //computed ################################################
-const visible = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+const visible = useVModel(props, "modelValue", emit);
 
 //watch ################################################
 watch(

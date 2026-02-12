@@ -79,7 +79,7 @@
 import server from "@/utils/request";
 import bpmnView from "./bpmnView.vue";
 import { listModeler, delModeler, addModeler, deployModeler, type ActModelerObj } from "@/api/workflow/activiti/modeler";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import type { ElForm } from "@/api/form";
 
@@ -117,8 +117,8 @@ const rules = ref({
 });
 
 //elment ################################################
-const queryRef = ref<ElForm>();
-const formRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const formRef = useTemplateRef<ElForm>("formRef");
 
 // Function ################################################
 /** 查询模型列表 */

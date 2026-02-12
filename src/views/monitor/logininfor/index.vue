@@ -45,7 +45,7 @@
       <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="logininforRef" v-loading="loading" :data="logininforList" :default-sort="defaultSort" @selection-change="handleSelectionChange" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="logininforList" :default-sort="defaultSort" @selection-change="handleSelectionChange" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="访问编号" align="center" prop="infoId" />
       <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
@@ -76,7 +76,7 @@ import server from "@/utils/request";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessageBox, ElMessage, dayjs } from "element-plus";
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor, type LoginLogObj } from "@/api/monitor/logininfor";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import type { ElForm, QueryParam } from "@/api/form";
 
 // const { proxy } = getCurrentInstance();
@@ -93,9 +93,7 @@ const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "loginTime", order: "descending" });
 
-const queryRef = ref<ElForm>();
-const logininforRef = ref();
-
+const queryRef = useTemplateRef<ElForm>("queryRef");
 // 查询参数
 const queryParams = ref<LoginLogObj & QueryParam>({
   pageNum: 1,
@@ -103,8 +101,8 @@ const queryParams = ref<LoginLogObj & QueryParam>({
   ipaddr: undefined,
   userName: undefined,
   status: undefined,
-  orderByColumn: "",
-  isAsc: "",
+  orderByColumn: "loginTime",
+  isAsc: "descending",
   infoId: "",
 });
 
@@ -137,7 +135,8 @@ function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   queryParams.value.pageNum = 1;
-  logininforRef.value.sort(defaultSort.value.prop, defaultSort.value.order);
+  queryParams.value.orderByColumn = "loginTime";
+  queryParams.value.isAsc = "descending";
 }
 /**
  * 多选框选中数据

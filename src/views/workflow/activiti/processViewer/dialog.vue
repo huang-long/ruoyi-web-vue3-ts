@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts" setup name="ProcessViewerDialog">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import processViewer from "./index.vue";
+import { useVModel } from "@vueuse/core";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -29,14 +30,7 @@ const viewer = ref({
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void; (event: "close"): void }>();
 //computed ################################################
-const dialogVisible = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+const dialogVisible = useVModel(props, "modelValue", emit);
 
 //watch ################################################
 watch(

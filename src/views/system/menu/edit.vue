@@ -172,7 +172,7 @@
 import { addMenu, getMenu, listMenu, updateMenu, type MenuObj } from "@/api/system/menu";
 import ElIconPicker from "@/components/ElIconPicker/index.vue";
 import { loadDicts } from "@/utils/dict";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "@/api/form";
@@ -201,7 +201,7 @@ const rules = ref({
   path: [{ required: true, message: "路由地址不能为空", trigger: "blur" }],
 });
 // ref 元素
-const menuRef = ref<ElForm>();
+const menuRef = useTemplateRef<ElForm>("menuRef");
 
 // emit事件 #####################################################
 const emit = defineEmits<{

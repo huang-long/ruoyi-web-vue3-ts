@@ -14,7 +14,7 @@
       <div class="header-user-con">
         <header-search id="header-search" />
 
-        <el-icon ref="myFullscreen" @click="toggleFullscreen">
+        <el-icon @click="toggleFullscreen">
           <component :is="isScreenfull ? 'Close' : 'FullScreen'" />
         </el-icon>
 

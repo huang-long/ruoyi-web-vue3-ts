@@ -19,14 +19,14 @@
 <script setup lang="ts" name="resetPwdPage">
 import { updateUserPwd } from "@/api/system/user";
 import { ElMessage } from "element-plus";
-import { reactive, ref } from "vue";
+import { reactive, ref, useTemplateRef } from "vue";
 import tagsStore from "@/stores/tagsView";
 import type { FormRule } from "@form-create/element-ui";
 import type { ElForm } from "@/api/form";
 
 // const { proxy } = getCurrentInstance();
 const tStore = tagsStore();
-const pwdRef = ref<ElForm>();
+const pwdRef = useTemplateRef<ElForm>("pwdRef");
 const user = reactive({
   oldPassword: "",
   newPassword: "",

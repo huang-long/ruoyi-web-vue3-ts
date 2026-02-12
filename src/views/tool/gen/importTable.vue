@@ -33,17 +33,17 @@
 </template>
 
 <script lang="ts" setup name="ToolGenTable">
-import type { ElForm } from "@/api/form";
+import type { ElForm, ElTableInstance } from "@/api/form";
 import { listDbTable, importTable, type GenInfoObj } from "@/api/tool/gen";
 import { ElMessage } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 const total = ref(0);
 const visible = ref(false);
 const tables = ref<string[]>([]);
 const dbTableList = ref<GenInfoObj[]>([]);
-const tableRef = ref();
-const queryRef = ref<ElForm>();
+const tableRef = useTemplateRef<ElTableInstance>("tableRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const queryParams = ref({
   pageNum: 1,
@@ -66,7 +66,7 @@ function show() {
  * @param row 选中行数据
  */
 function clickRow(row: GenInfoObj) {
-  tableRef.value.toggleRowSelection(row);
+  tableRef.value?.toggleRowSelection(row);
 }
 /**
  * 多选框选中数据

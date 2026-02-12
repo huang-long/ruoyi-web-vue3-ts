@@ -58,7 +58,7 @@
 <script setup lang="ts" name="MyProcessPage">
 import { loadDicts } from "@/utils/dict";
 import { queryMyProcess, type ActTaskObj } from "@/api/workflow/activiti/task";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import TaskDetail from "../components/detail.vue";
 import TaskHistory from "../components/history.vue";
 import ProcessViewer from "../../activiti/processViewer/dialog.vue";
@@ -99,7 +99,7 @@ const processViewDialog = ref({
 });
 
 // Element ################################################
-const queryFormRef = ref<ElForm>();
+const queryFormRef = useTemplateRef<ElForm>("queryFormRef");
 
 // Function ################################################
 /** 查询待办列表 */

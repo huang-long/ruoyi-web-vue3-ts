@@ -55,15 +55,15 @@
 <script setup lang="ts" name="AuthRolePage">
 import { getAuthRole, updateAuthRole } from "@/api/system/user";
 import type { UserInfoObj } from "@/api/system/user";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, useTemplateRef } from "vue";
 import { useRoute } from "vue-router";
 import tagsStore from "@/stores/tagsView";
 import { ElMessage, dayjs } from "element-plus";
 import type { RoleObj } from "@/api/system/role";
+import type { ElTableInstance } from "@/api/form";
 
 const route = useRoute();
 const tStore = tagsStore();
-const roleRef = ref();
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
@@ -76,12 +76,14 @@ const form = ref<UserInfoObj>({
   userId: "",
 });
 
+const roleRef = useTemplateRef<ElTableInstance>("roleRef");
+
 /**
  * 单击选中行数据
  * @param row 选中行数据
  */
 function clickRow(row: RoleObj) {
-  roleRef.value.toggleRowSelection(row);
+  roleRef.value?.toggleRowSelection(row);
 }
 /**
  * 多选框选中数据
@@ -126,7 +128,7 @@ const loadData = () => {
       nextTick(() => {
         roles.value.forEach((row) => {
           if (row.flag) {
-            roleRef.value.toggleRowSelection(row);
+            roleRef.value?.toggleRowSelection(row);
           }
         });
       });

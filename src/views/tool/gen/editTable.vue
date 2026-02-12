@@ -118,7 +118,7 @@ import { optionselect as getDictOptionselect, type DictTypeObj } from "@/api/sys
 import basicInfoForm from "./basicInfoForm.vue";
 import genInfoForm from "./genInfoForm.vue";
 import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "@/api/form";
 import tagsStore from "@/stores/tagsView";
@@ -133,8 +133,8 @@ const tables = ref<GenTColumn[]>([]);
 const columns = ref<GenEColumn[]>([]);
 const dictOptions = ref<DictTypeObj[]>([]);
 const info = ref<GenInfoObj>({});
-const basicInfoRef = ref();
-const genInfoRef = ref();
+const basicInfoRef = useTemplateRef("basicInfoRef");
+const genInfoRef = useTemplateRef("genInfoRef");
 let genInfo: GenInfoObj = {};
 
 /**
@@ -149,8 +149,8 @@ function genInfoChange(data: GenInfoObj) {
  * 提交按钮
  */
 function submitForm() {
-  const basicForm = basicInfoRef.value.$refs.basicInfoForm as ElForm;
-  const genForm = genInfoRef.value.$refs.genInfoForm as ElForm;
+  const basicForm = basicInfoRef.value?.$refs.basicInfoForm as ElForm;
+  const genForm = genInfoRef.value?.$refs.genInfoForm as ElForm;
   Promise.all([basicForm.validate(), genForm.validate()]).then((res) => {
     const validateResult = res.every((item: boolean) => !!item);
     if (validateResult) {

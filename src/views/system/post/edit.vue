@@ -33,7 +33,7 @@
 import { addPost, getPost, updatePost, type PostObj } from "@/api/system/post";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import type { ElForm } from "@/api/form";
 
 const dicts = loadDicts(["sys_normal_disable"]);
@@ -42,7 +42,7 @@ const action = ref("add");
 const open = ref(false);
 const loading = ref(true);
 const title = ref("");
-const postRef = ref<ElForm>();
+const postRef = useTemplateRef<ElForm>("postRef");
 
 const form = ref<PostObj>({
   postId: "",

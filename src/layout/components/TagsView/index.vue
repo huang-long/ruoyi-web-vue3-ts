@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup name="TagsViewLayout">
-import { computed, ref, watch, VueElement, nextTick } from "vue";
+import { computed, watch, VueElement, nextTick, useTemplateRef } from "vue";
 import tagsViewStore, { type Tag } from "@/stores/tagsView";
 import permissionStore from "@/stores/permission";
 import { useRoute, useRouter } from "vue-router";
@@ -129,14 +129,16 @@ const handleTags = (command: string) => {
 
 //滚轮滑动操作
 let translateX = 0;
-const tagsRef = ref();
-const tabsUlRef = ref();
-const tabsLiRef = ref();
+const tagsRef = useTemplateRef<HTMLElement>("tagsRef");
+const tabsUlRef = useTemplateRef<HTMLElement>("tabsUlRef");
+const tabsLiRef = useTemplateRef<VueElement[]>("tabsLiRef");
 /**
  * 滚轮滑动操作
  * @param event
  */
 const tabsWheel = (e: WheelEvent) => {
+  if (!tagsRef.value || !tabsUlRef.value || !tabsLiRef.value) return;
+
   translateX = translateX - e.deltaY;
   const max = tagsRef.value.offsetWidth - tabsUlRef.value.offsetWidth;
   if (max >= 0) {
@@ -155,14 +157,17 @@ const tabsWheel = (e: WheelEvent) => {
  * 定位到当前tag
  */
 const scrollToActiveTag = () => {
+  if (!tagsRef.value || !tabsUlRef.value || !tabsLiRef.value) return;
+  const tabsUlEl = tabsUlRef.value;
+  const tagsEl = tagsRef.value;
   tabsLiRef.value.forEach((item: VueElement) => {
     if (item.className && item.className.indexOf("active") >= 0) {
       if (item.offsetLeft + translateX < 0) {
         translateX = 0 - item.offsetLeft;
-        tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
-      } else if (item.offsetLeft + item.offsetWidth + translateX - tagsRef.value.offsetWidth > 0) {
-        translateX = tagsRef.value.offsetWidth - item.offsetLeft - item.offsetWidth;
-        tabsUlRef.value.style.transform = `translate(${translateX}px, 0px)`;
+        tabsUlEl.style.transform = `translate(${translateX}px, 0px)`;
+      } else if (item.offsetLeft + item.offsetWidth + translateX - tagsEl.offsetWidth > 0) {
+        translateX = tagsEl.offsetWidth - item.offsetLeft - item.offsetWidth;
+        tabsUlEl.style.transform = `translate(${translateX}px, 0px)`;
       }
     }
   });

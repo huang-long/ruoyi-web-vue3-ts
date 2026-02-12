@@ -66,33 +66,22 @@
     </el-table>
     <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
     <!-- 预览界面 -->
-    <el-dialog v-model="preview.open" :title="preview.title" width="80%" top="5vh" append-to-body class="scrollbar">
-      <el-tabs v-model="preview.activeName">
-        <el-tab-pane
-          v-for="item in preview.data"
-          :key="item.value"
-          :label="item.key.substring(item.key.lastIndexOf('/') + 1, item.key.indexOf('.vm'))"
-          :name="item.key.substring(item.key.lastIndexOf('/') + 1, item.key.indexOf('.vm'))"
-        >
-          <el-link v-copyText="item.value" v-copyText:callback="copyTextSuccess" :underline="false" icon="DocumentCopy" style="float: right">&nbsp;复制</el-link>
-          <pre>{{ item.value }}</pre>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>
+    <view-code v-model="showViewCode" :table-id="tableId"></view-code>
     <import-table ref="importRef" @ok="handleQuery" />
   </div>
 </template>
 
 <script lang="ts" setup name="ToolGen">
-import { listTable, previewTable, delTable, genCode, synchDb, type GenInfoObj, type GenTColumn } from "@/api/tool/gen";
+import { listTable, delTable, genCode, synchDb, type GenInfoObj, type GenTColumn } from "@/api/tool/gen";
 import router from "@/router";
 import importTable from "./importTable.vue";
 import { useRoute } from "vue-router";
-import { onActivated, ref } from "vue";
+import { onActivated, ref, useTemplateRef } from "vue";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import server from "@/utils/request";
-import type { ElForm, QueryParam } from "@/api/form";
+import type { EditPage, ElForm, QueryParam } from "@/api/form";
+import ViewCode from "./viewCode.vue";
 
 const route = useRoute();
 
@@ -106,25 +95,16 @@ const total = ref(0);
 const tableNames = ref<string[]>([]);
 const dateRange = ref<string[]>([]);
 const uniqueId = ref("");
-const queryFormRef = ref<ElForm>();
-const importRef = ref();
+const tableId = ref("");
+const showViewCode = ref(false);
+const queryFormRef = useTemplateRef<ElForm>("queryFormRef");
+const importRef = useTemplateRef<EditPage>("importRef");
 
 const queryParams = ref<GenTColumn & QueryParam>({
   pageNum: 1,
   pageSize: 10,
   tableName: undefined,
   tableComment: undefined,
-});
-const preview = ref<{
-  open: boolean;
-  title: string;
-  data: { key: string; value: string }[];
-  activeName: string;
-}>({
-  open: false,
-  title: "代码预览",
-  data: [],
-  activeName: "domain.java",
 });
 
 onActivated(() => {
@@ -192,7 +172,7 @@ function handleSynchDb(row: GenInfoObj) {
  * 打开导入表弹窗
  */
 function openImportTable() {
-  importRef.value.show();
+  importRef.value?.show();
 }
 /**
  * 重置按钮操作
@@ -207,28 +187,12 @@ function resetQuery() {
  * @param row 选中行数据
  */
 function handlePreview(row: GenInfoObj) {
-  row.tableId &&
-    previewTable(row.tableId).then((response) => {
-      preview.value.data = [];
-      if (response.data) {
-        Object.entries(response.data).forEach(([key, value]) => {
-          preview.value.data.push({
-            key: key,
-            value: value,
-          });
-        });
-      }
-      preview.value.open = true;
-      preview.value.activeName = "domain.java";
-    });
+  if (row.tableId) {
+    tableId.value = row.tableId;
+    showViewCode.value = true;
+  }
 }
-/**
- * 复制代码成功
- * @param status 成功失败状态
- */
-function copyTextSuccess(status: boolean) {
-  ElMessage.success(status ? "复制成功" : "复制失败");
-}
+
 /**
  * 多选框选中数据
  * @param selection 选中数据

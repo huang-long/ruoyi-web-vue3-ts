@@ -23,7 +23,7 @@
 import Fuse, { type FuseResult } from "fuse.js";
 import { isHttp } from "@/utils/validate";
 import permissionStore from "@/stores/permission";
-import { nextTick, onMounted, ref, watch, watchEffect } from "vue";
+import { nextTick, onMounted, ref, useTemplateRef, watch, watchEffect } from "vue";
 import { useRouter, type RouteRecordRaw } from "vue-router";
 
 type SearchData = {
@@ -37,7 +37,7 @@ const options = ref<FuseResult<SearchData>[]>([]);
 const searchPool = ref<SearchData[]>([]);
 const show = ref(false);
 const fuse = ref<Fuse<SearchData> | undefined>(undefined);
-const headerSearchSelectRef = ref();
+const headerSearchSelectRef = useTemplateRef<HTMLElement>("headerSearchSelectRef");
 const router = useRouter();
 const pStore = permissionStore();
 
@@ -47,7 +47,7 @@ const pStore = permissionStore();
 function click() {
   show.value = !show.value;
   if (show.value) {
-    headerSearchSelectRef.value && headerSearchSelectRef.value.focus();
+    headerSearchSelectRef.value?.focus();
   }
 }
 
@@ -55,7 +55,7 @@ function click() {
  * 点击关闭功能搜索
  */
 function close() {
-  headerSearchSelectRef.value && headerSearchSelectRef.value.blur();
+  headerSearchSelectRef.value?.blur();
   options.value = [];
   show.value = false;
 }

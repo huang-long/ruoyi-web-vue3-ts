@@ -71,10 +71,10 @@
 </template>
 
 <script lang="ts" setup name="ActDefinitionPage">
-import type { ElForm } from "@/api/form";
+import type { ElForm, ElUploadInstance } from "@/api/form";
 import { listDefinition, delDefinition, suspendOrActiveApply, convert2Model, uploadDefinition, type ActDefinitionObj } from "@/api/workflow/activiti/definition";
 import { ElMessage, ElMessageBox, dayjs, type UploadRawFile, type UploadRequestOptions } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 //ref对象 ################################################
 // 遮罩层
@@ -102,8 +102,8 @@ const queryParams = ref({
 });
 const uploadFileList = ref([]);
 //elment ################################################
-const queryRef = ref<ElForm>();
-const uploadRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const uploadRef = useTemplateRef<ElUploadInstance>("uploadRef");
 
 // Function ################################################
 /** 查询流程定义列表 */
@@ -140,14 +140,14 @@ const handleUpload = () => {
  */
 const close = () => {
   open.value = false;
-  uploadRef.value.clearFiles();
+  uploadRef.value?.clearFiles();
 };
 
 /**
  * 提交上传文件
  */
 const handelConfirm = () => {
-  uploadRef.value.submit();
+  uploadRef.value?.submit();
 };
 
 /**

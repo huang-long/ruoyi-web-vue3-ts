@@ -8,7 +8,6 @@ import type { Directive } from "vue";
  */
 const copyText: Directive<HTMLElement & { $copyValue: string; $copyCallback: (status: boolean, value: string) => void; $destroyCopy: () => void }, string | VoidFunction> = {
   beforeMount(el, { value, arg }) {
-    console.log(el, value, arg);
     if (arg === "callback" && typeof value === "function") {
       el.$copyCallback = value;
     } else if (typeof value === "string") {

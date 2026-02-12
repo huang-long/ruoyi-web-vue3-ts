@@ -3,11 +3,11 @@ import { getDicts as requestDicts } from "@/api/system/dict/data";
 import type { DictObj } from "@/api/system/dict/data";
 import { ref } from "vue";
 
-export type DictMapObj = { 
+export type DictMapObj = {
   /**
    * 字典类型
    */
-  [key: string]: DictObj[] | undefined 
+  [key: string]: DictObj[] | undefined;
 };
 
 /**

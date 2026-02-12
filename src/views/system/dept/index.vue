@@ -62,10 +62,10 @@
 <script lang="ts" setup name="Dept">
 import { listDept, delDept, type DeptObj } from "@/api/system/dept";
 import { loadDicts } from "@/utils/dict";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, useTemplateRef } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import type { ElForm } from "@/api/form";
+import type { EditPage, ElForm } from "@/api/form";
 import EditDialog from "./edit.vue";
 
 const dicts = loadDicts(["sys_normal_disable"]);
@@ -75,8 +75,8 @@ const loading = ref(true);
 const showSearch = ref(true);
 const isExpandAll = ref(true);
 const refreshTable = ref(true);
-const queryRef = ref<ElForm>();
-const editDialogRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const editDialogRef = useTemplateRef<EditPage>("editDialogRef");
 
 const queryParams = ref({
   deptId: "",

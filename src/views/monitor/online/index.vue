@@ -45,14 +45,14 @@
 import type { ElForm } from "@/api/form";
 import { forceLogout, list as initData, type OnlineInfoObj } from "@/api/monitor/online";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 const onlineList = ref<OnlineInfoObj[]>([]);
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
-const queryRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const queryParams = ref({
   pageNum: 1,

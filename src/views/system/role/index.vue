@@ -171,7 +171,7 @@ import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updat
 import { roleMenuTreeselect, treeselect as menuTreeselect, type TreeMenuObj } from "@/api/system/menu";
 import { useRouter } from "vue-router";
 import { loadDicts } from "@/utils/dict";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, useTemplateRef } from "vue";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import server from "@/utils/request";
@@ -200,10 +200,10 @@ const deptExpand = ref(true);
 const deptNodeAll = ref(false);
 const deptOptions = ref<TreeDeptObj[]>([]);
 const openDataScope = ref(false);
-const menuRef = ref<TreeStore>();
-const deptRef = ref<TreeStore>();
-const queryRef = ref<ElForm>();
-const roleRef = ref<ElForm>();
+const menuRef = useTemplateRef<TreeStore>("menuRef");
+const deptRef = useTemplateRef<TreeStore>("deptRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const roleRef = useTemplateRef<ElForm>("roleRef");
 
 /** 数据范围选项*/
 const dataScopeOptions = ref([

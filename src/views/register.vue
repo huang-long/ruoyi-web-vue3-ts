@@ -60,7 +60,7 @@
 
 <script lang="ts" setup name="RegisterPage">
 import { getCodeImg, register, type LoginReq } from "@/api/login";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessageBox } from "element-plus";
 import type { ElForm } from "@/api/form";
@@ -119,7 +119,7 @@ const getCode = () => {
   });
 };
 
-const registerFormRef = ref<ElForm>();
+const registerFormRef = useTemplateRef<ElForm>("registerFormRef");
 
 const handleRegister = () => {
   registerFormRef.value?.validate((valid) => {

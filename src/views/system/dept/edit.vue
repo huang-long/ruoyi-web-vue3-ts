@@ -65,7 +65,7 @@
 <script lang="ts" setup name="DeptEditDialog">
 import { listDept, getDept, addDept, updateDept, listDeptExcludeChild, type DeptObj } from "@/api/system/dept";
 import { loadDicts } from "@/utils/dict";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "@/api/form";
@@ -76,7 +76,7 @@ const loading = ref(true);
 const title = ref("");
 const deptOptions = ref<DeptObj[]>([]);
 const action = ref("add");
-const deptRef = ref<ElForm>();
+const deptRef = useTemplateRef<ElForm>("deptRef");
 
 const form = ref<DeptObj>({
   deptId: "",

@@ -67,11 +67,11 @@
 </template>
 
 <script lang="ts" setup name="SysNotice">
-import type { ElForm } from "@/api/form";
+import type { EditPage, ElForm } from "@/api/form";
 import { listNotice, delNotice, type NoticeObj } from "@/api/system/notice";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import EditDialog from "./edit.vue";
 
 const dicts = loadDicts(["sys_notice_status", "sys_notice_type"]);
@@ -83,8 +83,8 @@ const ids = ref<string[]>([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const editDialogRef = ref();
-const queryRef = ref<ElForm>();
+const editDialogRef = useTemplateRef<EditPage>("editDialogRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const queryParams = ref({
   pageNum: 1,

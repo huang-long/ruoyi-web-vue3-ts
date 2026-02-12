@@ -34,7 +34,7 @@ import type { ElForm } from "@/api/form";
 import { getConfig, addConfig, updateConfig, type SysConfigObj } from "@/api/system/config";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 const dicts = loadDicts(["sys_yes_no"]);
 
@@ -43,7 +43,7 @@ const loading = ref(true);
 const title = ref("");
 const action = ref("add");
 
-const configRef = ref<ElForm>();
+const configRef = useTemplateRef<ElForm>("configRef");
 
 const form = ref<SysConfigObj>({});
 const rules = ref({

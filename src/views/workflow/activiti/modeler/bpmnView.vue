@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup name="ActDefinitionPage">
-import { computed, watch, ref } from "vue";
+import { watch, ref, useTemplateRef } from "vue";
 import { ElMessage, type UploadFile } from "element-plus";
 import BpmnModeler from "bpmn-js/lib/Modeler"; // 引入 bpmn-js
 import type { ModdleElement } from "bpmn-js/lib/BaseModeler";
@@ -59,6 +59,8 @@ import { Splitpanes, Pane } from "splitpanes";
 import saveAs from "file-saver";
 import type CommandStack from "diagram-js/lib/command/CommandStack";
 import { getModelerDetail, updateModeler, type ActModelerObj, type XmlMetaInfo } from "@/api/workflow/activiti/modeler";
+import { useVModel } from "@vueuse/core";
+import type { ElUploadInstance } from "@/api/form";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -84,8 +86,8 @@ const iconBtn2 = ref([
   { name: "擦除重做", key: "restart", icon: "myEraser" },
 ]);
 //elment ################################################
-const canvasRef = ref();
-const uploadRef = ref();
+const canvasRef = useTemplateRef<HTMLElement>("canvasRef");
+const uploadRef = useTemplateRef<ElUploadInstance>("uploadRef");
 //emit
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void; (event: "close"): void }>();
 //内部变量 ################################################
@@ -94,14 +96,7 @@ let modelData: ActModelerObj = { id: "" };
 let bpmnXml: string | undefined = ""; //模型xml
 
 //computed ################################################
-const dialogVisible = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+const dialogVisible = useVModel(props, "modelValue", emit);
 
 // watch ################################################
 watch(dialogVisible, (value) => {
@@ -125,7 +120,7 @@ const getBpmnModeler = () => {
   };
   // 生成实例
   bpmnModeler = new BpmnModeler({
-    container: canvasRef.value, // 获取到属性ref为“canvasRef”的dom节点
+    container: canvasRef.value || undefined, // 获取到属性ref为“canvasRef”的dom节点
     propertiesPanel: {
       parent: "#js-properties-panel",
     },
@@ -244,7 +239,7 @@ const openProcess = (rawFile: UploadFile) => {
     } else {
       loading.value = false;
     }
-    uploadRef.value.clearFiles();
+    uploadRef.value?.clearFiles();
   };
 };
 /**

@@ -59,7 +59,7 @@
 <script setup lang="ts" name="todoListPage">
 import { loadDicts } from "@/utils/dict";
 import { queryTodoList, type ActTaskObj } from "@/api/workflow/activiti/task";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import TaskComplete from "../components/complete.vue";
 import TaskHistory from "../components/history.vue";
 import ProcessViewer from "../../activiti/processViewer/dialog.vue";
@@ -100,7 +100,7 @@ const processViewDialog = ref({
   procDefId: "",
 });
 // Element ################################################
-const queryFormRef = ref<ElForm>();
+const queryFormRef = useTemplateRef<ElForm>("queryFormRef");
 
 // Function ################################################
 /** 查询待办列表 */

@@ -73,10 +73,10 @@
 import EditDialog from "./edit.vue";
 import { delMenu, listMenu, type MenuObj } from "@/api/system/menu";
 import { loadDicts } from "@/utils/dict";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, useTemplateRef } from "vue";
 import { handleTree } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import type { ElForm } from "@/api/form";
+import type { EditPage, ElForm } from "@/api/form";
 
 // 内部变量 #####################################################
 // 数据字典
@@ -87,7 +87,7 @@ const loading = ref(true);
 const showSearch = ref(true);
 const isExpandAll = ref(false);
 const refreshTable = ref(true);
-const queryRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const queryParams = ref({
   menuId: "",
@@ -97,7 +97,7 @@ const queryParams = ref({
 });
 
 // ref 元素
-const editDialogRef = ref();
+const editDialogRef = useTemplateRef<EditPage>("editDialogRef");
 
 // function #####################################################
 /**
@@ -131,7 +131,7 @@ function resetQuery() {
  * @param row
  */
 function handleAdd(row: MenuObj) {
-  editDialogRef.value.show({ action: "add", parentId: row.menuId });
+  editDialogRef.value?.show({ action: "add", parentId: row.menuId });
 }
 /**
  * 展开/折叠操作
@@ -148,7 +148,7 @@ function toggleExpandAll() {
  * @param row
  */
 function handleUpdate(row: MenuObj) {
-  editDialogRef.value.show({ action: "edit", menuId: row.menuId });
+  editDialogRef.value?.show({ action: "edit", menuId: row.menuId });
 }
 
 /**

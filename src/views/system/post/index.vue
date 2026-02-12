@@ -69,10 +69,10 @@
 import { listPost, delPost, type PostObj } from "@/api/system/post";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import server from "@/utils/request";
 import { dayjs } from "element-plus";
-import type { ElForm } from "@/api/form";
+import type { EditPage, ElForm } from "@/api/form";
 import EditDialog from "./edit.vue";
 
 const dicts = loadDicts(["sys_normal_disable"]);
@@ -84,8 +84,8 @@ const ids = ref<string[]>([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const queryRef = ref<ElForm>();
-const editDialogRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const editDialogRef = useTemplateRef<EditPage>("editDialogRef");
 
 const queryParams = ref({
   postId: "",

@@ -50,7 +50,7 @@
       <right-toolbar v-model:showSearch="showSearch" @query-table="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="operlogRef" v-loading="loading" :data="operlogList" :default-sort="defaultSort" @selection-change="handleSelectionChange" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="operlogList" :default-sort="defaultSort" @selection-change="handleSelectionChange" @sort-change="handleSortChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="日志编号" align="center" prop="operId" />
       <el-table-column label="系统模块" align="center" prop="title" :show-overflow-tooltip="true" />
@@ -137,7 +137,7 @@ import { loadDicts } from "@/utils/dict";
 import server from "@/utils/request";
 import { addDateRange, selectDictLabel } from "@/utils/ruoyi";
 import { list, delOperlog, cleanOperlog, type OperLogObj } from "@/api/monitor/operlog";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import type { ElForm, QueryParam } from "@/api/form";
 
@@ -154,8 +154,7 @@ const total = ref(0);
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "operTime", order: "descending" });
 
-const queryRef = ref<ElForm>();
-const logininforRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const form = ref<OperLogObj>({
   operId: "",
@@ -167,8 +166,8 @@ const queryParams = ref<OperLogObj & QueryParam>({
   operIp: undefined,
   title: undefined,
   operName: undefined,
-  orderByColumn: "",
-  isAsc: "",
+  orderByColumn: "operTime",
+  isAsc: "descending",
   businessType: "",
   status: undefined,
   operId: "",
@@ -205,7 +204,8 @@ function resetQuery() {
   dateRange.value = [];
   queryRef.value?.resetFields();
   queryParams.value.pageNum = 1;
-  logininforRef.value.sort(defaultSort.value.prop, defaultSort.value.order);
+  queryParams.value.orderByColumn = "operTime";
+  queryParams.value.isAsc = "descending";
 }
 /**
  * 多选框选中数据

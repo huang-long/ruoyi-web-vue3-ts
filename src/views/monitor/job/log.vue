@@ -118,6 +118,7 @@ import { useRoute } from "vue-router";
 import tagsStore from "@/stores/tagsView";
 import { dayjs, ElMessage, ElMessageBox } from "element-plus";
 import type { ElForm, QueryParam } from "@/api/form";
+import { useTemplateRef } from "vue";
 
 const tStore = tagsStore();
 const dicts = loadDicts(["sys_common_status", "sys_job_group"]);
@@ -131,7 +132,7 @@ const multiple = ref(true);
 const total = ref(0);
 const dateRange = ref<string[]>([]);
 const route = useRoute();
-const queryRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const form = ref<JobLogObj>({
   jobLogId: "",

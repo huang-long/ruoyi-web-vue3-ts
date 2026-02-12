@@ -59,11 +59,11 @@ import { useRoute } from "vue-router";
 import selectUser from "./selectUser.vue";
 import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/role";
 import { loadDicts } from "@/utils/dict";
-import { reactive, ref } from "vue";
+import { reactive, ref, useTemplateRef } from "vue";
 import type { UserInfoObj } from "@/api/system/user";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import tagsStore from "@/stores/tagsView";
-import type { ElForm } from "@/api/form";
+import type { EditPage, ElForm } from "@/api/form";
 
 const tStore = tagsStore();
 const route = useRoute();
@@ -77,8 +77,8 @@ const showSearch = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const userIds = ref<string[]>([]);
-const queryRef = ref<ElForm>();
-const selectRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const selectRef = useTemplateRef<EditPage>("selectRef");
 
 const queryParams = reactive({
   pageNum: 1,
@@ -131,7 +131,7 @@ function handleSelectionChange(selection: UserInfoObj[]) {
  * 打开授权用户表弹窗
  */
 function openSelectUser() {
-  selectRef.value.show();
+  selectRef.value?.show();
 }
 /**
  * 取消授权按钮操作

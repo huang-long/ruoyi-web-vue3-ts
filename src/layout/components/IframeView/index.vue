@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup name="InnerLinkLayout">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, useTemplateRef } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -20,23 +20,16 @@ const route = useRoute();
 //   }
 // );
 
-const iframeRef = ref<HTMLIFrameElement>();
+const iframeRef = useTemplateRef<HTMLIFrameElement>("iframeRef");
 const loading = ref(false);
 
 onMounted(() => {
   nextTick(() => {
-    if (iframeRef.value && route.meta.link) {
-      if (iframeRef.value.addEventListener instanceof Function) {
-        loading.value = true;
-        iframeRef.value.addEventListener("load", function () {
-          loading.value = false;
-        });
-      } else {
-        loading.value = true;
-        iframeRef.value.onload = function () {
-          loading.value = false;
-        };
-      }
+    if (route.meta.link && iframeRef.value) {
+      loading.value = true;
+      iframeRef.value.addEventListener("load", function () {
+        loading.value = false;
+      });
       iframeRef.value.src = route.meta.link;
     }
   });

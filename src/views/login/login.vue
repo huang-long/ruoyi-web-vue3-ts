@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup name="LoginPage">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, useTemplateRef } from "vue";
 import { getCodeImg } from "@/api/login";
 import type { LoginReq } from "@/api/login";
 import Cookies from "js-cookie";
@@ -123,7 +123,7 @@ const getCookie = () => {
   };
 };
 
-const loginFormRef = ref<ElForm>();
+const loginFormRef = useTemplateRef<ElForm>("loginFormRef");
 /**
  * 登录
  */

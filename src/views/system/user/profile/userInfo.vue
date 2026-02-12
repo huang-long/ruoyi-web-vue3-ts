@@ -26,7 +26,7 @@
 import { updateUserProfile } from "@/api/system/user";
 import type { UserInfoObj } from "@/api/system/user";
 import { ElMessage } from "element-plus";
-import { ref, watch } from "vue";
+import { ref, useTemplateRef, watch } from "vue";
 import useStore from "@/stores/user";
 import tagsStore from "@/stores/tagsView";
 import type { ElForm } from "@/api/form";
@@ -45,7 +45,7 @@ const props = withDefaults(
   },
 );
 
-const userRef = ref<ElForm>();
+const userRef = useTemplateRef<ElForm>("userRef");
 const form = ref<UserInfoObj>({ userId: "" });
 const rules = ref({
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],

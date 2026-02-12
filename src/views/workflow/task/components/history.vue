@@ -52,10 +52,11 @@
 
 <script lang="ts" setup name="CompApplyAfter">
 import { loadDicts } from "@/utils/dict";
-import { watch } from "vue";
-import { computed, ref } from "vue";
+import { useTemplateRef, watch } from "vue";
+import { ref } from "vue";
 import { queryHistoryList, type TaskHistoryObj } from "@/api/workflow/activiti/task";
 import type { ElForm } from "@/api/form";
+import { useVModel } from "@vueuse/core";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -85,19 +86,12 @@ const total = ref(0);
 const historyList = ref<TaskHistoryObj[]>([]);
 
 //element ################################################
-const queryRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void }>();
 //computed ################################################
-const visible = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+const visible = useVModel(props, "modelValue", emit);
 
 //watch ################################################
 watch(

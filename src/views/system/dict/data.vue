@@ -118,7 +118,7 @@ import { loadDicts } from "@/utils/dict";
 import store from "@/stores/index";
 import { optionselect as getDictOptionselect, getType, type DictTypeObj } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData, type DictObj } from "@/api/system/dict/data";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useRoute } from "vue-router";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import server from "@/utils/request";
@@ -214,7 +214,7 @@ function cancel() {
   open.value = false;
   reset();
 }
-const dataRef = ref<ElForm>();
+const dataRef = useTemplateRef<ElForm>("dataRef");
 /**
  * 表单重置
  */
@@ -247,7 +247,7 @@ function handleClose() {
   tStore.closeOpenPage("/system/dict");
 }
 
-const queryRef = ref<ElForm>();
+const queryRef = useTemplateRef<ElForm>("queryRef");
 /**
  * 重置按钮操作
  */

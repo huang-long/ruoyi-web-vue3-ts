@@ -29,7 +29,7 @@ function move(amount: number) {
 
 /**
  * 获取页面 scrollTop
- * @returns 
+ * @returns
  */
 function position() {
   return document.documentElement.scrollTop || document.body.scrollTop;

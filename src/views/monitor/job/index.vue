@@ -228,7 +228,7 @@ import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus, ty
 import Crontab from "@/components/Crontab/index.vue";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 import type { ElForm } from "@/api/form";
 const router = useRouter();
@@ -247,8 +247,8 @@ const title = ref("");
 const openView = ref(false);
 const openCron = ref(false);
 const expression = ref("");
-const jobRef = ref<ElForm>();
-const queryRef = ref<ElForm>();
+const jobRef = useTemplateRef<ElForm>("jobRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
 
 const form = ref<JobObj>({
   jobId: "",

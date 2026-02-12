@@ -60,7 +60,7 @@ import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
 import userStore from "@/stores/user";
-import { reactive, ref } from "vue";
+import { reactive, ref, useTemplateRef } from "vue";
 import { ElMessage } from "element-plus";
 
 const uStore = userStore();
@@ -69,7 +69,13 @@ const uStore = userStore();
 const open = ref(false);
 const visible = ref(false);
 const title = ref("修改头像");
-const cropperRef = ref();
+//TODO
+const cropperRef = useTemplateRef<{
+  rotateLeft: () => void;
+  rotateRight: () => void;
+  changeScale: (num: number) => void;
+  getCropBlob: (callback: (data: Blob) => void) => void;
+}>("cropperRef");
 
 /** 图片裁剪数据 */
 const options = reactive({
@@ -113,13 +119,13 @@ function modalOpened() {
  * 向左旋转
  */
 function rotateLeft() {
-  cropperRef.value.rotateLeft();
+  cropperRef.value?.rotateLeft();
 }
 /**
  * 向右旋转
  */
 function rotateRight() {
-  cropperRef.value.rotateRight();
+  cropperRef.value?.rotateRight();
 }
 /**
  * 图片缩放
@@ -127,7 +133,7 @@ function rotateRight() {
  */
 function changeScale(num: number) {
   num = num || 1;
-  cropperRef.value.changeScale(num);
+  cropperRef.value?.changeScale(num);
 }
 /**
  * 上传预处理
@@ -149,7 +155,7 @@ function beforeUpload(file: File) {
  * 上传图片
  */
 function uploadImg() {
-  cropperRef.value.getCropBlob((data: Blob) => {
+  cropperRef.value?.getCropBlob((data: Blob) => {
     const formData = new FormData();
     formData.append("avatarfile", data, options.filename);
     uploadAvatar(formData).then((rsp) => {

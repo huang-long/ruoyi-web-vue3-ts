@@ -2,31 +2,31 @@
   <div>
     <el-tabs type="border-card">
       <el-tab-pane v-if="shouldHide('second')" label="秒">
-        <CrontabSecond ref="cronsecond" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabSecond :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('min')" label="分钟">
-        <CrontabMin ref="cronmin" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabMin :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('hour')" label="小时">
-        <CrontabHour ref="cronhour" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabHour :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('day')" label="日">
-        <CrontabDay ref="cronday" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabDay :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('month')" label="月">
-        <CrontabMonth ref="cronmonth" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabMonth :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('week')" label="周">
-        <CrontabWeek ref="cronweek" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabWeek :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
 
       <el-tab-pane v-if="shouldHide('year')" label="年">
-        <CrontabYear ref="cronyear" :cron="crontabValueObj" @update="updateCrontabValue" />
+        <CrontabYear :cron="crontabValueObj" @update="updateCrontabValue" />
       </el-tab-pane>
     </el-tabs>
 

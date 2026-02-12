@@ -26,12 +26,13 @@
 </template>
 
 <script lang="ts" setup name="CompTaskDetail">
-import { nextTick, watch } from "vue";
-import { computed, ref } from "vue";
+import { nextTick, useTemplateRef, watch } from "vue";
+import { ref } from "vue";
 import LeaveInfo from "../../leave/leaveInfo.vue";
 import { complete } from "@/api/workflow/activiti/task";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "@/api/form";
+import { useVModel } from "@vueuse/core";
 
 //外部参数 ################################################
 const props = withDefaults(
@@ -61,19 +62,12 @@ const rule = ref({
 const busiId = ref("");
 
 //element ################################################
-const formRef = ref<ElForm>();
+const formRef = useTemplateRef<ElForm>("formRef");
 
 //emit ################################################
 const emit = defineEmits<{ (event: "update:modelValue", value: boolean): void; (event: "ok"): void }>();
 //computed ################################################
-const visible = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value) {
-    emit("update:modelValue", value);
-  },
-});
+const visible = useVModel(props, "modelValue", emit);
 
 //watch ################################################
 watch(

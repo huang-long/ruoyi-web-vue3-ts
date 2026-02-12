@@ -255,22 +255,22 @@ import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, delUser, getUser, updateUser, addUser, deptTreeSelect, type UserInfoObj, resetUserPwd } from "@/api/system/user";
 import { useRouter } from "vue-router";
 import { loadDicts } from "@/utils/dict";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, useTemplateRef, watch } from "vue";
 import type { DeptObj } from "@/api/system/dept";
 import { addDateRange } from "@/utils/ruoyi";
-import { ElMessage, ElMessageBox, dayjs } from "element-plus";
+import { ElMessage, ElMessageBox, dayjs, type UploadFile } from "element-plus";
 import server from "@/utils/request";
 import type { PostObj } from "@/api/system/post";
 import type { RoleObj } from "@/api/system/role";
-import type { ElForm, QueryParam } from "@/api/form";
+import type { ElForm, ElTreeInstance, ElUploadInstance, QueryParam } from "@/api/form";
 import { type TransferObj } from "@/components/RightToolbar/toolbar.ts";
 
 const router = useRouter();
 // const { proxy } = getCurrentInstance();
-const userRef = ref<ElForm>();
-const queryRef = ref<ElForm>();
-const deptTreeRef = ref();
-const uploadRef = ref();
+const userRef = useTemplateRef<ElForm>("userRef");
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const deptTreeRef = useTemplateRef<ElTreeInstance>("deptTreeRef");
+const uploadRef = useTemplateRef<ElUploadInstance>("uploadRef");
 const dicts = loadDicts(["sys_normal_disable", "sys_user_sex"]);
 
 const userList = ref<UserInfoObj[]>([]);
@@ -359,7 +359,7 @@ const rules = ref({
   ],
 });
 
-const rePwdRef = ref();
+const rePwdRef = useTemplateRef<ElForm>("rePwdRef");
 const rePwdOpen = ref(false);
 const rePwdForm = ref({
   password: "",
@@ -388,7 +388,7 @@ const filterNode = (value: string, data: { label: string }) => {
 };
 /** 根据名称筛选部门树 */
 watch(deptName, (val) => {
-  deptTreeRef.value.filter(val);
+  deptTreeRef.value?.filter(val);
 });
 /**
  * 查询部门下拉树结构
@@ -427,7 +427,7 @@ const resetQuery = () => {
   dateRange.value = [];
   queryRef.value?.resetFields();
   queryParams.value.deptId = "";
-  deptTreeRef.value.setCurrentKey(null);
+  deptTreeRef.value?.setCurrentKey(null);
   handleQuery();
 };
 /**
@@ -507,7 +507,7 @@ const handleResetPwd = (row: UserInfoObj) => {
  * 重置密码提交
  */
 const submitRePwdForm = () => {
-  rePwdRef.value.validate().then((valid: boolean) => {
+  rePwdRef.value?.validate().then((valid: boolean) => {
     if (valid) {
       resetUserPwd(rePwdForm.value.userId, rePwdForm.value.password).then(() => {
         ElMessage.success("修改成功，新密码是：" + rePwdForm.value.password);
@@ -549,10 +549,10 @@ const handleFileUploadProgress = () => {
  * @param response 响应结果
  * @param file 文件
  */
-const handleFileSuccess = (response: { msg: string }, file: File) => {
+const handleFileSuccess = (response: { msg: string }, file: UploadFile) => {
   upload.open = false;
   upload.isUploading = false;
-  uploadRef.value.handleRemove(file);
+  uploadRef.value?.handleRemove(file);
   ElMessage.success(response.msg);
   getList();
 };
@@ -560,7 +560,7 @@ const handleFileSuccess = (response: { msg: string }, file: File) => {
  * 提交上传文件
  */
 const submitFileForm = () => {
-  uploadRef.value.submit();
+  uploadRef.value?.submit();
 };
 /**
  * 重置操作表单

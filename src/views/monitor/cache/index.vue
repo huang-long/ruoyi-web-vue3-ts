@@ -125,7 +125,7 @@
             <span style="vertical-align: middle">命令统计</span>
           </template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
-            <div ref="commandstats" style="height: 420px" />
+            <div ref="commandstatsRef" style="height: 420px" />
           </div>
         </el-card>
       </el-col>
@@ -137,7 +137,7 @@
             <span style="vertical-align: middle">内存信息</span>
           </template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
-            <div ref="usedmemory" style="height: 420px" />
+            <div ref="usedmemoryRef" style="height: 420px" />
           </div>
         </el-card>
       </el-col>
@@ -148,12 +148,12 @@
 <script lang="ts" setup name="Cache">
 import { getCache, type CacheInfoObj } from "@/api/monitor/cache";
 import * as echarts from "echarts";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { ElLoading } from "element-plus";
 
 const cache = ref<CacheInfoObj>({});
-const commandstats = ref(null);
-const usedmemory = ref(null);
+const commandstatsRef = useTemplateRef<HTMLElement>("commandstatsRef");
+const usedmemoryRef = useTemplateRef<HTMLElement>("usedmemoryRef");
 
 /**
  * 加载缓存监控数据列表
@@ -164,7 +164,7 @@ function getList() {
     load.close();
     cache.value = response.data || {};
 
-    const commandstatsIntance = echarts.init(commandstats.value, "macarons");
+    const commandstatsIntance = echarts.init(commandstatsRef.value, "macarons");
     commandstatsIntance.setOption({
       tooltip: {
         trigger: "item",
@@ -183,7 +183,7 @@ function getList() {
         },
       ],
     });
-    const usedmemoryInstance = echarts.init(usedmemory.value, "macarons");
+    const usedmemoryInstance = echarts.init(usedmemoryRef.value, "macarons");
     usedmemoryInstance.setOption({
       tooltip: {
         formatter: "{b} <br/>{a} : " + cache.value.info?.used_memory_human,

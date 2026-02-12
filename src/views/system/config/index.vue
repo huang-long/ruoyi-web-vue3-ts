@@ -73,12 +73,12 @@
 </template>
 
 <script lang="ts" setup name="SysConfig">
-import type { ElForm, QueryParam } from "@/api/form";
+import type { EditPage, ElForm, QueryParam } from "@/api/form";
 import { listConfig, delConfig, refreshCache, type SysConfigObj } from "@/api/system/config";
 import { loadDicts } from "@/utils/dict";
 import { addDateRange } from "@/utils/ruoyi";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import server from "@/utils/request";
 import EditDialog from "./edit.vue";
 
@@ -93,8 +93,8 @@ const multiple = ref(true);
 const total = ref(0);
 const dateRange = ref([]);
 
-const queryRef = ref<ElForm>();
-const editDialogRef = ref();
+const queryRef = useTemplateRef<ElForm>("queryRef");
+const editDialogRef = useTemplateRef<EditPage>("editDialogRef");
 
 const queryParams = ref<SysConfigObj & QueryParam>({
   pageNum: 1,

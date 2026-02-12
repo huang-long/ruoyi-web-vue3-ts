@@ -25,7 +25,7 @@
         <el-col :span="24">
           <el-form-item label="内容">
             <div>
-              <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :default-config="toolbarConfig" mode="default" />
+              <Toolbar style="border-bottom: 1px solid #ccc" :editor="domEditor" :default-config="toolbarConfig" mode="default" />
               <Editor v-model="form.noticeContent" style="height: 300px; overflow-y: hidden" :default-config="editorConfig" mode="default" @on-created="handleCreated" />
             </div>
           </el-form-item>
@@ -46,8 +46,8 @@ import type { ElForm } from "@/api/form";
 import { getNotice, addNotice, updateNotice, type NoticeObj } from "@/api/system/notice";
 import { loadDicts } from "@/utils/dict";
 import { ElMessage } from "element-plus";
-import { onBeforeUnmount, ref } from "vue";
-import "@wangeditor/editor-next/dist/css/style.css"; // 引入 css
+import { onBeforeUnmount, ref, useTemplateRef } from "vue";
+import "@wangeditor-next/editor/dist/css/style.css"; // 引入 css
 import { Editor, Toolbar } from "@wangeditor-next/editor-for-vue";
 import type { IDomEditor } from "@wangeditor-next/editor";
 
@@ -57,8 +57,8 @@ const action = ref("add");
 const open = ref(false);
 const loading = ref(true);
 const title = ref("");
-const noticeRef = ref<ElForm>();
-const editorRef = ref<IDomEditor>();
+const domEditor = ref<IDomEditor>();
+const noticeRef = useTemplateRef<ElForm>("noticeRef");
 
 const form = ref<NoticeObj>({
   noticeId: "",
@@ -76,7 +76,7 @@ const editorConfig = { placeholder: "请输入内容..." };
  * @param editor
  */
 const handleCreated = (editor: IDomEditor) => {
-  editorRef.value = editor; // 记录 editor 实例，重要！
+  domEditor.value = editor; // 记录 editor 实例，重要！
 };
 
 const emit = defineEmits<{
@@ -160,7 +160,7 @@ function submitForm() {
  * 组件销毁时，也及时销毁编辑器
  */
 onBeforeUnmount(() => {
-  editorRef.value?.destroy();
+  domEditor.value?.destroy();
 });
 
 defineExpose({ show });
