@@ -3,10 +3,12 @@
  */
 import type { Directive } from "vue";
 
+export declare type CopyCallbackFun = (status: boolean, value: string) => void;
+
 /**
  * v-copyText 复制文本内容
  */
-const copyText: Directive<HTMLElement & { $copyValue: string; $copyCallback: (status: boolean, value: string) => void; $destroyCopy: () => void }, string | VoidFunction> = {
+const copyText: Directive<HTMLElement & { $copyValue: string; $copyCallback: CopyCallbackFun; $destroyCopy: () => void }, string | CopyCallbackFun, string, "callback"> = {
   beforeMount(el, { value, arg }) {
     if (arg === "callback" && typeof value === "function") {
       el.$copyCallback = value;
@@ -31,6 +33,9 @@ const copyText: Directive<HTMLElement & { $copyValue: string; $copyCallback: (st
       el.addEventListener("click", handler);
       el.$destroyCopy = () => el.removeEventListener("click", handler);
     }
+  },
+  beforeUnmount(el) {
+    el.$destroyCopy && el.$destroyCopy();
   },
 };
 
